@@ -7,14 +7,43 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>VERA | Victim Evidence & Response Advocate</title>
+  <title>White Knight Law | VERA Victim Advocate Intake</title>
 
   <meta
     name="description"
-    content="Free browser-based victim advocacy intake, timeline building, evidence organization, and referral preparation."
+    content="White Knight Law VERA helps crime victims organize urgent concerns, evidence, timelines, resources, and handoff packets for advocate review."
   >
 
-  <meta name="theme-color" content="#102f4c">
+  <link rel="canonical" href="https://white-knight-law.github.io/vera_2/">
+
+  <meta name="theme-color" content="#020617">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="White Knight Law">
+  <meta property="og:title" content="White Knight Law | VERA Victim Advocate Intake">
+  <meta
+    property="og:description"
+    content="A trauma-aware White Knight Law intake workspace for crisis escalation, evidence inventory, timeline building, resource referral, and dashboard handoff."
+  >
+  <meta property="og:url" content="https://white-knight-law.github.io/vera_2/">
+  <meta name="twitter:card" content="summary">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "VERA Victim Evidence & Response Advocate",
+      "applicationCategory": "PublicSafetyApplication",
+      "operatingSystem": "Any",
+      "url": "https://white-knight-law.github.io/vera_2/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "White Knight Law Inc",
+        "url": "https://www.whiteknightlaw.org/"
+      },
+      "description": "Browser-based crime victim advocacy intake, timeline building, evidence organization, resource referral, and handoff packet preparation."
+    }
+  </script>
 
   <style>
     :root {
@@ -1153,6 +1182,14 @@
                   Export handoff packet
                 </button>
 
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="copy-handoff"
+                >
+                  Copy dashboard packet
+                </button>
+
                 <a
                   class="button button-outline"
                   href="https://www.whiteknightlaw.org/dashboard"
@@ -2148,6 +2185,10 @@
         .addEventListener("click", exportHandoffPacket);
 
       document
+        .getElementById("copy-handoff")
+        .addEventListener("click", copyHandoffPacket);
+
+      document
         .getElementById("generate-summary")
         .addEventListener("click", generateSummary);
 
@@ -2459,11 +2500,44 @@
     }
 
     function exportHandoffPacket() {
+      const packet = buildHandoffPacket();
+
+      downloadFile(
+        `vera-handoff-packet-${dateStamp()}.json`,
+        JSON.stringify(packet, null, 2),
+        "application/json;charset=utf-8"
+      );
+
+      showToast("Handoff packet exported.");
+    }
+
+    async function copyHandoffPacket() {
+      const packet = buildHandoffPacket();
+      const packetJson = JSON.stringify(packet, null, 2);
+
+      try {
+        await navigator.clipboard.writeText(packetJson);
+        showToast("Dashboard packet copied.");
+      } catch (error) {
+        console.error("Clipboard error:", error);
+        downloadFile(
+          `vera-dashboard-packet-${dateStamp()}.json`,
+          packetJson,
+          "application/json;charset=utf-8"
+        );
+        showToast("Copy failed, so the dashboard packet was downloaded.");
+      }
+    }
+
+    function buildHandoffPacket() {
       caseData.intake = formToObject(intakeForm);
       saveCase();
 
-      const packet = {
+      return {
         version: 1,
+        source: "VERA",
+        sourceUrl: "https://white-knight-law.github.io/vera_2/",
+        targetSystem: "White Knight Law dashboard",
         exportedAt: new Date().toISOString(),
         handoff: caseData.handoff,
         flags: buildReviewFlags(),
@@ -2473,14 +2547,6 @@
         evidence: caseData.evidence,
         summary: generateSummary()
       };
-
-      downloadFile(
-        `vera-handoff-packet-${dateStamp()}.json`,
-        JSON.stringify(packet, null, 2),
-        "application/json;charset=utf-8"
-      );
-
-      showToast("Handoff packet exported.");
     }
 
     function buildReviewFlags() {

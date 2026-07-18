@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://white-knight-law.github.io/vera_2/sitemap.xml
