@@ -106,6 +106,11 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    :focus-visible {
+      outline: 3px solid rgba(196, 181, 253, 0.72);
+      outline-offset: 3px;
+    }
+
     a {
       color: var(--blue);
     }
@@ -225,6 +230,10 @@
       padding: 30px 0 56px;
     }
 
+    main:focus {
+      outline: 0;
+    }
+
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
@@ -336,6 +345,12 @@
     .nav-button:hover,
     .nav-button:focus-visible,
     .nav-button.active {
+      color: white;
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .nav-button[aria-selected="true"] {
       color: white;
       background: var(--navy);
       border-color: var(--navy);
@@ -663,6 +678,18 @@
       padding: 14px;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .chat-message {
       max-width: 82%;
       border-radius: 12px;
@@ -812,6 +839,17 @@
       z-index: 5000;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     @media (max-width: 820px) {
       .hero,
       .form-grid,
@@ -904,7 +942,7 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <header>
+  <header role="banner">
     <div class="container header-inner">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">V</div>
@@ -957,7 +995,11 @@
     </div>
   </header>
 
-  <section class="emergency-bar" id="emergency-information">
+  <section
+    class="emergency-bar"
+    id="emergency-information"
+    aria-label="Emergency information"
+  >
     <div class="container emergency-inner">
       <strong>Immediate danger:</strong>
       VERA is not an emergency service and is not monitored by a person.
@@ -967,12 +1009,12 @@
     </div>
   </section>
 
-  <main class="container" id="main-content">
-    <section class="hero">
+  <main class="container" id="main-content" tabindex="-1">
+    <section class="hero" aria-labelledby="vera-title">
       <article class="hero-card">
         <p class="eyebrow">White Knight Law advocacy workspace</p>
 
-        <h1>VERA organizes crisis facts for White Knight review.</h1>
+        <h1 id="vera-title">VERA organizes crisis facts for White Knight review.</h1>
 
         <p class="hero-description">
           VERA is the victim-advocacy intake surface for the White Knight Law
@@ -1019,11 +1061,14 @@
       </aside>
     </section>
 
-    <nav class="navigation" aria-label="VERA sections">
+    <nav class="navigation" aria-label="VERA sections" role="tablist">
       <button
         class="nav-button active"
         type="button"
         data-view-target="chat-view"
+        role="tab"
+        aria-controls="chat-view"
+        aria-selected="true"
       >
         Chat
       </button>
@@ -1032,6 +1077,9 @@
         class="nav-button"
         type="button"
         data-view-target="intake-view"
+        role="tab"
+        aria-controls="intake-view"
+        aria-selected="false"
       >
         Intake
       </button>
@@ -1040,6 +1088,9 @@
         class="nav-button"
         type="button"
         data-view-target="timeline-view"
+        role="tab"
+        aria-controls="timeline-view"
+        aria-selected="false"
       >
         Timeline
       </button>
@@ -1048,6 +1099,9 @@
         class="nav-button"
         type="button"
         data-view-target="evidence-view"
+        role="tab"
+        aria-controls="evidence-view"
+        aria-selected="false"
       >
         Evidence
       </button>
@@ -1056,6 +1110,9 @@
         class="nav-button"
         type="button"
         data-view-target="summary-view"
+        role="tab"
+        aria-controls="summary-view"
+        aria-selected="false"
       >
         Summary
       </button>
@@ -1064,6 +1121,9 @@
         class="nav-button"
         type="button"
         data-view-target="resources-view"
+        role="tab"
+        aria-controls="resources-view"
+        aria-selected="false"
       >
         Library
       </button>
@@ -1072,6 +1132,9 @@
         class="nav-button"
         type="button"
         data-view-target="admin-view"
+        role="tab"
+        aria-controls="admin-view"
+        aria-selected="false"
       >
         Admin
       </button>
@@ -1080,14 +1143,22 @@
         class="nav-button"
         type="button"
         data-view-target="privacy-view"
+        role="tab"
+        aria-controls="privacy-view"
+        aria-selected="false"
       >
         Privacy
       </button>
     </nav>
 
-    <section class="view active" id="chat-view">
+    <section
+      class="view active"
+      id="chat-view"
+      role="tabpanel"
+      aria-labelledby="chat-tab-title"
+    >
       <article class="panel">
-        <h2>Secure advocacy chat</h2>
+        <h2 id="chat-tab-title">Secure advocacy chat</h2>
 
         <div class="notice notice-danger">
           VERA is not monitored in real time and cannot dispatch help. If
@@ -1101,16 +1172,23 @@
               class="chat-window"
               id="chat-window"
               aria-live="polite"
+              aria-relevant="additions text"
               aria-label="VERA chat transcript"
+              tabindex="0"
             ></div>
 
             <form class="chat-compose" id="chat-form">
               <div class="form-group">
                 <label for="chat-input">Message VERA</label>
+                <p class="help-text" id="chat-input-help">
+                  Do not include passwords, one-time codes, account numbers, or
+                  unnecessary identifying details.
+                </p>
                 <textarea
                   id="chat-input"
                   name="message"
                   placeholder="Start with what happened or the safest next thing you need help with."
+                  aria-describedby="chat-input-help"
                   required
                 ></textarea>
               </div>
@@ -1195,6 +1273,7 @@
                   href="https://www.whiteknightlaw.org/dashboard"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Open White Knight dashboard in a new tab"
                 >
                   Open dashboard
                 </a>
@@ -1205,9 +1284,14 @@
       </article>
     </section>
 
-    <section class="view" id="intake-view">
+    <section
+      class="view"
+      id="intake-view"
+      role="tabpanel"
+      aria-labelledby="intake-title"
+    >
       <article class="panel">
-        <h2>Initial intake</h2>
+        <h2 id="intake-title">Initial intake</h2>
 
         <div class="notice notice-info">
           Share only what is needed to understand the situation. You do
@@ -1233,8 +1317,15 @@
 
             <div class="form-group">
               <label for="safety-status">Current safety</label>
+              <p class="help-text" id="safety-status-help">
+                Choose immediate or possible danger when current safety is uncertain.
+              </p>
 
-              <select id="safety-status" name="safetyStatus">
+              <select
+                id="safety-status"
+                name="safetyStatus"
+                aria-describedby="safety-status-help"
+              >
                 <option value="">Choose one</option>
                 <option value="No immediate danger reported">
                   No immediate danger reported
@@ -1462,14 +1553,19 @@
           </div>
         </form>
 
-        <div id="safety-response" class="hidden"></div>
-        <div id="next-steps-output"></div>
+        <div id="safety-response" class="hidden" role="status" aria-live="polite"></div>
+        <div id="next-steps-output" role="status" aria-live="polite"></div>
       </article>
     </section>
 
-    <section class="view" id="timeline-view">
+    <section
+      class="view"
+      id="timeline-view"
+      role="tabpanel"
+      aria-labelledby="timeline-title"
+    >
       <article class="panel">
-        <h2>Chronological timeline</h2>
+        <h2 id="timeline-title">Chronological timeline</h2>
 
         <p>
           Add one event at a time. Use approximate dates when the exact date
@@ -1547,13 +1643,24 @@
           </div>
         </form>
 
-        <div class="record-list" id="timeline-list"></div>
+        <div
+          class="record-list"
+          id="timeline-list"
+          role="region"
+          aria-live="polite"
+          aria-label="Saved timeline events"
+        ></div>
       </article>
     </section>
 
-    <section class="view" id="evidence-view">
+    <section
+      class="view"
+      id="evidence-view"
+      role="tabpanel"
+      aria-labelledby="evidence-title"
+    >
       <article class="panel">
-        <h2>Evidence inventory</h2>
+        <h2 id="evidence-title">Evidence inventory</h2>
 
         <div class="notice notice-warning">
           Preserve original files and records when it is safe to do so.
@@ -1669,13 +1776,24 @@
           </div>
         </form>
 
-        <div class="record-list" id="evidence-list"></div>
+        <div
+          class="record-list"
+          id="evidence-list"
+          role="region"
+          aria-live="polite"
+          aria-label="Saved evidence items"
+        ></div>
       </article>
     </section>
 
-    <section class="view" id="summary-view">
+    <section
+      class="view"
+      id="summary-view"
+      role="tabpanel"
+      aria-labelledby="summary-title"
+    >
       <article class="panel">
-        <h2>Organizational incident summary</h2>
+        <h2 id="summary-title">Organizational incident summary</h2>
 
         <div class="notice notice-info no-print">
           Review the summary carefully. Correct inaccurate language before
@@ -1683,7 +1801,14 @@
           law-enforcement professional.
         </div>
 
-        <div class="summary-output" id="summary-output">
+        <div
+          class="summary-output"
+          id="summary-output"
+          role="region"
+          aria-live="polite"
+          aria-label="Generated organizational incident summary"
+          tabindex="0"
+        >
           No summary has been generated yet.
         </div>
 
@@ -1742,9 +1867,14 @@
       </article>
     </section>
 
-    <section class="view" id="resources-view">
+    <section
+      class="view"
+      id="resources-view"
+      role="tabpanel"
+      aria-labelledby="resources-title"
+    >
       <article class="panel">
-        <h2>Victim advocacy reference library</h2>
+        <h2 id="resources-title">Victim advocacy reference library</h2>
 
         <p>
           These materials informed the structure and safeguards used by
@@ -1766,9 +1896,14 @@
       </article>
     </section>
 
-    <section class="view" id="privacy-view">
+    <section
+      class="view"
+      id="privacy-view"
+      role="tabpanel"
+      aria-labelledby="privacy-title"
+    >
       <article class="panel">
-        <h2>Privacy, limits, and safe use</h2>
+        <h2 id="privacy-title">Privacy, limits, and safe use</h2>
 
         <div class="notice notice-danger">
           This website is not a secure case-management portal. Information
@@ -1828,9 +1963,14 @@
       </article>
     </section>
 
-    <section class="view" id="admin-view">
+    <section
+      class="view"
+      id="admin-view"
+      role="tabpanel"
+      aria-labelledby="admin-title"
+    >
       <article class="panel">
-        <h2>Admin review queue</h2>
+        <h2 id="admin-title">Admin review queue</h2>
 
         <div class="notice notice-warning">
           This prototype admin queue reads the current browser only. A
@@ -1843,7 +1983,12 @@
         <div class="admin-layout">
           <div>
             <h3>Review status</h3>
-            <div id="admin-review-list"></div>
+            <div
+              id="admin-review-list"
+              role="region"
+              aria-live="polite"
+              aria-label="Admin review status"
+            ></div>
           </div>
 
           <div>
@@ -2074,6 +2219,7 @@
       bindNavigation();
       bindForms();
       bindActions();
+      syncViewState("chat-view");
       populateIntakeForm();
       populateAdminForm();
       seedChat();
@@ -2091,19 +2237,49 @@
           showView(button.dataset.viewTarget);
         });
       });
+
+      navButtons.forEach((button, index) => {
+        button.addEventListener("keydown", (event) => {
+          const keyMap = {
+            ArrowRight: 1,
+            ArrowDown: 1,
+            ArrowLeft: -1,
+            ArrowUp: -1
+          };
+
+          if (event.key === "Home") {
+            event.preventDefault();
+            navButtons[0].focus();
+            showView(navButtons[0].dataset.viewTarget);
+            return;
+          }
+
+          if (event.key === "End") {
+            event.preventDefault();
+            const lastButton = navButtons[navButtons.length - 1];
+            lastButton.focus();
+            showView(lastButton.dataset.viewTarget);
+            return;
+          }
+
+          if (!(event.key in keyMap)) {
+            return;
+          }
+
+          event.preventDefault();
+          const nextIndex =
+            (index + keyMap[event.key] + navButtons.length) %
+            navButtons.length;
+          const nextButton = navButtons[nextIndex];
+
+          nextButton.focus();
+          showView(nextButton.dataset.viewTarget);
+        });
+      });
     }
 
     function showView(viewId) {
-      views.forEach((view) => {
-        view.classList.toggle("active", view.id === viewId);
-      });
-
-      navButtons.forEach((button) => {
-        button.classList.toggle(
-          "active",
-          button.dataset.viewTarget === viewId
-        );
-      });
+      syncViewState(viewId);
 
       if (viewId === "summary-view") {
         generateSummary();
@@ -2117,6 +2293,20 @@
       window.scrollTo({
         top: document.querySelector(".navigation").offsetTop - 15,
         behavior: "smooth"
+      });
+    }
+
+    function syncViewState(viewId) {
+      views.forEach((view) => {
+        view.classList.toggle("active", view.id === viewId);
+      });
+
+      navButtons.forEach((button) => {
+        const isActive = button.dataset.viewTarget === viewId;
+
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-selected", String(isActive));
+        button.tabIndex = isActive ? 0 : -1;
       });
     }
 
