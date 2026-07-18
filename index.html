@@ -14,7 +14,7 @@
     content="White Knight Law VERA helps crime victims organize urgent concerns, evidence, timelines, resources, and handoff packets for advocate review."
   >
 
-  <link rel="canonical" href="https://white-knight-law.github.io/vera_2/">
+  <link rel="canonical" href="https://vera.whiteknightlaw.org/">
 
   <meta name="theme-color" content="#020617">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -25,7 +25,7 @@
     property="og:description"
     content="A trauma-aware White Knight Law intake workspace for crisis escalation, evidence inventory, timeline building, resource referral, and dashboard handoff."
   >
-  <meta property="og:url" content="https://white-knight-law.github.io/vera_2/">
+  <meta property="og:url" content="https://vera.whiteknightlaw.org/">
   <meta name="twitter:card" content="summary">
 
   <script type="application/ld+json">
@@ -35,7 +35,7 @@
       "name": "VERA Victim Evidence & Response Advocate",
       "applicationCategory": "PublicSafetyApplication",
       "operatingSystem": "Any",
-      "url": "https://white-knight-law.github.io/vera_2/",
+      "url": "https://vera.whiteknightlaw.org/",
       "publisher": {
         "@type": "Organization",
         "name": "White Knight Law Inc",
@@ -750,6 +750,40 @@
       margin-top: 12px;
     }
 
+    .case-file-card {
+      display: grid;
+      gap: 10px;
+      border: 1px solid rgba(167, 139, 250, 0.34);
+      border-radius: 11px;
+      padding: 14px;
+      background: rgba(15, 23, 42, 0.72);
+      margin: 0 0 14px;
+    }
+
+    .case-file-card h3 {
+      margin: 0;
+    }
+
+    .case-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .case-meta-grid span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .case-meta-grid strong {
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
     .admin-table {
       width: 100%;
       border-collapse: collapse;
@@ -856,6 +890,10 @@
       .resource-grid,
       .chat-layout,
       .admin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .case-meta-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1033,6 +1071,11 @@
 
       <aside class="status-card" aria-label="System status">
         <h2>White Knight integration</h2>
+
+        <div class="case-file-card" aria-label="Current VERA case file">
+          <h3>Current case file</h3>
+          <div class="case-meta-grid" id="case-meta"></div>
+        </div>
 
         <div class="status-list">
           <div class="status-item">
@@ -1998,12 +2041,33 @@
                 <label for="admin-status">Case status</label>
                 <select id="admin-status" name="status">
                   <option>New</option>
+                  <option>Submitted for review</option>
                   <option>Needs crisis escalation</option>
                   <option>Needs advocate follow-up</option>
                   <option>Needs evidence review</option>
+                  <option>Needs legal review</option>
+                  <option>Assigned to reviewer</option>
                   <option>Referred out</option>
                   <option>Closed</option>
                 </select>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-priority">Priority</label>
+                <select id="admin-priority" name="priority">
+                  <option>Standard</option>
+                  <option>High</option>
+                  <option>Urgent safety</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-owner">Assigned reviewer</label>
+                <input
+                  id="admin-owner"
+                  name="owner"
+                  placeholder="Unassigned"
+                >
               </div>
 
               <div class="form-group">
@@ -2018,6 +2082,22 @@
               <div class="button-row">
                 <button class="button button-primary" type="submit">
                   Save admin notes
+                </button>
+
+                <button
+                  class="button button-success"
+                  type="button"
+                  id="submit-dashboard-case"
+                >
+                  Submit to dashboard queue
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="copy-admin-packet"
+                >
+                  Copy admin packet
                 </button>
               </div>
             </form>
@@ -2048,6 +2128,9 @@
     const STORAGE_KEY = "vera_case_v1";
 
     const emptyCase = {
+      caseId: "",
+      createdAt: "",
+      submittedAt: null,
       intake: {},
       timeline: [],
       evidence: [],
@@ -2056,6 +2139,8 @@
         requested: false,
         requestedAt: null,
         status: "New",
+        priority: "Standard",
+        owner: "",
         notes: ""
       },
       updatedAt: null
@@ -2206,6 +2291,7 @@
     const timelineList = document.getElementById("timeline-list");
     const evidenceList = document.getElementById("evidence-list");
     const adminReviewList = document.getElementById("admin-review-list");
+    const caseMeta = document.getElementById("case-meta");
     const summaryOutput = document.getElementById("summary-output");
     const safetyResponse = document.getElementById("safety-response");
     const nextStepsOutput = document.getElementById("next-steps-output");
@@ -2227,6 +2313,7 @@
       renderTimeline();
       renderEvidence();
       renderAdminReview();
+      renderCaseMeta();
       renderResources(advocacyResources);
       evaluateSafety();
     }
@@ -2379,6 +2466,14 @@
         .addEventListener("click", copyHandoffPacket);
 
       document
+        .getElementById("submit-dashboard-case")
+        .addEventListener("click", submitDashboardCase);
+
+      document
+        .getElementById("copy-admin-packet")
+        .addEventListener("click", copyHandoffPacket);
+
+      document
         .getElementById("generate-summary")
         .addEventListener("click", generateSummary);
 
@@ -2414,28 +2509,51 @@
         const saved = localStorage.getItem(STORAGE_KEY);
 
         if (!saved) {
-          return structuredClone(emptyCase);
+          return normalizeCase(structuredClone(emptyCase));
         }
 
         const parsed = JSON.parse(saved);
 
-        return {
-          intake: parsed.intake || {},
-          timeline: Array.isArray(parsed.timeline) ? parsed.timeline : [],
-          evidence: Array.isArray(parsed.evidence) ? parsed.evidence : [],
-          messages: Array.isArray(parsed.messages) ? parsed.messages : [],
-          handoff: {
-            requested: Boolean(parsed.handoff?.requested),
-            requestedAt: parsed.handoff?.requestedAt || null,
-            status: parsed.handoff?.status || "New",
-            notes: parsed.handoff?.notes || ""
-          },
-          updatedAt: parsed.updatedAt || null
-        };
+        return normalizeCase(parsed);
       } catch (error) {
         console.error("Could not load saved case:", error);
-        return structuredClone(emptyCase);
+        return normalizeCase(structuredClone(emptyCase));
       }
+    }
+
+    function normalizeCase(rawCase) {
+      const createdAt =
+        rawCase.createdAt ||
+        rawCase.updatedAt ||
+        new Date().toISOString();
+
+      return {
+        caseId: rawCase.caseId || createCaseId(createdAt),
+        createdAt,
+        submittedAt: rawCase.submittedAt || null,
+        intake: rawCase.intake || {},
+        timeline: Array.isArray(rawCase.timeline) ? rawCase.timeline : [],
+        evidence: Array.isArray(rawCase.evidence) ? rawCase.evidence : [],
+        messages: Array.isArray(rawCase.messages) ? rawCase.messages : [],
+        handoff: {
+          requested: Boolean(rawCase.handoff?.requested),
+          requestedAt: rawCase.handoff?.requestedAt || null,
+          status: rawCase.handoff?.status || "New",
+          priority: rawCase.handoff?.priority || "Standard",
+          owner: rawCase.handoff?.owner || "",
+          notes: rawCase.handoff?.notes || ""
+        },
+        updatedAt: rawCase.updatedAt || null
+      };
+    }
+
+    function createCaseId(seed) {
+      const compactDate = new Date(seed)
+        .toISOString()
+        .slice(0, 10)
+        .replaceAll("-", "");
+      const suffix = crypto.randomUUID().slice(0, 8).toUpperCase();
+      return `VERA-${compactDate}-${suffix}`;
     }
 
     function seedChat() {
@@ -2724,13 +2842,22 @@
       saveCase();
 
       return {
-        version: 1,
+        version: 2,
         source: "VERA",
-        sourceUrl: "https://white-knight-law.github.io/vera_2/",
+        sourceUrl: "https://vera.whiteknightlaw.org/",
         targetSystem: "White Knight Law dashboard",
+        dashboardPath: "/dashboard/vera/intake",
+        caseId: caseData.caseId,
+        caseCreatedAt: caseData.createdAt,
+        submittedAt: caseData.submittedAt,
         exportedAt: new Date().toISOString(),
         handoff: caseData.handoff,
         flags: buildReviewFlags(),
+        counts: {
+          messages: caseData.messages.length,
+          timelineEvents: caseData.timeline.length,
+          evidenceItems: caseData.evidence.length
+        },
         transcript: caseData.messages,
         intake: caseData.intake,
         timeline: caseData.timeline,
@@ -2764,16 +2891,46 @@
     function populateAdminForm() {
       document.getElementById("admin-status").value =
         caseData.handoff.status || "New";
+      document.getElementById("admin-priority").value =
+        caseData.handoff.priority || "Standard";
+      document.getElementById("admin-owner").value =
+        caseData.handoff.owner || "";
       document.getElementById("admin-notes").value =
         caseData.handoff.notes || "";
     }
 
     function saveAdminNotes() {
       caseData.handoff.status = document.getElementById("admin-status").value;
+      caseData.handoff.priority = document.getElementById("admin-priority").value;
+      caseData.handoff.owner = document.getElementById("admin-owner").value.trim();
       caseData.handoff.notes = document.getElementById("admin-notes").value.trim();
       saveCase();
       renderAdminReview();
       showToast("Admin review notes saved locally.");
+    }
+
+    function submitDashboardCase() {
+      caseData.intake = formToObject(intakeForm);
+      caseData.submittedAt = new Date().toISOString();
+      caseData.handoff.requested = true;
+      caseData.handoff.requestedAt =
+        caseData.handoff.requestedAt || caseData.submittedAt;
+      caseData.handoff.status = "Submitted for review";
+
+      if (buildReviewFlags().includes("crisis")) {
+        caseData.handoff.priority = "Urgent safety";
+      } else if (
+        caseData.evidence.length ||
+        caseData.timeline.length ||
+        caseData.messages.length > 2
+      ) {
+        caseData.handoff.priority = "High";
+      }
+
+      saveCase();
+      populateAdminForm();
+      renderAdminReview();
+      showToast("Case submitted to the local dashboard queue.");
     }
 
     function renderAdminReview() {
@@ -2788,8 +2945,18 @@
               ${escapeHtml(caseData.handoff.status || "New")}
             </span>
           </p>
+          <p><strong>Case ID:</strong> ${escapeHtml(caseData.caseId)}</p>
+          <p><strong>Priority:</strong> ${escapeHtml(caseData.handoff.priority || "Standard")}</p>
+          <p><strong>Assigned reviewer:</strong> ${
+            caseData.handoff.owner ? escapeHtml(caseData.handoff.owner) : "Unassigned"
+          }</p>
           <p><strong>Human review requested:</strong> ${
             caseData.handoff.requested ? "Yes" : "No"
+          }</p>
+          <p><strong>Submitted at:</strong> ${
+            caseData.submittedAt
+              ? new Date(caseData.submittedAt).toLocaleString()
+              : "Not submitted"
           }</p>
           <p><strong>Requested at:</strong> ${
             caseData.handoff.requestedAt
@@ -2807,11 +2974,48 @@
       `;
     }
 
+    function renderCaseMeta() {
+      const updated = caseData.updatedAt
+        ? new Date(caseData.updatedAt).toLocaleString()
+        : "Not saved";
+      const submitted = caseData.submittedAt
+        ? new Date(caseData.submittedAt).toLocaleString()
+        : "Not submitted";
+
+      caseMeta.innerHTML = `
+        <div>
+          <span>Case ID</span>
+          <strong>${escapeHtml(caseData.caseId)}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong>${escapeHtml(caseData.handoff.status || "New")}</strong>
+        </div>
+        <div>
+          <span>Priority</span>
+          <strong>${escapeHtml(caseData.handoff.priority || "Standard")}</strong>
+        </div>
+        <div>
+          <span>Submitted</span>
+          <strong>${escapeHtml(submitted)}</strong>
+        </div>
+        <div>
+          <span>Updated</span>
+          <strong>${escapeHtml(updated)}</strong>
+        </div>
+        <div>
+          <span>Packet</span>
+          <strong>${caseData.messages.length} messages / ${caseData.timeline.length} timeline / ${caseData.evidence.length} evidence</strong>
+        </div>
+      `;
+    }
+
     function saveCase() {
       caseData.updatedAt = new Date().toISOString();
 
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(caseData));
+        renderCaseMeta();
       } catch (error) {
         console.error("Could not save case:", error);
         showToast("The browser could not save this information.");
@@ -3282,6 +3486,13 @@
       lines.push("VERA ORGANIZATIONAL INCIDENT SUMMARY");
       lines.push("====================================");
       lines.push("");
+      lines.push(`Case ID: ${caseData.caseId}`);
+      lines.push(`Case status: ${caseData.handoff.status || "New"}`);
+      lines.push(`Priority: ${caseData.handoff.priority || "Standard"}`);
+      lines.push(
+        `Submitted for review: ${caseData.submittedAt ? "Yes" : "No"}`
+      );
+      lines.push("");
 
       lines.push("1. IMMEDIATE CONCERN");
       lines.push(valueOrUnknown(intake.urgentProblem));
@@ -3518,7 +3729,7 @@
 
       const exportData = {
         format: "VERA case backup",
-        version: 1,
+        version: 2,
         exportedAt: new Date().toISOString(),
         case: caseData
       };
@@ -3561,21 +3772,7 @@
             return;
           }
 
-          caseData = {
-            intake: imported.intake || {},
-            timeline: imported.timeline || [],
-            evidence: imported.evidence || [],
-            messages: Array.isArray(imported.messages)
-              ? imported.messages
-              : [],
-            handoff: {
-              requested: Boolean(imported.handoff?.requested),
-              requestedAt: imported.handoff?.requestedAt || null,
-              status: imported.handoff?.status || "New",
-              notes: imported.handoff?.notes || ""
-            },
-            updatedAt: imported.updatedAt || new Date().toISOString()
-          };
+          caseData = normalizeCase(imported);
 
           saveCase();
           intakeForm.reset();
@@ -3586,6 +3783,7 @@
           renderTimeline();
           renderEvidence();
           renderAdminReview();
+          renderCaseMeta();
           generateSummary();
           evaluateSafety();
           showToast("Case backup imported.");
@@ -3610,7 +3808,7 @@
       }
 
       localStorage.removeItem(STORAGE_KEY);
-      caseData = structuredClone(emptyCase);
+      caseData = normalizeCase(structuredClone(emptyCase));
 
       intakeForm.reset();
       chatForm.reset();
@@ -3624,6 +3822,7 @@
       renderEvidence();
       populateAdminForm();
       renderAdminReview();
+      renderCaseMeta();
       summaryOutput.textContent = "No summary has been generated yet.";
       nextStepsOutput.innerHTML = "";
       safetyResponse.className = "hidden";

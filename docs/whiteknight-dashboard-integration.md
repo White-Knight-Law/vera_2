@@ -2,7 +2,7 @@
 
 VERA currently runs as a static GitHub Pages intake surface:
 
-https://white-knight-law.github.io/vera_2/
+https://vera.whiteknightlaw.org/
 
 The production White Knight Law dashboard is served by Cloud Run in Google Cloud project `ai-litigation`:
 
