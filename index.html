@@ -2143,6 +2143,7 @@
         owner: "",
         notes: ""
       },
+      serverSubmission: null,
       updatedAt: null
     };
 
@@ -2543,6 +2544,7 @@
           owner: rawCase.handoff?.owner || "",
           notes: rawCase.handoff?.notes || ""
         },
+        serverSubmission: rawCase.serverSubmission || null,
         updatedAt: rawCase.updatedAt || null
       };
     }
@@ -2909,7 +2911,7 @@
       showToast("Admin review notes saved locally.");
     }
 
-    function submitDashboardCase() {
+    async function submitDashboardCase() {
       caseData.intake = formToObject(intakeForm);
       caseData.submittedAt = new Date().toISOString();
       caseData.handoff.requested = true;
@@ -2928,9 +2930,45 @@
       }
 
       saveCase();
+
+      const packet = buildHandoffPacket();
+
+      try {
+        const response = await fetch("/api/intakes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(packet)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Submission failed with status ${response.status}`);
+        }
+
+        caseData.serverSubmission = await response.json();
+        caseData.handoff.status = "Submitted for review";
+        saveCase();
+        populateAdminForm();
+        renderAdminReview();
+        renderCaseMeta();
+        showToast("Case submitted to the VERA server review queue.");
+      } catch (error) {
+        console.error("Server submission error:", error);
+        caseData.serverSubmission = {
+          ok: false,
+          error: "Server submission failed; saved locally only.",
+          failedAt: new Date().toISOString()
+        };
+        saveCase();
+        populateAdminForm();
+        renderAdminReview();
+        renderCaseMeta();
+        showToast("Saved locally. Server submission is not available.");
+      }
+
       populateAdminForm();
       renderAdminReview();
-      showToast("Case submitted to the local dashboard queue.");
     }
 
     function renderAdminReview() {
@@ -2949,6 +2987,13 @@
           <p><strong>Priority:</strong> ${escapeHtml(caseData.handoff.priority || "Standard")}</p>
           <p><strong>Assigned reviewer:</strong> ${
             caseData.handoff.owner ? escapeHtml(caseData.handoff.owner) : "Unassigned"
+          }</p>
+          <p><strong>Server queue:</strong> ${
+            caseData.serverSubmission?.ok
+              ? `Received ${escapeHtml(new Date(caseData.serverSubmission.receivedAt).toLocaleString())}`
+              : caseData.serverSubmission?.error
+                ? escapeHtml(caseData.serverSubmission.error)
+                : "Not submitted to server"
           }</p>
           <p><strong>Human review requested:</strong> ${
             caseData.handoff.requested ? "Yes" : "No"
@@ -2981,6 +3026,11 @@
       const submitted = caseData.submittedAt
         ? new Date(caseData.submittedAt).toLocaleString()
         : "Not submitted";
+      const serverQueue = caseData.serverSubmission?.ok
+        ? "Server received"
+        : caseData.serverSubmission?.error
+          ? "Local only"
+          : "Not sent";
 
       caseMeta.innerHTML = `
         <div>
@@ -3006,6 +3056,10 @@
         <div>
           <span>Packet</span>
           <strong>${caseData.messages.length} messages / ${caseData.timeline.length} timeline / ${caseData.evidence.length} evidence</strong>
+        </div>
+        <div>
+          <span>Server queue</span>
+          <strong>${escapeHtml(serverQueue)}</strong>
         </div>
       `;
     }
