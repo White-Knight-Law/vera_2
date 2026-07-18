@@ -18,25 +18,25 @@
 
   <style>
     :root {
-      --navy: #102f4c;
-      --navy-dark: #092238;
-      --blue: #176b9c;
-      --blue-light: #eaf5fb;
-      --green: #187554;
-      --green-light: #edf8f3;
-      --gold: #bd7a12;
-      --gold-light: #fff7e8;
-      --red: #a52c2c;
-      --red-dark: #791e1e;
-      --red-light: #fff2f2;
-      --cream: #faf9f5;
-      --white: #ffffff;
-      --text: #17212b;
-      --muted: #586574;
-      --border: #d7e0e6;
-      --border-dark: #b7c4cd;
-      --shadow: 0 14px 34px rgba(16, 47, 76, 0.11);
-      --radius: 15px;
+      --navy: #8b5cf6;
+      --navy-dark: #020617;
+      --blue: #a78bfa;
+      --blue-light: rgba(139, 92, 246, 0.14);
+      --green: #10b981;
+      --green-light: rgba(16, 185, 129, 0.14);
+      --gold: #f59e0b;
+      --gold-light: rgba(245, 158, 11, 0.14);
+      --red: #ef4444;
+      --red-dark: #fecaca;
+      --red-light: rgba(239, 68, 68, 0.16);
+      --cream: #020617;
+      --white: #0f172a;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-dark: rgba(255, 255, 255, 0.18);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+      --radius: 14px;
       --max-width: 1120px;
     }
 
@@ -50,7 +50,9 @@
 
     body {
       margin: 0;
-      background: var(--cream);
+      background:
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.2), transparent 36rem),
+        linear-gradient(180deg, #020617 0%, #0f172a 48%, #020617 100%);
       color: var(--text);
       font-family:
         Inter,
@@ -100,9 +102,13 @@
     }
 
     header {
-      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      background: rgba(2, 6, 23, 0.88);
       color: white;
-      border-bottom: 4px solid #2f87b7;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .header-inner {
@@ -172,13 +178,13 @@
     }
 
     .emergency-bar {
-      background: var(--red-light);
-      border-bottom: 1px solid #e6b1b1;
+      background: rgba(127, 29, 29, 0.28);
+      border-bottom: 1px solid rgba(248, 113, 113, 0.32);
     }
 
     .emergency-inner {
       padding: 12px 0;
-      color: #551616;
+      color: #fee2e2;
       font-size: 0.94rem;
     }
 
@@ -200,10 +206,11 @@
     .hero-card,
     .status-card,
     .panel {
-      background: white;
+      background: rgba(15, 23, 42, 0.84);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
 
     .hero-card {
@@ -230,7 +237,7 @@
       margin: 20px 0 0;
       max-width: 770px;
       font-size: 1.08rem;
-      color: #2c3742;
+      color: #dbe4ef;
     }
 
     .opening-question {
@@ -290,8 +297,8 @@
       appearance: none;
       border: 1px solid var(--border-dark);
       border-radius: 999px;
-      background: white;
-      color: var(--navy);
+      background: rgba(15, 23, 42, 0.72);
+      color: #ede9fe;
       padding: 9px 14px;
       font-weight: 800;
       cursor: pointer;
@@ -385,7 +392,7 @@
       width: 100%;
       border: 1px solid var(--border-dark);
       border-radius: 9px;
-      background: white;
+      background: rgba(2, 6, 23, 0.64);
       color: var(--text);
       padding: 11px 12px;
     }
@@ -457,7 +464,7 @@
     .button-secondary {
       background: var(--blue-light);
       color: var(--navy);
-      border: 1px solid #bad7e7;
+      border: 1px solid rgba(139, 92, 246, 0.42);
     }
 
     .button-success {
@@ -471,8 +478,8 @@
     }
 
     .button-outline {
-      background: white;
-      color: var(--navy);
+      background: rgba(2, 6, 23, 0.46);
+      color: #ede9fe;
       border: 1px solid var(--border-dark);
     }
 
@@ -493,7 +500,7 @@
       border: 1px solid var(--border);
       border-radius: 11px;
       padding: 15px;
-      background: #fcfdfe;
+      background: rgba(2, 6, 23, 0.36);
     }
 
     .record-header {
@@ -528,8 +535,8 @@
     .small-button {
       appearance: none;
       border: 1px solid var(--border-dark);
-      background: white;
-      color: var(--navy);
+      background: rgba(2, 6, 23, 0.58);
+      color: #ede9fe;
       border-radius: 7px;
       padding: 6px 9px;
       cursor: pointer;
@@ -545,7 +552,7 @@
     .summary-output {
       white-space: pre-wrap;
       border: 1px solid var(--border-dark);
-      background: #fdfefe;
+      background: rgba(2, 6, 23, 0.52);
       border-radius: 10px;
       padding: 20px;
       min-height: 280px;
@@ -572,7 +579,7 @@
     .resource-card {
       border: 1px solid var(--border);
       border-radius: 12px;
-      background: white;
+      background: rgba(15, 23, 42, 0.72);
       padding: 18px;
     }
 
@@ -583,7 +590,7 @@
 
     .resource-card p {
       margin: 0 0 11px;
-      color: #3b4854;
+      color: #cbd5e1;
       font-size: 0.92rem;
     }
 
@@ -607,6 +614,119 @@
     .resource-link {
       font-weight: 850;
       font-size: 0.88rem;
+    }
+
+    .chat-layout,
+    .admin-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .chat-window {
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      background: rgba(2, 6, 23, 0.48);
+      min-height: 430px;
+      max-height: 58vh;
+      overflow-y: auto;
+      padding: 14px;
+    }
+
+    .chat-message {
+      max-width: 82%;
+      border-radius: 12px;
+      padding: 11px 13px;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+
+    .chat-message.user {
+      margin-left: auto;
+      background: var(--navy);
+      color: white;
+    }
+
+    .chat-message.vera {
+      background: rgba(241, 245, 249, 0.96);
+      color: #17212b;
+      border: 1px solid var(--border);
+    }
+
+    .chat-message.system {
+      max-width: 100%;
+      background: var(--gold-light);
+      border: 1px solid #e9cd95;
+      color: #4d3105;
+      font-size: 0.92rem;
+    }
+
+    .chat-meta {
+      display: block;
+      opacity: 0.76;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .chat-compose {
+      margin-top: 12px;
+    }
+
+    .chat-compose textarea {
+      min-height: 94px;
+    }
+
+    .handoff-card {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px;
+      background: rgba(241, 245, 249, 0.96);
+      color: #17212b;
+      margin-top: 12px;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.92rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: var(--blue-light);
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 850;
+    }
+
+    .status-pill.urgent {
+      background: var(--red-light);
+      color: var(--red-dark);
+    }
+
+    .status-pill.review {
+      background: var(--gold-light);
+      color: #5d3b07;
     }
 
     .empty-state {
@@ -666,7 +786,9 @@
     @media (max-width: 820px) {
       .hero,
       .form-grid,
-      .resource-grid {
+      .resource-grid,
+      .chat-layout,
+      .admin-layout {
         grid-template-columns: 1fr;
       }
 
@@ -759,14 +881,30 @@
         <div class="brand-mark" aria-hidden="true">V</div>
 
         <div>
-          <p class="brand-name">VERA</p>
+          <p class="brand-name">White Knight Law | VERA</p>
           <p class="brand-subtitle">
-            Victim Evidence &amp; Response Advocate
+            Victim Evidence &amp; Response Advocate workspace
           </p>
         </div>
       </div>
 
       <div class="header-actions">
+        <a class="header-button" href="https://www.whiteknightlaw.org/">
+          White Knight Law
+        </a>
+
+        <a class="header-button" href="https://www.whiteknightlaw.org/dashboard">
+          Dashboard
+        </a>
+
+        <button
+          class="header-button"
+          type="button"
+          data-view-target="chat-view"
+        >
+          Start chat
+        </button>
+
         <button
           class="header-button"
           type="button"
@@ -803,16 +941,17 @@
   <main class="container" id="main-content">
     <section class="hero">
       <article class="hero-card">
-        <p class="eyebrow">Free browser-based organizational support</p>
+        <p class="eyebrow">White Knight Law advocacy workspace</p>
 
-        <h1>Organize what happened, one fact at a time.</h1>
+        <h1>VERA organizes crisis facts for White Knight review.</h1>
 
         <p class="hero-description">
-          VERA helps you build an incident timeline, identify potential
-          evidence, document harm, separate direct observations from
-          allegations and third-party statements, and prepare an
-          organizational summary for a trained advocate, attorney, agency,
-          or law-enforcement professional to review.
+          VERA is the victim-advocacy intake surface for the White Knight Law
+          information and resource-coordination system. It helps build an
+          incident timeline, identify potential evidence, document harm,
+          separate direct observations from allegations and third-party
+          statements, and prepare a handoff packet for the White Knight
+          dashboard workflow.
         </p>
 
         <div class="opening-question">
@@ -822,22 +961,22 @@
       </article>
 
       <aside class="status-card" aria-label="System status">
-        <h2>How this version works</h2>
+        <h2>White Knight integration</h2>
 
         <div class="status-list">
           <div class="status-item">
             <span class="status-dot" aria-hidden="true"></span>
-            <span>No paid API or ChatGPT account is required.</span>
+            <span>Visual system aligned to the White Knight dashboard.</span>
           </div>
 
           <div class="status-item">
             <span class="status-dot" aria-hidden="true"></span>
-            <span>Your entries stay in this browser unless you export them.</span>
+            <span>Handoff packets are formatted for reviewer intake.</span>
           </div>
 
           <div class="status-item">
             <span class="status-dot" aria-hidden="true"></span>
-            <span>The site can be used repeatedly without a built-in message limit.</span>
+            <span>Dashboard and main-site paths are always one click away.</span>
           </div>
 
           <div class="status-item">
@@ -854,6 +993,14 @@
     <nav class="navigation" aria-label="VERA sections">
       <button
         class="nav-button active"
+        type="button"
+        data-view-target="chat-view"
+      >
+        Chat
+      </button>
+
+      <button
+        class="nav-button"
         type="button"
         data-view-target="intake-view"
       >
@@ -895,13 +1042,133 @@
       <button
         class="nav-button"
         type="button"
+        data-view-target="admin-view"
+      >
+        Admin
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
         data-view-target="privacy-view"
       >
         Privacy
       </button>
     </nav>
 
-    <section class="view active" id="intake-view">
+    <section class="view active" id="chat-view">
+      <article class="panel">
+        <h2>Secure advocacy chat</h2>
+
+        <div class="notice notice-danger">
+          VERA is not monitored in real time and cannot dispatch help. If
+          anyone may be in immediate danger, contact local emergency services
+          or a local crisis service now.
+        </div>
+
+        <div class="chat-layout">
+          <div>
+            <div
+              class="chat-window"
+              id="chat-window"
+              aria-live="polite"
+              aria-label="VERA chat transcript"
+            ></div>
+
+            <form class="chat-compose" id="chat-form">
+              <div class="form-group">
+                <label for="chat-input">Message VERA</label>
+                <textarea
+                  id="chat-input"
+                  name="message"
+                  placeholder="Start with what happened or the safest next thing you need help with."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="button-row">
+                <button class="button button-primary" type="submit">
+                  Send message
+                </button>
+
+                <button
+                  class="button button-secondary"
+                  type="button"
+                  id="chat-save-intake"
+                >
+                  Save chat to intake
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="chat-add-timeline"
+                >
+                  Add latest as timeline
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="chat-add-evidence"
+                >
+                  Add latest as evidence
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <aside>
+            <div class="notice notice-info">
+              <strong>Consent and privacy notice.</strong>
+              Chat messages are stored only in this browser in this prototype.
+              Do not enter passwords, account numbers, intimate images, or
+              details that could increase danger if someone else sees this
+              device.
+            </div>
+
+            <div class="handoff-card">
+              <h3>Human handoff</h3>
+              <p>
+                Use this when the conversation should be reviewed by a trained
+                person. The export includes intake, transcript, timeline,
+                evidence inventory, and flags formatted for White Knight's
+                dashboard review workflow.
+              </p>
+
+              <div class="button-row">
+                <button
+                  class="button button-success"
+                  type="button"
+                  id="request-handoff"
+                >
+                  Request human review
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="export-handoff"
+                >
+                  Export handoff packet
+                </button>
+
+                <a
+                  class="button button-outline"
+                  href="https://www.whiteknightlaw.org/dashboard"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open dashboard
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+    </section>
+
+    <section class="view" id="intake-view">
       <article class="panel">
         <h2>Initial intake</h2>
 
@@ -1523,6 +1790,59 @@
         </div>
       </article>
     </section>
+
+    <section class="view" id="admin-view">
+      <article class="panel">
+        <h2>Admin review queue</h2>
+
+        <div class="notice notice-warning">
+          This prototype admin queue reads the current browser only. A
+          production version needs authenticated staff accounts, encrypted
+          server storage, audit logs, retention rules, and a real notification
+          channel inside the White Knight dashboard before it can receive live
+          victim messages.
+        </div>
+
+        <div class="admin-layout">
+          <div>
+            <h3>Review status</h3>
+            <div id="admin-review-list"></div>
+          </div>
+
+          <div>
+            <h3>Reviewer notes</h3>
+            <form id="admin-form">
+              <div class="form-group">
+                <label for="admin-status">Case status</label>
+                <select id="admin-status" name="status">
+                  <option>New</option>
+                  <option>Needs crisis escalation</option>
+                  <option>Needs advocate follow-up</option>
+                  <option>Needs evidence review</option>
+                  <option>Referred out</option>
+                  <option>Closed</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-notes">Notes for reviewer</label>
+                <textarea
+                  id="admin-notes"
+                  name="notes"
+                  placeholder="Document review decisions, referrals, safety concerns, and follow-up needs."
+                ></textarea>
+              </div>
+
+              <div class="button-row">
+                <button class="button button-primary" type="submit">
+                  Save admin notes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </article>
+    </section>
   </main>
 
   <footer class="footer">
@@ -1549,8 +1869,32 @@
       intake: {},
       timeline: [],
       evidence: [],
+      messages: [],
+      handoff: {
+        requested: false,
+        requestedAt: null,
+        status: "New",
+        notes: ""
+      },
       updatedAt: null
     };
+
+    const crisisTerms = [
+      "immediate danger",
+      "kill",
+      "weapon",
+      "gun",
+      "knife",
+      "suicide",
+      "hurt myself",
+      "hurt me",
+      "threat",
+      "strang",
+      "stalk",
+      "following me",
+      "outside my house",
+      "cannot leave"
+    ];
 
     let caseData = loadCase();
 
@@ -1670,11 +2014,16 @@
     const navButtons = [...document.querySelectorAll(".nav-button")];
 
     const intakeForm = document.getElementById("intake-form");
+    const chatForm = document.getElementById("chat-form");
     const timelineForm = document.getElementById("timeline-form");
     const evidenceForm = document.getElementById("evidence-form");
+    const adminForm = document.getElementById("admin-form");
 
+    const chatWindow = document.getElementById("chat-window");
+    const chatInput = document.getElementById("chat-input");
     const timelineList = document.getElementById("timeline-list");
     const evidenceList = document.getElementById("evidence-list");
+    const adminReviewList = document.getElementById("admin-review-list");
     const summaryOutput = document.getElementById("summary-output");
     const safetyResponse = document.getElementById("safety-response");
     const nextStepsOutput = document.getElementById("next-steps-output");
@@ -1689,8 +2038,12 @@
       bindForms();
       bindActions();
       populateIntakeForm();
+      populateAdminForm();
+      seedChat();
+      renderChat();
       renderTimeline();
       renderEvidence();
+      renderAdminReview();
       renderResources(advocacyResources);
       evaluateSafety();
     }
@@ -1719,6 +2072,11 @@
         generateSummary();
       }
 
+      if (viewId === "admin-view") {
+        renderAdminReview();
+        populateAdminForm();
+      }
+
       window.scrollTo({
         top: document.querySelector(".navigation").offsetTop - 15,
         behavior: "smooth"
@@ -1729,6 +2087,11 @@
       intakeForm.addEventListener("submit", (event) => {
         event.preventDefault();
         saveIntake();
+      });
+
+      chatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendChatMessage();
       });
 
       document
@@ -1744,6 +2107,11 @@
         event.preventDefault();
         addEvidenceItem();
       });
+
+      adminForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveAdminNotes();
+      });
     }
 
     function bindActions() {
@@ -1758,6 +2126,26 @@
       document
         .getElementById("clear-evidence-form")
         .addEventListener("click", () => evidenceForm.reset());
+
+      document
+        .getElementById("chat-save-intake")
+        .addEventListener("click", saveChatToIntake);
+
+      document
+        .getElementById("chat-add-timeline")
+        .addEventListener("click", addLatestChatAsTimeline);
+
+      document
+        .getElementById("chat-add-evidence")
+        .addEventListener("click", addLatestChatAsEvidence);
+
+      document
+        .getElementById("request-handoff")
+        .addEventListener("click", requestHandoff);
+
+      document
+        .getElementById("export-handoff")
+        .addEventListener("click", exportHandoffPacket);
 
       document
         .getElementById("generate-summary")
@@ -1804,12 +2192,363 @@
           intake: parsed.intake || {},
           timeline: Array.isArray(parsed.timeline) ? parsed.timeline : [],
           evidence: Array.isArray(parsed.evidence) ? parsed.evidence : [],
+          messages: Array.isArray(parsed.messages) ? parsed.messages : [],
+          handoff: {
+            requested: Boolean(parsed.handoff?.requested),
+            requestedAt: parsed.handoff?.requestedAt || null,
+            status: parsed.handoff?.status || "New",
+            notes: parsed.handoff?.notes || ""
+          },
           updatedAt: parsed.updatedAt || null
         };
       } catch (error) {
         console.error("Could not load saved case:", error);
         return structuredClone(emptyCase);
       }
+    }
+
+    function seedChat() {
+      if (caseData.messages.length) {
+        return;
+      }
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "vera",
+        text:
+          "I can help organize what happened, identify urgent safety issues, list evidence without uploading it here, build a timeline, suggest resource categories, and prepare a handoff packet for human review.\n\nBefore you continue: do not use this chat for emergencies. If anyone may be in immediate danger, contact local emergency services or a local crisis service now.\n\nWhat is the most urgent problem you need help with today?",
+        createdAt: new Date().toISOString(),
+        flags: ["consent-notice"]
+      });
+
+      saveCase();
+    }
+
+    function sendChatMessage() {
+      const message = chatInput.value.trim();
+
+      if (!message) {
+        showToast("Write a message first.");
+        return;
+      }
+
+      const flags = detectMessageFlags(message);
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "user",
+        text: message,
+        createdAt: new Date().toISOString(),
+        flags
+      });
+
+      if (flags.includes("crisis")) {
+        caseData.handoff.requested = true;
+        caseData.handoff.requestedAt =
+          caseData.handoff.requestedAt || new Date().toISOString();
+        caseData.handoff.status = "Needs crisis escalation";
+      }
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "vera",
+        text: buildAdvocateResponse(message, flags),
+        createdAt: new Date().toISOString(),
+        flags: flags.includes("crisis") ? ["crisis-escalation"] : []
+      });
+
+      saveCase();
+      chatInput.value = "";
+      renderChat();
+      renderAdminReview();
+    }
+
+    function detectMessageFlags(message) {
+      const normalized = message.toLowerCase();
+      const flags = [];
+
+      if (crisisTerms.some((term) => normalized.includes(term))) {
+        flags.push("crisis");
+      }
+
+      if (
+        normalized.includes("evidence") ||
+        normalized.includes("photo") ||
+        normalized.includes("screenshot") ||
+        normalized.includes("email") ||
+        normalized.includes("recording") ||
+        normalized.includes("document")
+      ) {
+        flags.push("evidence");
+      }
+
+      if (
+        /\b(20\d{2}|19\d{2})\b/.test(normalized) ||
+        normalized.includes("yesterday") ||
+        normalized.includes("today") ||
+        normalized.includes("last week") ||
+        normalized.includes("then")
+      ) {
+        flags.push("timeline");
+      }
+
+      return flags;
+    }
+
+    function buildAdvocateResponse(message, flags) {
+      if (flags.includes("crisis")) {
+        return [
+          "This may involve urgent safety risk. Stop ordinary documentation if continuing could increase danger.",
+          "",
+          "If anyone may be in immediate danger, contact local emergency services or a local crisis service now. Move to a safer place if possible, avoid confronting the person, and do not try to collect more evidence if that could put anyone at risk.",
+          "",
+          "I marked this conversation for human review in the local admin queue. When it is safe, write only the next fact needed: where are you now, and what immediate help do you need?"
+        ].join("\n");
+      }
+
+      if (flags.includes("evidence")) {
+        return [
+          "I can help inventory that evidence without uploading the content here.",
+          "",
+          "For each item, capture: what it is, when it was created or received, where the original is stored, who controls it, whether the original is preserved, and what it tends to show.",
+          "",
+          "Use the evidence button below to save your latest message as a draft evidence item, then edit it for accuracy."
+        ].join("\n");
+      }
+
+      if (flags.includes("timeline")) {
+        return [
+          "Let's keep this chronological and factual.",
+          "",
+          "For the next entry, separate the date or approximate date, location or platform, what you directly observed, what someone else said, and what document or record supports it.",
+          "",
+          "Use the timeline button below to save your latest message as a draft event, then refine it."
+        ].join("\n");
+      }
+
+      return [
+        "I understand. To organize this for review, answer the next safest question you can:",
+        "",
+        "1. What did you personally see, hear, receive, or experience?",
+        "2. What do you believe happened but cannot personally verify?",
+        "3. What evidence or records may exist?",
+        "4. What outcome are you seeking right now?",
+        "",
+        "Keep names, account numbers, passwords, and unnecessary identifying details out of the chat."
+      ].join("\n");
+    }
+
+    function renderChat() {
+      chatWindow.innerHTML = "";
+
+      caseData.messages.forEach((message) => {
+        const article = document.createElement("article");
+        article.className = `chat-message ${message.role}`;
+        article.innerHTML = `
+          <span class="chat-meta">
+            ${message.role === "user" ? "You" : message.role === "system" ? "System" : "VERA"}
+            ${message.flags?.length ? ` · ${escapeHtml(message.flags.join(", "))}` : ""}
+          </span>
+          ${escapeHtml(message.text)}
+        `;
+
+        chatWindow.appendChild(article);
+      });
+
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function getLatestUserMessage() {
+      return [...caseData.messages].reverse().find(
+        (message) => message.role === "user"
+      );
+    }
+
+    function saveChatToIntake() {
+      const latest = getLatestUserMessage();
+
+      if (!latest) {
+        showToast("No user chat message is available yet.");
+        return;
+      }
+
+      const existing = intakeForm.elements.namedItem("urgentProblem").value;
+      intakeForm.elements.namedItem("urgentProblem").value = [
+        existing,
+        latest.text
+      ]
+        .filter(Boolean)
+        .join("\n\n");
+
+      saveIntake();
+      showToast("Latest chat message saved to intake.");
+    }
+
+    function addLatestChatAsTimeline() {
+      const latest = getLatestUserMessage();
+
+      if (!latest) {
+        showToast("No user chat message is available yet.");
+        return;
+      }
+
+      caseData.timeline.push({
+        id: crypto.randomUUID(),
+        date: "",
+        time: "",
+        location: "",
+        sourceType: "User allegation",
+        event: latest.text,
+        support: "Drafted from VERA chat. Review and separate facts before sharing.",
+        createdAt: new Date().toISOString()
+      });
+
+      sortTimeline();
+      saveCase();
+      renderTimeline();
+      showToast("Latest chat message added as a draft timeline event.");
+    }
+
+    function addLatestChatAsEvidence() {
+      const latest = getLatestUserMessage();
+
+      if (!latest) {
+        showToast("No user chat message is available yet.");
+        return;
+      }
+
+      caseData.evidence.push({
+        id: crypto.randomUUID(),
+        category: "Other supporting document",
+        date: "",
+        description: latest.text,
+        storageLocation: "",
+        owner: "",
+        originalPreserved: "Unknown",
+        backupMade: "Unknown",
+        notes: "Drafted from VERA chat. Do not upload sensitive evidence to this static site.",
+        createdAt: new Date().toISOString()
+      });
+
+      saveCase();
+      renderEvidence();
+      showToast("Latest chat message added as a draft evidence item.");
+    }
+
+    function requestHandoff() {
+      caseData.handoff.requested = true;
+      caseData.handoff.requestedAt = new Date().toISOString();
+
+      if (caseData.handoff.status === "New") {
+        caseData.handoff.status = "Needs advocate follow-up";
+      }
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "system",
+        text:
+          "Human review requested in this browser. Export the handoff packet and send it through an approved secure channel when one is available.",
+        createdAt: new Date().toISOString(),
+        flags: ["handoff-requested"]
+      });
+
+      saveCase();
+      renderChat();
+      renderAdminReview();
+      showToast("Human review request marked locally.");
+    }
+
+    function exportHandoffPacket() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+
+      const packet = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        handoff: caseData.handoff,
+        flags: buildReviewFlags(),
+        transcript: caseData.messages,
+        intake: caseData.intake,
+        timeline: caseData.timeline,
+        evidence: caseData.evidence,
+        summary: generateSummary()
+      };
+
+      downloadFile(
+        `vera-handoff-packet-${dateStamp()}.json`,
+        JSON.stringify(packet, null, 2),
+        "application/json;charset=utf-8"
+      );
+
+      showToast("Handoff packet exported.");
+    }
+
+    function buildReviewFlags() {
+      const flags = new Set();
+
+      caseData.messages.forEach((message) => {
+        (message.flags || []).forEach((flag) => flags.add(flag));
+      });
+
+      if (caseData.handoff.requested) {
+        flags.add("human-review-requested");
+      }
+
+      if (!caseData.timeline.length) {
+        flags.add("timeline-incomplete");
+      }
+
+      if (!caseData.evidence.length) {
+        flags.add("evidence-inventory-incomplete");
+      }
+
+      return [...flags];
+    }
+
+    function populateAdminForm() {
+      document.getElementById("admin-status").value =
+        caseData.handoff.status || "New";
+      document.getElementById("admin-notes").value =
+        caseData.handoff.notes || "";
+    }
+
+    function saveAdminNotes() {
+      caseData.handoff.status = document.getElementById("admin-status").value;
+      caseData.handoff.notes = document.getElementById("admin-notes").value.trim();
+      saveCase();
+      renderAdminReview();
+      showToast("Admin review notes saved locally.");
+    }
+
+    function renderAdminReview() {
+      const flags = buildReviewFlags();
+      const urgent = flags.includes("crisis") || flags.includes("crisis-escalation");
+      const latest = caseData.messages.at(-1);
+
+      adminReviewList.innerHTML = `
+        <div class="handoff-card">
+          <p>
+            <span class="status-pill ${urgent ? "urgent" : "review"}">
+              ${escapeHtml(caseData.handoff.status || "New")}
+            </span>
+          </p>
+          <p><strong>Human review requested:</strong> ${
+            caseData.handoff.requested ? "Yes" : "No"
+          }</p>
+          <p><strong>Requested at:</strong> ${
+            caseData.handoff.requestedAt
+              ? new Date(caseData.handoff.requestedAt).toLocaleString()
+              : "Not requested"
+          }</p>
+          <p><strong>Messages:</strong> ${caseData.messages.length}</p>
+          <p><strong>Timeline events:</strong> ${caseData.timeline.length}</p>
+          <p><strong>Evidence items:</strong> ${caseData.evidence.length}</p>
+          <p><strong>Flags:</strong> ${flags.length ? flags.map(escapeHtml).join(", ") : "None"}</p>
+          <p><strong>Latest message:</strong> ${
+            latest ? escapeHtml(latest.text.slice(0, 240)) : "No messages yet."
+          }</p>
+        </div>
+      `;
     }
 
     function saveCase() {
@@ -2407,7 +3146,24 @@
       }
 
       lines.push("");
-      lines.push("14. UNRESOLVED QUESTIONS");
+      lines.push("14. CHAT AND HUMAN REVIEW STATUS");
+      lines.push(`Messages captured: ${caseData.messages.length}`);
+      lines.push(
+        `Human review requested: ${caseData.handoff.requested ? "Yes" : "No"}`
+      );
+      lines.push(`Review status: ${caseData.handoff.status || "New"}`);
+
+      if (caseData.handoff.notes) {
+        lines.push(`Reviewer notes: ${caseData.handoff.notes}`);
+      }
+
+      const reviewFlags = buildReviewFlags();
+      lines.push(
+        `Review flags: ${reviewFlags.length ? reviewFlags.join(", ") : "None"}`
+      );
+
+      lines.push("");
+      lines.push("15. UNRESOLVED QUESTIONS");
 
       const unresolved = buildUnresolvedQuestions();
 
@@ -2420,7 +3176,7 @@
       }
 
       lines.push("");
-      lines.push("15. LIMITATIONS");
+      lines.push("16. LIMITATIONS");
       lines.push(
         "VERA has not independently verified any statement, allegation, document, identity, loss, date, or event described above."
       );
@@ -2553,14 +3309,27 @@
             intake: imported.intake || {},
             timeline: imported.timeline || [],
             evidence: imported.evidence || [],
+            messages: Array.isArray(imported.messages)
+              ? imported.messages
+              : [],
+            handoff: {
+              requested: Boolean(imported.handoff?.requested),
+              requestedAt: imported.handoff?.requestedAt || null,
+              status: imported.handoff?.status || "New",
+              notes: imported.handoff?.notes || ""
+            },
             updatedAt: imported.updatedAt || new Date().toISOString()
           };
 
           saveCase();
           intakeForm.reset();
           populateIntakeForm();
+          populateAdminForm();
+          seedChat();
+          renderChat();
           renderTimeline();
           renderEvidence();
+          renderAdminReview();
           generateSummary();
           evaluateSafety();
           showToast("Case backup imported.");
@@ -2588,11 +3357,17 @@
       caseData = structuredClone(emptyCase);
 
       intakeForm.reset();
+      chatForm.reset();
       timelineForm.reset();
       evidenceForm.reset();
+      adminForm.reset();
 
+      seedChat();
+      renderChat();
       renderTimeline();
       renderEvidence();
+      populateAdminForm();
+      renderAdminReview();
       summaryOutput.textContent = "No summary has been generated yet.";
       nextStepsOutput.innerHTML = "";
       safetyResponse.className = "hidden";
