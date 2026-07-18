@@ -1,0 +1,2728 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>VERA | Victim Evidence & Response Advocate</title>
+
+  <meta
+    name="description"
+    content="Free browser-based victim advocacy intake, timeline building, evidence organization, and referral preparation."
+  >
+
+  <meta name="theme-color" content="#102f4c">
+
+  <style>
+    :root {
+      --navy: #102f4c;
+      --navy-dark: #092238;
+      --blue: #176b9c;
+      --blue-light: #eaf5fb;
+      --green: #187554;
+      --green-light: #edf8f3;
+      --gold: #bd7a12;
+      --gold-light: #fff7e8;
+      --red: #a52c2c;
+      --red-dark: #791e1e;
+      --red-light: #fff2f2;
+      --cream: #faf9f5;
+      --white: #ffffff;
+      --text: #17212b;
+      --muted: #586574;
+      --border: #d7e0e6;
+      --border-dark: #b7c4cd;
+      --shadow: 0 14px 34px rgba(16, 47, 76, 0.11);
+      --radius: 15px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: var(--blue);
+    }
+
+    .container {
+      width: min(calc(100% - 28px), var(--max-width));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 8px;
+      z-index: 9999;
+      background: white;
+      color: black;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+
+    .skip-link:focus {
+      left: 8px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      color: white;
+      border-bottom: 4px solid #2f87b7;
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-block: 14px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: white;
+      color: var(--navy);
+      font-weight: 900;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .brand-name {
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      font-size: 1.2rem;
+    }
+
+    .brand-subtitle {
+      margin: 1px 0 0;
+      color: #dcecf5;
+      font-size: 0.86rem;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .header-button {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: transparent;
+      color: white;
+      text-decoration: none;
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-size: 0.88rem;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .header-button:hover,
+    .header-button:focus-visible {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .emergency-bar {
+      background: var(--red-light);
+      border-bottom: 1px solid #e6b1b1;
+    }
+
+    .emergency-inner {
+      padding: 12px 0;
+      color: #551616;
+      font-size: 0.94rem;
+    }
+
+    .emergency-inner strong {
+      color: var(--red-dark);
+    }
+
+    main {
+      padding: 30px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 22px;
+      margin-bottom: 25px;
+    }
+
+    .hero-card,
+    .status-card,
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: clamp(25px, 5vw, 48px);
+    }
+
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-size: 0.79rem;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(2rem, 5vw, 3.45rem);
+      line-height: 1.05;
+    }
+
+    .hero-description {
+      margin: 20px 0 0;
+      max-width: 770px;
+      font-size: 1.08rem;
+      color: #2c3742;
+    }
+
+    .opening-question {
+      margin: 25px 0 0;
+      padding: 18px 20px;
+      border-left: 5px solid var(--blue);
+      border-radius: 9px;
+      background: var(--blue-light);
+      font-weight: 850;
+      font-size: 1.15rem;
+    }
+
+    .status-card {
+      padding: 24px;
+      align-self: stretch;
+    }
+
+    .status-card h2 {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: 1.14rem;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .status-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.94rem;
+    }
+
+    .status-dot {
+      flex: 0 0 auto;
+      width: 11px;
+      height: 11px;
+      margin-top: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .status-dot.warning {
+      background: var(--gold);
+    }
+
+    .navigation {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .nav-button {
+      appearance: none;
+      border: 1px solid var(--border-dark);
+      border-radius: 999px;
+      background: white;
+      color: var(--navy);
+      padding: 9px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav-button:hover,
+    .nav-button:focus-visible,
+    .nav-button.active {
+      color: white;
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .panel {
+      padding: clamp(19px, 4vw, 31px);
+      margin-bottom: 20px;
+    }
+
+    .panel h2,
+    .panel h3 {
+      color: var(--navy);
+    }
+
+    .panel h2 {
+      margin-top: 0;
+    }
+
+    .notice {
+      border-radius: 10px;
+      padding: 15px 17px;
+      margin: 14px 0;
+    }
+
+    .notice-info {
+      background: var(--blue-light);
+      border: 1px solid #b8d9ea;
+    }
+
+    .notice-warning {
+      background: var(--gold-light);
+      border: 1px solid #e9cd95;
+    }
+
+    .notice-danger {
+      background: var(--red-light);
+      border: 1px solid #e1aaaa;
+    }
+
+    .notice-success {
+      background: var(--green-light);
+      border: 1px solid #b9ddcc;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label,
+    legend {
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    .help-text {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--border-dark);
+      border-radius: 9px;
+      background: white;
+      color: var(--text);
+      padding: 11px 12px;
+    }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: 3px solid rgba(23, 107, 156, 0.2);
+      border-color: var(--blue);
+    }
+
+    fieldset {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .checkbox-label input {
+      width: auto;
+      margin-top: 4px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 16px;
+      font-weight: 850;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .button-primary {
+      background: var(--navy);
+      color: white;
+    }
+
+    .button-secondary {
+      background: var(--blue-light);
+      color: var(--navy);
+      border: 1px solid #bad7e7;
+    }
+
+    .button-success {
+      background: var(--green);
+      color: white;
+    }
+
+    .button-danger {
+      background: var(--red);
+      color: white;
+    }
+
+    .button-outline {
+      background: white;
+      color: var(--navy);
+      border: 1px solid var(--border-dark);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      filter: brightness(0.94);
+      outline: 3px solid rgba(23, 107, 156, 0.18);
+      outline-offset: 2px;
+    }
+
+    .record-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .record {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 15px;
+      background: #fcfdfe;
+    }
+
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .record h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .record-meta {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-top: 4px;
+    }
+
+    .record-text {
+      margin: 12px 0 0;
+      white-space: pre-wrap;
+    }
+
+    .record-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .small-button {
+      appearance: none;
+      border: 1px solid var(--border-dark);
+      background: white;
+      color: var(--navy);
+      border-radius: 7px;
+      padding: 6px 9px;
+      cursor: pointer;
+      font-size: 0.79rem;
+      font-weight: 800;
+    }
+
+    .small-button.delete {
+      color: var(--red);
+      border-color: #d7a3a3;
+    }
+
+    .summary-output {
+      white-space: pre-wrap;
+      border: 1px solid var(--border-dark);
+      background: #fdfefe;
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 280px;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+      font-size: 0.91rem;
+      overflow-wrap: anywhere;
+    }
+
+    .resource-search {
+      margin-bottom: 17px;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .resource-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      padding: 18px;
+    }
+
+    .resource-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    .resource-card p {
+      margin: 0 0 11px;
+      color: #3b4854;
+      font-size: 0.92rem;
+    }
+
+    .resource-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 9px 0;
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: var(--blue-light);
+      color: var(--navy);
+      font-size: 0.75rem;
+      font-weight: 750;
+    }
+
+    .resource-link {
+      font-weight: 850;
+      font-size: 0.88rem;
+    }
+
+    .empty-state {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--border-dark);
+      border-radius: 11px;
+    }
+
+    .privacy-box {
+      background: var(--navy);
+      color: white;
+      border-radius: 13px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    .privacy-box h2,
+    .privacy-box h3 {
+      color: white;
+      margin-top: 0;
+    }
+
+    .privacy-box ul {
+      columns: 2;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 24px 0 38px;
+    }
+
+    .footer-inner {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      max-width: 360px;
+      background: var(--navy-dark);
+      color: white;
+      padding: 13px 16px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      z-index: 5000;
+    }
+
+    @media (max-width: 820px) {
+      .hero,
+      .form-grid,
+      .resource-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-box ul {
+        columns: 1;
+      }
+    }
+
+    @media (max-width: 610px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
+
+      .record-header {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .navigation {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      header,
+      .emergency-bar,
+      .navigation,
+      .button-row,
+      .header-actions,
+      .footer,
+      .privacy-box,
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      main {
+        padding: 0;
+      }
+
+      .panel,
+      .hero-card,
+      .status-card {
+        border: 0;
+        box-shadow: none;
+      }
+
+      .view {
+        display: none !important;
+      }
+
+      #summary-view {
+        display: block !important;
+      }
+
+      .summary-output {
+        border: 0;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header>
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">V</div>
+
+        <div>
+          <p class="brand-name">VERA</p>
+          <p class="brand-subtitle">
+            Victim Evidence &amp; Response Advocate
+          </p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button
+          class="header-button"
+          type="button"
+          data-view-target="privacy-view"
+        >
+          Privacy
+        </button>
+
+        <button
+          class="header-button"
+          type="button"
+          data-view-target="resources-view"
+        >
+          Advocacy library
+        </button>
+
+        <a class="header-button" href="#emergency-information">
+          Emergency information
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="emergency-bar" id="emergency-information">
+    <div class="container emergency-inner">
+      <strong>Immediate danger:</strong>
+      VERA is not an emergency service and is not monitored by a person.
+      If you or someone else may be in immediate danger, contact local
+      emergency services or a local crisis service now. Do not rely on
+      this website for urgent intervention.
+    </div>
+  </section>
+
+  <main class="container" id="main-content">
+    <section class="hero">
+      <article class="hero-card">
+        <p class="eyebrow">Free browser-based organizational support</p>
+
+        <h1>Organize what happened, one fact at a time.</h1>
+
+        <p class="hero-description">
+          VERA helps you build an incident timeline, identify potential
+          evidence, document harm, separate direct observations from
+          allegations and third-party statements, and prepare an
+          organizational summary for a trained advocate, attorney, agency,
+          or law-enforcement professional to review.
+        </p>
+
+        <div class="opening-question">
+          What happened, and what is the most urgent problem you need
+          help with today?
+        </div>
+      </article>
+
+      <aside class="status-card" aria-label="System status">
+        <h2>How this version works</h2>
+
+        <div class="status-list">
+          <div class="status-item">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>No paid API or ChatGPT account is required.</span>
+          </div>
+
+          <div class="status-item">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Your entries stay in this browser unless you export them.</span>
+          </div>
+
+          <div class="status-item">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>The site can be used repeatedly without a built-in message limit.</span>
+          </div>
+
+          <div class="status-item">
+            <span class="status-dot warning" aria-hidden="true"></span>
+            <span>
+              This is structured software, not a human advocate or trained
+              artificial-intelligence model.
+            </span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="navigation" aria-label="VERA sections">
+      <button
+        class="nav-button active"
+        type="button"
+        data-view-target="intake-view"
+      >
+        Intake
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="timeline-view"
+      >
+        Timeline
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="evidence-view"
+      >
+        Evidence
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="summary-view"
+      >
+        Summary
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="resources-view"
+      >
+        Library
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="privacy-view"
+      >
+        Privacy
+      </button>
+    </nav>
+
+    <section class="view active" id="intake-view">
+      <article class="panel">
+        <h2>Initial intake</h2>
+
+        <div class="notice notice-info">
+          Share only what is needed to understand the situation. You do
+          not need to provide your legal name. Do not enter passwords,
+          Social Security numbers, one-time codes, full account numbers,
+          intimate images, or unnecessary identifying information.
+        </div>
+
+        <form id="intake-form">
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="urgent-problem">
+                What happened, and what is the most urgent problem you
+                need help with today?
+              </label>
+
+              <textarea
+                id="urgent-problem"
+                name="urgentProblem"
+                placeholder="Describe the immediate concern in your own words."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="safety-status">Current safety</label>
+
+              <select id="safety-status" name="safetyStatus">
+                <option value="">Choose one</option>
+                <option value="No immediate danger reported">
+                  No immediate danger reported
+                </option>
+                <option value="Unsure whether danger is immediate">
+                  Unsure whether danger is immediate
+                </option>
+                <option value="Possible immediate danger">
+                  Possible immediate danger
+                </option>
+                <option value="Immediate danger reported">
+                  Immediate danger reported
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="incident-type">General issue category</label>
+
+              <select id="incident-type" name="incidentType">
+                <option value="">Choose one</option>
+                <option>Fraud or financial exploitation</option>
+                <option>Identity theft or account takeover</option>
+                <option>Harassment or threats</option>
+                <option>Stalking or unwanted monitoring</option>
+                <option>Domestic or family violence</option>
+                <option>Sexual violence or coercion</option>
+                <option>Physical assault</option>
+                <option>Cybercrime or online abuse</option>
+                <option>Workplace or institutional misconduct</option>
+                <option>Property crime</option>
+                <option>Other or uncertain</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="approximate-start">Approximate start date</label>
+              <input id="approximate-start" name="approximateStart" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="approximate-end">Approximate end or most recent date</label>
+              <input id="approximate-end" name="approximateEnd" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="location-platform">Location or online platform</label>
+              <input
+                id="location-platform"
+                name="locationPlatform"
+                type="text"
+                placeholder="City, workplace, website, app, email, phone, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="people-organizations">
+                People or organizations involved
+              </label>
+              <input
+                id="people-organizations"
+                name="peopleOrganizations"
+                type="text"
+                placeholder="Use roles or initials when possible."
+              >
+            </div>
+
+            <div class="form-group full">
+              <label for="directly-witnessed">
+                What did you directly see, hear, receive, or experience?
+              </label>
+
+              <textarea
+                id="directly-witnessed"
+                name="directlyWitnessed"
+                placeholder="Include only what you personally observed or received."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="allegations">
+                What do you believe happened but cannot personally verify?
+              </label>
+
+              <textarea
+                id="allegations"
+                name="allegations"
+                placeholder="Describe allegations, suspicions, or interpretations separately."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="third-party-statements">
+                What did another person tell you?
+              </label>
+
+              <textarea
+                id="third-party-statements"
+                name="thirdPartyStatements"
+                placeholder="Identify the speaker by role or initials and summarize what they said."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="harm-loss">
+                Financial loss, physical injury, emotional impact, or other harm
+              </label>
+
+              <textarea
+                id="harm-loss"
+                name="harmLoss"
+                placeholder="Describe losses, expenses, missed work, damaged property, medical needs, housing problems, or other effects."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="reports-made">
+                Reports, complaints, or requests for help already made
+              </label>
+
+              <textarea
+                id="reports-made"
+                name="reportsMade"
+                placeholder="Police, bank, employer, school, platform, regulator, attorney, advocate, medical provider, etc."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="deadline">Known deadline, court date, or appointment</label>
+              <input id="deadline" name="deadline" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="outcome-sought">Primary outcome sought</label>
+
+              <select id="outcome-sought" name="outcomeSought">
+                <option value="">Choose one</option>
+                <option>Immediate safety</option>
+                <option>Stop unwanted contact</option>
+                <option>Preserve or organize evidence</option>
+                <option>Report to law enforcement</option>
+                <option>Report to another agency or organization</option>
+                <option>Recover money or property</option>
+                <option>Prepare for an attorney consultation</option>
+                <option>Understand available options</option>
+                <option>Document the incident for future use</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>Potential evidence currently available</legend>
+
+            <div class="checkbox-grid">
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Messages and emails">
+                Messages and emails
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Photos or videos">
+                Photos or videos
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Audio recordings">
+                Audio recordings
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Financial records">
+                Financial records
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Account activity">
+                Account activity
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Medical records">
+                Medical records
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Police or agency reports">
+                Police or agency reports
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Witnesses">
+                Witnesses
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Contracts and business records">
+                Contracts and business records
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Device or technical evidence">
+                Device or technical evidence
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Other supporting documents">
+                Other supporting documents
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">
+              Save intake locally
+            </button>
+
+            <button
+              class="button button-secondary"
+              type="button"
+              id="generate-next-steps"
+            >
+              Show suggested next steps
+            </button>
+          </div>
+        </form>
+
+        <div id="safety-response" class="hidden"></div>
+        <div id="next-steps-output"></div>
+      </article>
+    </section>
+
+    <section class="view" id="timeline-view">
+      <article class="panel">
+        <h2>Chronological timeline</h2>
+
+        <p>
+          Add one event at a time. Use approximate dates when the exact date
+          is unknown. Describe what occurred without adding conclusions.
+        </p>
+
+        <form id="timeline-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="timeline-date">Date</label>
+              <input id="timeline-date" name="date" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="timeline-time">Approximate time</label>
+              <input id="timeline-time" name="time" type="time">
+            </div>
+
+            <div class="form-group">
+              <label for="timeline-location">Location or platform</label>
+              <input
+                id="timeline-location"
+                name="location"
+                type="text"
+                placeholder="Physical location, app, website, email, telephone, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="timeline-source">Information category</label>
+
+              <select id="timeline-source" name="sourceType">
+                <option>Direct observation or experience</option>
+                <option>User allegation</option>
+                <option>Third-party statement</option>
+                <option>Document or record</option>
+                <option>Unresolved or uncertain</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="timeline-event">What happened?</label>
+
+              <textarea
+                id="timeline-event"
+                name="event"
+                placeholder="Describe the event in factual, neutral language."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="timeline-support">Related evidence or witness</label>
+
+              <textarea
+                id="timeline-support"
+                name="support"
+                placeholder="Message, statement, photograph, transaction, witness, record, or other supporting item."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">
+              Add timeline event
+            </button>
+
+            <button
+              class="button button-outline"
+              type="button"
+              id="clear-timeline-form"
+            >
+              Clear form
+            </button>
+          </div>
+        </form>
+
+        <div class="record-list" id="timeline-list"></div>
+      </article>
+    </section>
+
+    <section class="view" id="evidence-view">
+      <article class="panel">
+        <h2>Evidence inventory</h2>
+
+        <div class="notice notice-warning">
+          Preserve original files and records when it is safe to do so.
+          Avoid editing, cropping, annotating, renaming, publicly posting,
+          or repeatedly forwarding potential evidence. Do not obtain
+          evidence through hacking, impersonation, trespassing, threats,
+          or unlawful surveillance.
+        </div>
+
+        <form id="evidence-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="evidence-category">Category</label>
+
+              <select id="evidence-category" name="category">
+                <option>Messages and emails</option>
+                <option>Photos or videos</option>
+                <option>Audio recordings</option>
+                <option>Financial records</option>
+                <option>Account activity</option>
+                <option>Medical records</option>
+                <option>Police or agency reports</option>
+                <option>Witness information</option>
+                <option>Contracts and business records</option>
+                <option>Device or technical evidence</option>
+                <option>Other supporting document</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-date">Date obtained or created</label>
+              <input id="evidence-date" name="date" type="date">
+            </div>
+
+            <div class="form-group full">
+              <label for="evidence-description">Description</label>
+
+              <textarea
+                id="evidence-description"
+                name="description"
+                placeholder="Describe the item without pasting highly sensitive content."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-location">Where is the original stored?</label>
+
+              <input
+                id="evidence-location"
+                name="storageLocation"
+                type="text"
+                placeholder="Device, email account, cloud folder, paper file, agency, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-owner">Who controls or possesses it?</label>
+
+              <input
+                id="evidence-owner"
+                name="owner"
+                type="text"
+                placeholder="You, witness, bank, employer, agency, platform, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-original">Original preserved?</label>
+
+              <select id="evidence-original" name="originalPreserved">
+                <option value="Unknown">Unknown</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-backup">Backup made?</label>
+
+              <select id="evidence-backup" name="backupMade">
+                <option value="Unknown">Unknown</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="evidence-notes">
+                Authenticity, context, or follow-up notes
+              </label>
+
+              <textarea
+                id="evidence-notes"
+                name="notes"
+                placeholder="Who created it, how it was received, missing context, or questions to verify."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">
+              Add evidence item
+            </button>
+
+            <button
+              class="button button-outline"
+              type="button"
+              id="clear-evidence-form"
+            >
+              Clear form
+            </button>
+          </div>
+        </form>
+
+        <div class="record-list" id="evidence-list"></div>
+      </article>
+    </section>
+
+    <section class="view" id="summary-view">
+      <article class="panel">
+        <h2>Organizational incident summary</h2>
+
+        <div class="notice notice-info no-print">
+          Review the summary carefully. Correct inaccurate language before
+          giving it to an advocate, lawyer, agency, medical provider, or
+          law-enforcement professional.
+        </div>
+
+        <div class="summary-output" id="summary-output">
+          No summary has been generated yet.
+        </div>
+
+        <div class="button-row no-print">
+          <button
+            class="button button-primary"
+            type="button"
+            id="generate-summary"
+          >
+            Generate or refresh summary
+          </button>
+
+          <button
+            class="button button-secondary"
+            type="button"
+            id="copy-summary"
+          >
+            Copy summary
+          </button>
+
+          <button
+            class="button button-outline"
+            type="button"
+            id="download-summary"
+          >
+            Download text file
+          </button>
+
+          <button
+            class="button button-outline"
+            type="button"
+            id="print-summary"
+          >
+            Print or save as PDF
+          </button>
+
+          <button
+            class="button button-success"
+            type="button"
+            id="export-case"
+          >
+            Export case backup
+          </button>
+
+          <label class="button button-outline" for="import-case">
+            Import case backup
+          </label>
+
+          <input
+            class="hidden"
+            id="import-case"
+            type="file"
+            accept="application/json,.json"
+          >
+        </div>
+      </article>
+    </section>
+
+    <section class="view" id="resources-view">
+      <article class="panel">
+        <h2>Victim advocacy reference library</h2>
+
+        <p>
+          These materials informed the structure and safeguards used by
+          VERA. To make the PDF links work on GitHub Pages, create a
+          <code>resources</code> folder in the repository and upload the
+          eight PDF files using the filenames shown below.
+        </p>
+
+        <div class="form-group resource-search">
+          <label for="resource-search">Search the library</label>
+          <input
+            id="resource-search"
+            type="search"
+            placeholder="Search privacy, evidence, safety, compensation, advocacy, court..."
+          >
+        </div>
+
+        <div class="resource-grid" id="resource-grid"></div>
+      </article>
+    </section>
+
+    <section class="view" id="privacy-view">
+      <article class="panel">
+        <h2>Privacy, limits, and safe use</h2>
+
+        <div class="notice notice-danger">
+          This website is not a secure case-management portal. Information
+          entered into the site may be accessible to anyone who can access
+          this browser profile or device.
+        </div>
+
+        <h3>Where information is stored</h3>
+
+        <p>
+          Intake answers, timeline events, and evidence inventory entries
+          are stored in the browser using local storage. The website does
+          not send this information to WhiteKnight Law, an advocate, an
+          attorney, law enforcement, or any other person.
+        </p>
+
+        <h3>Do not enter</h3>
+
+        <ul>
+          <li>Passwords, one-time codes, or recovery codes</li>
+          <li>Social Security numbers or government identification numbers</li>
+          <li>Full bank, card, or financial account numbers</li>
+          <li>Intimate images or recordings</li>
+          <li>Medical records containing unnecessary identifiers</li>
+          <li>Information that could increase danger if another person sees it</li>
+        </ul>
+
+        <h3>Legal and professional limits</h3>
+
+        <p>
+          VERA is not a lawyer, law firm, police agency, therapist,
+          investigator, medical provider, or emergency service. It does not
+          determine whether a crime occurred, assess credibility, identify
+          a guilty person, guarantee confidentiality, create legal
+          privilege, provide legal advice, or establish an attorney-client
+          relationship.
+        </p>
+
+        <div class="privacy-box">
+          <h3>Delete information from this browser</h3>
+
+          <p>
+            This removes VERA information stored by this website from the
+            current browser. It does not delete downloaded files, printed
+            pages, browser backups, screenshots, or information copied
+            elsewhere.
+          </p>
+
+          <button
+            class="button button-danger"
+            type="button"
+            id="delete-local-data"
+          >
+            Delete all local VERA data
+          </button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      VERA is an organizational victim-support tool. It does not replace
+      emergency services, a trained victim advocate, licensed attorney,
+      medical care, mental-health care, or law enforcement.
+    </div>
+  </footer>
+
+  <div
+    class="toast hidden"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "vera_case_v1";
+
+    const emptyCase = {
+      intake: {},
+      timeline: [],
+      evidence: [],
+      updatedAt: null
+    };
+
+    let caseData = loadCase();
+
+    const advocacyResources = [
+      {
+        title: "Victim Advocacy Guidelines",
+        file: "resources/2019-Victim-Advocacy-Guidelines-final.pdf",
+        summary:
+          "Guidance on trauma-informed services, crisis intervention, risk assessment, safety planning, professional boundaries, victims’ rights, court support, referrals, and coordinated multidisciplinary advocacy.",
+        tags: [
+          "training",
+          "safety planning",
+          "victims’ rights",
+          "court support",
+          "referrals"
+        ]
+      },
+      {
+        title: "Know Your Rights: A Guide for Victims of Crime",
+        file: "resources/rights-crime-victims-booklet.pdf",
+        summary:
+          "A New York-focused victim-rights booklet covering case information, court participation, protection from intimidation, victim impact statements, notification, compensation, restitution-related issues, and legal assistance.",
+        tags: [
+          "victims’ rights",
+          "New York",
+          "compensation",
+          "court",
+          "notification"
+        ]
+      },
+      {
+        title: "Best Practices Guidelines: Crime Victim Services",
+        file: "resources/Practices_Best practices guidelines-508.pdf",
+        summary:
+          "Victim-centered service principles addressing personal advocacy, crisis intervention, justice-system advocacy, financial assistance, accessibility, confidentiality, partnerships, governance, ethics, and program quality.",
+        tags: [
+          "best practices",
+          "victim-centered",
+          "confidentiality",
+          "ethics",
+          "accessibility"
+        ]
+      },
+      {
+        title: "Resources for Meeting the Victim Support and Advocacy Standard",
+        file:
+          "resources/Resources-for-Meeting-the-Victim-Support-and-Advocacy-Standard-2023.04.14.pdf",
+        summary:
+          "Updated advocacy-standard material addressing abuse dynamics, trauma-informed response, crisis and risk assessment, legal rights, court support, cultural responsiveness, caregiver resilience, domestic violence, and referral resources.",
+        tags: [
+          "2023 standards",
+          "trauma-informed",
+          "risk assessment",
+          "culture",
+          "domestic violence"
+        ]
+      },
+      {
+        title:
+          "The Victim Advocate’s Guide to Safety and Economic Security for Victims of Violence Against Women",
+        file: "resources/ESS-Victim-Advocate-Sector-Guide-1.pdf",
+        summary:
+          "Guidance on the relationship between victim safety and economic security, including housing, employment, transportation, financial loss, economic abuse, compensation, restitution, civil protections, referrals, and justice-system participation.",
+        tags: [
+          "economic abuse",
+          "financial harm",
+          "housing",
+          "restitution",
+          "safety"
+        ]
+      },
+      {
+        title:
+          "The Victim Advocate’s Guide to Safety and Economic Security — Second Copy",
+        file: "resources/ESS-Victim-Advocate-Sector-Guide.pdf",
+        summary:
+          "Duplicate source copy retained for completeness. Covers economic security, safety planning, financial evidence, economic barriers, justice-system remedies, referrals, and coordinated advocacy.",
+        tags: [
+          "economic security",
+          "financial evidence",
+          "safety planning",
+          "advocacy"
+        ]
+      },
+      {
+        title:
+          "New Directions from the Field: Victims’ Rights and Services for the 21st Century",
+        file: "resources/GOVPUB-J34-PURL-LPS88920.pdf",
+        summary:
+          "A broad Office for Victims of Crime resource addressing victims’ rights, law enforcement, prosecution, courts, corrections, victim assistance, health and mental health, legal services, financial recovery, child victims, technology, and multidisciplinary partnerships.",
+        tags: [
+          "Office for Victims of Crime",
+          "law enforcement",
+          "courts",
+          "restitution",
+          "multidisciplinary"
+        ]
+      },
+      {
+        title:
+          "Effective Victim Advocacy Within the Criminal Justice System",
+        file: "resources/Advocacy-in-Criminal-Justice-System.pdf",
+        summary:
+          "Detailed guidance on community-based and system-based advocacy, victim privacy, confidentiality, legal privilege, medical forensic examinations, law-enforcement investigations, prosecution, victims’ rights, compensation, restitution, civil issues, and collaboration.",
+        tags: [
+          "privacy",
+          "confidentiality",
+          "investigation",
+          "prosecution",
+          "compensation"
+        ]
+      }
+    ];
+
+    const views = [...document.querySelectorAll(".view")];
+    const viewButtons = [...document.querySelectorAll("[data-view-target]")];
+    const navButtons = [...document.querySelectorAll(".nav-button")];
+
+    const intakeForm = document.getElementById("intake-form");
+    const timelineForm = document.getElementById("timeline-form");
+    const evidenceForm = document.getElementById("evidence-form");
+
+    const timelineList = document.getElementById("timeline-list");
+    const evidenceList = document.getElementById("evidence-list");
+    const summaryOutput = document.getElementById("summary-output");
+    const safetyResponse = document.getElementById("safety-response");
+    const nextStepsOutput = document.getElementById("next-steps-output");
+    const resourceGrid = document.getElementById("resource-grid");
+    const resourceSearch = document.getElementById("resource-search");
+    const toast = document.getElementById("toast");
+
+    initialize();
+
+    function initialize() {
+      bindNavigation();
+      bindForms();
+      bindActions();
+      populateIntakeForm();
+      renderTimeline();
+      renderEvidence();
+      renderResources(advocacyResources);
+      evaluateSafety();
+    }
+
+    function bindNavigation() {
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          showView(button.dataset.viewTarget);
+        });
+      });
+    }
+
+    function showView(viewId) {
+      views.forEach((view) => {
+        view.classList.toggle("active", view.id === viewId);
+      });
+
+      navButtons.forEach((button) => {
+        button.classList.toggle(
+          "active",
+          button.dataset.viewTarget === viewId
+        );
+      });
+
+      if (viewId === "summary-view") {
+        generateSummary();
+      }
+
+      window.scrollTo({
+        top: document.querySelector(".navigation").offsetTop - 15,
+        behavior: "smooth"
+      });
+    }
+
+    function bindForms() {
+      intakeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveIntake();
+      });
+
+      document
+        .getElementById("safety-status")
+        .addEventListener("change", evaluateSafety);
+
+      timelineForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        addTimelineEvent();
+      });
+
+      evidenceForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        addEvidenceItem();
+      });
+    }
+
+    function bindActions() {
+      document
+        .getElementById("generate-next-steps")
+        .addEventListener("click", generateNextSteps);
+
+      document
+        .getElementById("clear-timeline-form")
+        .addEventListener("click", () => timelineForm.reset());
+
+      document
+        .getElementById("clear-evidence-form")
+        .addEventListener("click", () => evidenceForm.reset());
+
+      document
+        .getElementById("generate-summary")
+        .addEventListener("click", generateSummary);
+
+      document
+        .getElementById("copy-summary")
+        .addEventListener("click", copySummary);
+
+      document
+        .getElementById("download-summary")
+        .addEventListener("click", downloadSummary);
+
+      document
+        .getElementById("print-summary")
+        .addEventListener("click", () => window.print());
+
+      document
+        .getElementById("export-case")
+        .addEventListener("click", exportCase);
+
+      document
+        .getElementById("import-case")
+        .addEventListener("change", importCase);
+
+      document
+        .getElementById("delete-local-data")
+        .addEventListener("click", deleteLocalData);
+
+      resourceSearch.addEventListener("input", filterResources);
+    }
+
+    function loadCase() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+          return structuredClone(emptyCase);
+        }
+
+        const parsed = JSON.parse(saved);
+
+        return {
+          intake: parsed.intake || {},
+          timeline: Array.isArray(parsed.timeline) ? parsed.timeline : [],
+          evidence: Array.isArray(parsed.evidence) ? parsed.evidence : [],
+          updatedAt: parsed.updatedAt || null
+        };
+      } catch (error) {
+        console.error("Could not load saved case:", error);
+        return structuredClone(emptyCase);
+      }
+    }
+
+    function saveCase() {
+      caseData.updatedAt = new Date().toISOString();
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(caseData));
+      } catch (error) {
+        console.error("Could not save case:", error);
+        showToast("The browser could not save this information.");
+      }
+    }
+
+    function formToObject(form) {
+      const formData = new FormData(form);
+      const result = {};
+
+      for (const [key, value] of formData.entries()) {
+        if (key === "evidenceCategories") {
+          continue;
+        }
+
+        result[key] = String(value).trim();
+      }
+
+      result.evidenceCategories = [
+        ...form.querySelectorAll(
+          'input[name="evidenceCategories"]:checked'
+        )
+      ].map((input) => input.value);
+
+      return result;
+    }
+
+    function saveIntake() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+      evaluateSafety();
+      generateNextSteps();
+      showToast("Intake saved in this browser.");
+    }
+
+    function populateIntakeForm() {
+      const intake = caseData.intake || {};
+
+      Object.entries(intake).forEach(([key, value]) => {
+        if (key === "evidenceCategories") {
+          const selected = Array.isArray(value) ? value : [];
+
+          document
+            .querySelectorAll('input[name="evidenceCategories"]')
+            .forEach((input) => {
+              input.checked = selected.includes(input.value);
+            });
+
+          return;
+        }
+
+        const field = intakeForm.elements.namedItem(key);
+
+        if (field && typeof value === "string") {
+          field.value = value;
+        }
+      });
+    }
+
+    function evaluateSafety() {
+      const safetyStatus =
+        document.getElementById("safety-status").value ||
+        caseData.intake.safetyStatus ||
+        "";
+
+      safetyResponse.className = "";
+
+      if (safetyStatus === "Immediate danger reported") {
+        safetyResponse.classList.add("notice", "notice-danger");
+        safetyResponse.innerHTML = `
+          <strong>Immediate safety comes first.</strong>
+          Do not continue ordinary intake if doing so could increase danger.
+          Contact local emergency services or an appropriate local crisis
+          service now. Move to a safer location when possible. Do not confront
+          the person, announce plans to leave, or attempt to collect additional
+          evidence if doing so could place anyone at greater risk.
+        `;
+      } else if (safetyStatus === "Possible immediate danger") {
+        safetyResponse.classList.add("notice", "notice-danger");
+        safetyResponse.innerHTML = `
+          <strong>Possible urgent safety risk.</strong>
+          Consider contacting local emergency services, a local victim-service
+          provider, domestic-violence service, stalking resource, hospital, or
+          another appropriate crisis service. Avoid confrontation and do not
+          take evidence-preservation steps that could increase danger.
+        `;
+      } else if (
+        safetyStatus === "Unsure whether danger is immediate"
+      ) {
+        safetyResponse.classList.add("notice", "notice-warning");
+        safetyResponse.innerHTML = `
+          <strong>Uncertain safety risk.</strong>
+          Consider whether there have been recent threats, access to weapons,
+          escalating behavior, monitoring, forced isolation, serious injury,
+          strangulation, threats involving children, or attempts to prevent
+          you from leaving or obtaining help. Contact local emergency or crisis
+          services when danger may be immediate.
+        `;
+      } else if (safetyStatus) {
+        safetyResponse.classList.add("notice", "notice-success");
+        safetyResponse.textContent =
+          "No immediate danger was reported. Reassess safety if circumstances change.";
+      } else {
+        safetyResponse.classList.add("hidden");
+      }
+    }
+
+    function addTimelineEvent() {
+      const formData = new FormData(timelineForm);
+      const eventText = String(formData.get("event") || "").trim();
+
+      if (!eventText) {
+        showToast("Add a factual event description.");
+        return;
+      }
+
+      caseData.timeline.push({
+        id: crypto.randomUUID(),
+        date: String(formData.get("date") || ""),
+        time: String(formData.get("time") || ""),
+        location: String(formData.get("location") || "").trim(),
+        sourceType: String(formData.get("sourceType") || ""),
+        event: eventText,
+        support: String(formData.get("support") || "").trim(),
+        createdAt: new Date().toISOString()
+      });
+
+      sortTimeline();
+      saveCase();
+      timelineForm.reset();
+      renderTimeline();
+      showToast("Timeline event added.");
+    }
+
+    function sortTimeline() {
+      caseData.timeline.sort((a, b) => {
+        const aValue = `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
+        const bValue = `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
+        return aValue.localeCompare(bValue);
+      });
+    }
+
+    function renderTimeline() {
+      timelineList.innerHTML = "";
+
+      if (!caseData.timeline.length) {
+        timelineList.innerHTML = `
+          <div class="empty-state">
+            No timeline events have been added.
+          </div>
+        `;
+        return;
+      }
+
+      caseData.timeline.forEach((item, index) => {
+        const article = document.createElement("article");
+        article.className = "record";
+
+        article.innerHTML = `
+          <div class="record-header">
+            <div>
+              <h3>Event ${index + 1}: ${escapeHtml(formatDate(item.date))}</h3>
+              <div class="record-meta">
+                ${escapeHtml(item.time || "Time unknown")}
+                ${item.location ? ` · ${escapeHtml(item.location)}` : ""}
+                · ${escapeHtml(item.sourceType || "Uncategorized")}
+              </div>
+            </div>
+
+            <div class="record-actions">
+              <button
+                class="small-button delete"
+                type="button"
+                data-delete-timeline="${escapeHtml(item.id)}"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <p class="record-text">${escapeHtml(item.event)}</p>
+
+          ${
+            item.support
+              ? `<p class="record-meta"><strong>Support:</strong> ${escapeHtml(item.support)}</p>`
+              : ""
+          }
+        `;
+
+        timelineList.appendChild(article);
+      });
+
+      document
+        .querySelectorAll("[data-delete-timeline]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            deleteTimelineItem(button.dataset.deleteTimeline);
+          });
+        });
+    }
+
+    function deleteTimelineItem(id) {
+      const confirmed = window.confirm(
+        "Delete this timeline event from the browser?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      caseData.timeline = caseData.timeline.filter(
+        (item) => item.id !== id
+      );
+
+      saveCase();
+      renderTimeline();
+      showToast("Timeline event deleted.");
+    }
+
+    function addEvidenceItem() {
+      const formData = new FormData(evidenceForm);
+      const description = String(
+        formData.get("description") || ""
+      ).trim();
+
+      if (!description) {
+        showToast("Add a description of the evidence item.");
+        return;
+      }
+
+      caseData.evidence.push({
+        id: crypto.randomUUID(),
+        category: String(formData.get("category") || ""),
+        date: String(formData.get("date") || ""),
+        description,
+        storageLocation: String(
+          formData.get("storageLocation") || ""
+        ).trim(),
+        owner: String(formData.get("owner") || "").trim(),
+        originalPreserved: String(
+          formData.get("originalPreserved") || "Unknown"
+        ),
+        backupMade: String(formData.get("backupMade") || "Unknown"),
+        notes: String(formData.get("notes") || "").trim(),
+        createdAt: new Date().toISOString()
+      });
+
+      saveCase();
+      evidenceForm.reset();
+      renderEvidence();
+      showToast("Evidence item added.");
+    }
+
+    function renderEvidence() {
+      evidenceList.innerHTML = "";
+
+      if (!caseData.evidence.length) {
+        evidenceList.innerHTML = `
+          <div class="empty-state">
+            No evidence items have been added.
+          </div>
+        `;
+        return;
+      }
+
+      caseData.evidence.forEach((item, index) => {
+        const article = document.createElement("article");
+        article.className = "record";
+
+        article.innerHTML = `
+          <div class="record-header">
+            <div>
+              <h3>Item ${index + 1}: ${escapeHtml(item.category)}</h3>
+              <div class="record-meta">
+                ${escapeHtml(formatDate(item.date))}
+              </div>
+            </div>
+
+            <div class="record-actions">
+              <button
+                class="small-button delete"
+                type="button"
+                data-delete-evidence="${escapeHtml(item.id)}"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <p class="record-text">${escapeHtml(item.description)}</p>
+
+          <div class="record-meta">
+            ${
+              item.storageLocation
+                ? `<div><strong>Stored:</strong> ${escapeHtml(item.storageLocation)}</div>`
+                : ""
+            }
+
+            ${
+              item.owner
+                ? `<div><strong>Possessed by:</strong> ${escapeHtml(item.owner)}</div>`
+                : ""
+            }
+
+            <div>
+              <strong>Original preserved:</strong>
+              ${escapeHtml(item.originalPreserved)}
+            </div>
+
+            <div>
+              <strong>Backup made:</strong>
+              ${escapeHtml(item.backupMade)}
+            </div>
+
+            ${
+              item.notes
+                ? `<div><strong>Notes:</strong> ${escapeHtml(item.notes)}</div>`
+                : ""
+            }
+          </div>
+        `;
+
+        evidenceList.appendChild(article);
+      });
+
+      document
+        .querySelectorAll("[data-delete-evidence]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            deleteEvidenceItem(button.dataset.deleteEvidence);
+          });
+        });
+    }
+
+    function deleteEvidenceItem(id) {
+      const confirmed = window.confirm(
+        "Delete this evidence entry from the browser?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      caseData.evidence = caseData.evidence.filter(
+        (item) => item.id !== id
+      );
+
+      saveCase();
+      renderEvidence();
+      showToast("Evidence item deleted.");
+    }
+
+    function generateNextSteps() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+
+      const intake = caseData.intake;
+      const steps = [];
+
+      if (
+        intake.safetyStatus === "Immediate danger reported" ||
+        intake.safetyStatus === "Possible immediate danger"
+      ) {
+        steps.push(
+          "Address immediate safety before continuing documentation. Contact local emergency or crisis services when appropriate."
+        );
+      }
+
+      if (
+        !intake.directlyWitnessed ||
+        !intake.allegations ||
+        !intake.thirdPartyStatements
+      ) {
+        steps.push(
+          "Continue separating direct observations, user allegations, and third-party statements."
+        );
+      }
+
+      if (!intake.approximateStart && !caseData.timeline.length) {
+        steps.push(
+          "Add approximate dates and create a chronological timeline."
+        );
+      }
+
+      if (
+        !intake.evidenceCategories ||
+        !intake.evidenceCategories.length
+      ) {
+        steps.push(
+          "Identify available messages, account records, photographs, reports, witnesses, contracts, medical records, or technical evidence."
+        );
+      }
+
+      if (!caseData.evidence.length) {
+        steps.push(
+          "Create an evidence inventory without uploading sensitive evidence to this website."
+        );
+      }
+
+      if (!intake.reportsMade) {
+        steps.push(
+          "Record which organizations, agencies, financial institutions, employers, platforms, advocates, or professionals have already been contacted."
+        );
+      }
+
+      if (!intake.deadline) {
+        steps.push(
+          "Check for reporting deadlines, hearings, court dates, appointments, threatened actions, account-recovery windows, or insurance deadlines."
+        );
+      }
+
+      if (intake.harmLoss) {
+        steps.push(
+          "Keep receipts, invoices, lost-wage records, repair estimates, medical expenses, relocation costs, and other records of harm or loss."
+        );
+      }
+
+      if (
+        intake.incidentType === "Fraud or financial exploitation" ||
+        intake.incidentType === "Identity theft or account takeover"
+      ) {
+        steps.push(
+          "Contact affected financial institutions or account providers through verified contact information, change exposed credentials from a safe device, and preserve transaction and account-activity records."
+        );
+      }
+
+      if (
+        intake.incidentType === "Harassment or threats" ||
+        intake.incidentType === "Stalking or unwanted monitoring" ||
+        intake.incidentType === "Cybercrime or online abuse"
+      ) {
+        steps.push(
+          "Preserve original messages, usernames, profile links, dates, times, call records, platform reports, and device-security alerts. Avoid responding when engagement may increase risk."
+        );
+      }
+
+      if (
+        intake.incidentType === "Domestic or family violence" ||
+        intake.incidentType === "Sexual violence or coercion"
+      ) {
+        steps.push(
+          "Consider contacting a trained community-based victim advocate. Do not make changes that could increase danger without considering safety."
+        );
+      }
+
+      steps.push(
+        "Generate an organizational summary and review it for accuracy before sharing it with a professional."
+      );
+
+      nextStepsOutput.innerHTML = `
+        <div class="notice notice-info">
+          <strong>Suggested organizational next steps</strong>
+          <ol>
+            ${steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+          These are general organizational suggestions, not legal advice.
+        </div>
+      `;
+    }
+
+    function generateSummary() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+
+      const intake = caseData.intake;
+      const lines = [];
+
+      lines.push("VERA ORGANIZATIONAL INCIDENT SUMMARY");
+      lines.push("====================================");
+      lines.push("");
+
+      lines.push("1. IMMEDIATE CONCERN");
+      lines.push(valueOrUnknown(intake.urgentProblem));
+      lines.push("");
+
+      lines.push("2. CURRENT SAFETY STATUS");
+      lines.push(valueOrUnknown(intake.safetyStatus));
+      lines.push("");
+
+      lines.push("3. GENERAL INCIDENT INFORMATION");
+      lines.push(`Issue category: ${valueOrUnknown(intake.incidentType)}`);
+      lines.push(
+        `Approximate start: ${valueOrUnknown(
+          formatDate(intake.approximateStart)
+        )}`
+      );
+      lines.push(
+        `Approximate end or latest event: ${valueOrUnknown(
+          formatDate(intake.approximateEnd)
+        )}`
+      );
+      lines.push(
+        `Location or platform: ${valueOrUnknown(intake.locationPlatform)}`
+      );
+      lines.push(
+        `People or organizations involved: ${valueOrUnknown(
+          intake.peopleOrganizations
+        )}`
+      );
+      lines.push("");
+
+      lines.push("4. DIRECTLY OBSERVED OR EXPERIENCED BY USER");
+      lines.push(valueOrUnknown(intake.directlyWitnessed));
+      lines.push("");
+
+      lines.push("5. USER ALLEGATIONS, BELIEFS, OR INTERPRETATIONS");
+      lines.push(valueOrUnknown(intake.allegations));
+      lines.push("");
+
+      lines.push("6. THIRD-PARTY STATEMENTS");
+      lines.push(valueOrUnknown(intake.thirdPartyStatements));
+      lines.push("");
+
+      lines.push("7. REPORTED HARM OR LOSS");
+      lines.push(valueOrUnknown(intake.harmLoss));
+      lines.push("");
+
+      lines.push("8. REPORTS OR REQUESTS FOR HELP ALREADY MADE");
+      lines.push(valueOrUnknown(intake.reportsMade));
+      lines.push("");
+
+      lines.push("9. DEADLINES OR APPOINTMENTS");
+      lines.push(valueOrUnknown(formatDate(intake.deadline)));
+      lines.push("");
+
+      lines.push("10. OUTCOME SOUGHT");
+      lines.push(valueOrUnknown(intake.outcomeSought));
+      lines.push("");
+
+      lines.push("11. EVIDENCE CATEGORIES IDENTIFIED DURING INTAKE");
+
+      if (
+        Array.isArray(intake.evidenceCategories) &&
+        intake.evidenceCategories.length
+      ) {
+        intake.evidenceCategories.forEach((category) => {
+          lines.push(`- ${category}`);
+        });
+      } else {
+        lines.push("No evidence categories identified.");
+      }
+
+      lines.push("");
+      lines.push("12. CHRONOLOGICAL TIMELINE");
+
+      if (caseData.timeline.length) {
+        caseData.timeline.forEach((item, index) => {
+          lines.push(
+            `${index + 1}. ${formatDate(item.date)} ${
+              item.time || "time unknown"
+            }`
+          );
+          lines.push(`   Location/platform: ${item.location || "Unknown"}`);
+          lines.push(`   Category: ${item.sourceType || "Unknown"}`);
+          lines.push(`   Event: ${item.event}`);
+
+          if (item.support) {
+            lines.push(`   Related support: ${item.support}`);
+          }
+        });
+      } else {
+        lines.push("No timeline events entered.");
+      }
+
+      lines.push("");
+      lines.push("13. EVIDENCE INVENTORY");
+
+      if (caseData.evidence.length) {
+        caseData.evidence.forEach((item, index) => {
+          lines.push(`${index + 1}. ${item.category}`);
+          lines.push(`   Date: ${formatDate(item.date)}`);
+          lines.push(`   Description: ${item.description}`);
+          lines.push(
+            `   Storage location: ${item.storageLocation || "Unknown"}`
+          );
+          lines.push(`   Possessed by: ${item.owner || "Unknown"}`);
+          lines.push(
+            `   Original preserved: ${item.originalPreserved || "Unknown"}`
+          );
+          lines.push(`   Backup made: ${item.backupMade || "Unknown"}`);
+
+          if (item.notes) {
+            lines.push(`   Notes or unresolved issues: ${item.notes}`);
+          }
+        });
+      } else {
+        lines.push("No evidence inventory entries.");
+      }
+
+      lines.push("");
+      lines.push("14. UNRESOLVED QUESTIONS");
+
+      const unresolved = buildUnresolvedQuestions();
+
+      if (unresolved.length) {
+        unresolved.forEach((question) => lines.push(`- ${question}`));
+      } else {
+        lines.push(
+          "No automatically identified unresolved questions. Human review is still recommended."
+        );
+      }
+
+      lines.push("");
+      lines.push("15. LIMITATIONS");
+      lines.push(
+        "VERA has not independently verified any statement, allegation, document, identity, loss, date, or event described above."
+      );
+      lines.push("");
+      lines.push(
+        "This document is an organizational draft based on information provided by the user. It has not been independently verified and is not legal advice."
+      );
+
+      summaryOutput.textContent = lines.join("\n");
+      return summaryOutput.textContent;
+    }
+
+    function buildUnresolvedQuestions() {
+      const intake = caseData.intake;
+      const questions = [];
+
+      if (!intake.approximateStart && !caseData.timeline.length) {
+        questions.push("When did the conduct begin?");
+      }
+
+      if (!intake.peopleOrganizations) {
+        questions.push("Which people or organizations were involved?");
+      }
+
+      if (!intake.directlyWitnessed) {
+        questions.push(
+          "What did the user personally see, hear, receive, or experience?"
+        );
+      }
+
+      if (!intake.reportsMade) {
+        questions.push(
+          "Have any reports, complaints, account disputes, or requests for assistance already been made?"
+        );
+      }
+
+      if (!intake.outcomeSought) {
+        questions.push("What outcome is the user seeking?");
+      }
+
+      if (!caseData.evidence.length) {
+        questions.push(
+          "What original records or communications are currently available, and where are they stored?"
+        );
+      }
+
+      const unpreserved = caseData.evidence.filter(
+        (item) => item.originalPreserved !== "Yes"
+      );
+
+      if (unpreserved.length) {
+        questions.push(
+          "Can the original versions of identified evidence be preserved safely and lawfully?"
+        );
+      }
+
+      return questions;
+    }
+
+    async function copySummary() {
+      const text = generateSummary();
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Summary copied.");
+      } catch (error) {
+        console.error("Clipboard error:", error);
+        showToast("Copy failed. Select and copy the summary manually.");
+      }
+    }
+
+    function downloadSummary() {
+      const text = generateSummary();
+      downloadFile(
+        `vera-summary-${dateStamp()}.txt`,
+        text,
+        "text/plain;charset=utf-8"
+      );
+    }
+
+    function exportCase() {
+      saveIntake();
+
+      const exportData = {
+        format: "VERA case backup",
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        case: caseData
+      };
+
+      downloadFile(
+        `vera-case-backup-${dateStamp()}.json`,
+        JSON.stringify(exportData, null, 2),
+        "application/json;charset=utf-8"
+      );
+    }
+
+    function importCase(event) {
+      const file = event.target.files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          const imported = parsed.case || parsed;
+
+          if (
+            typeof imported !== "object" ||
+            imported === null ||
+            !Array.isArray(imported.timeline) ||
+            !Array.isArray(imported.evidence)
+          ) {
+            throw new Error("Unsupported case format");
+          }
+
+          const confirmed = window.confirm(
+            "Replace the current browser data with this imported case?"
+          );
+
+          if (!confirmed) {
+            return;
+          }
+
+          caseData = {
+            intake: imported.intake || {},
+            timeline: imported.timeline || [],
+            evidence: imported.evidence || [],
+            updatedAt: imported.updatedAt || new Date().toISOString()
+          };
+
+          saveCase();
+          intakeForm.reset();
+          populateIntakeForm();
+          renderTimeline();
+          renderEvidence();
+          generateSummary();
+          evaluateSafety();
+          showToast("Case backup imported.");
+        } catch (error) {
+          console.error("Import error:", error);
+          showToast("The selected file is not a valid VERA case backup.");
+        } finally {
+          event.target.value = "";
+        }
+      };
+
+      reader.readAsText(file);
+    }
+
+    function deleteLocalData() {
+      const confirmed = window.confirm(
+        "Delete all VERA intake, timeline, and evidence information stored in this browser?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      localStorage.removeItem(STORAGE_KEY);
+      caseData = structuredClone(emptyCase);
+
+      intakeForm.reset();
+      timelineForm.reset();
+      evidenceForm.reset();
+
+      renderTimeline();
+      renderEvidence();
+      summaryOutput.textContent = "No summary has been generated yet.";
+      nextStepsOutput.innerHTML = "";
+      safetyResponse.className = "hidden";
+
+      showToast("Local VERA data deleted.");
+    }
+
+    function renderResources(resources) {
+      resourceGrid.innerHTML = "";
+
+      if (!resources.length) {
+        resourceGrid.innerHTML = `
+          <div class="empty-state">
+            No matching resources found.
+          </div>
+        `;
+        return;
+      }
+
+      resources.forEach((resource) => {
+        const article = document.createElement("article");
+        article.className = "resource-card";
+
+        article.innerHTML = `
+          <h3>${escapeHtml(resource.title)}</h3>
+          <p>${escapeHtml(resource.summary)}</p>
+
+          <div class="resource-tags">
+            ${resource.tags
+              .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+              .join("")}
+          </div>
+
+          <a
+            class="resource-link"
+            href="${encodeURI(resource.file)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open PDF
+          </a>
+        `;
+
+        resourceGrid.appendChild(article);
+      });
+    }
+
+    function filterResources() {
+      const query = resourceSearch.value.trim().toLowerCase();
+
+      if (!query) {
+        renderResources(advocacyResources);
+        return;
+      }
+
+      const filtered = advocacyResources.filter((resource) => {
+        const searchable = [
+          resource.title,
+          resource.summary,
+          ...resource.tags
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return searchable.includes(query);
+      });
+
+      renderResources(filtered);
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function valueOrUnknown(value) {
+      const normalized = String(value || "").trim();
+      return normalized || "Not provided.";
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "Date unknown";
+      }
+
+      const date = new Date(`${value}T12:00:00`);
+
+      if (Number.isNaN(date.getTime())) {
+        return value;
+      }
+
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }).format(date);
+    }
+
+    function dateStamp() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.remove("hidden");
+
+      window.clearTimeout(showToast.timeout);
+
+      showToast.timeout = window.setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3200);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
