@@ -211,145 +211,62 @@
       background: rgba(255, 255, 255, 0.12);
     }
 
-    .prototype-notice {
-      background: rgba(239, 68, 68, 0.1);
-      border-bottom: 1px solid rgba(248, 113, 113, 0.32);
-      padding: 12px 0;
-      color: #fee2e2;
-      font-size: 0.92rem;
-      font-weight: 600;
-    }
-
-    .prototype-inner {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .vault-status {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      font-size: 0.82rem;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: rgba(139, 92, 246, 0.2);
-    }
-
-    .vault-status.locked {
-      background: rgba(239, 68, 68, 0.2);
-      color: #fecaca;
-    }
-
-    .vault-status.unlocked {
-      background: rgba(16, 185, 129, 0.2);
-      color: #86efac;
-    }
-
-    .lock-screen {
+    .vault-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #020617 0%, #0f172a 48%, #020617 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      inset: 0;
       z-index: 10000;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .lock-screen.hidden {
-      display: none;
-    }
-
-    .lock-icon {
-      font-size: 4rem;
-      color: var(--navy);
-    }
-
-    .lock-form {
-      background: rgba(15, 23, 42, 0.84);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 40px;
-      max-width: 380px;
-      width: 90%;
-      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(2, 6, 23, 0.96);
       backdrop-filter: blur(14px);
     }
 
-    .lock-form h1 {
-      margin: 0 0 10px;
-      font-size: 1.8rem;
-      color: var(--navy);
+    .vault-overlay.hidden {
+      display: none;
     }
 
-    .lock-form p {
-      margin: 0 0 25px;
-      color: #cbd5e1;
-      font-size: 0.94rem;
-    }
-
-    .lock-form-group {
-      margin-bottom: 18px;
-    }
-
-    .lock-form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--blue);
-      font-weight: 800;
-      font-size: 0.9rem;
-    }
-
-    .lock-form-group input {
-      width: 100%;
-      padding: 11px 12px;
+    .vault-card {
+      width: min(100%, 620px);
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      padding: 28px;
       border: 1px solid var(--border-dark);
-      border-radius: 9px;
-      background: rgba(2, 6, 23, 0.64);
-      color: var(--text);
+      border-radius: 18px;
+      background: var(--white);
+      box-shadow: var(--shadow);
     }
 
-    .lock-form-group input:focus {
-      outline: 3px solid rgba(23, 107, 156, 0.2);
-      border-color: var(--blue);
+    .vault-card h1 {
+      margin-top: 0;
     }
 
-    .lock-button {
-      width: 100%;
-      padding: 12px;
-      background: var(--navy);
-      color: white;
-      border: none;
-      border-radius: 9px;
-      font-weight: 850;
-      cursor: pointer;
-      font-size: 1rem;
+    .vault-choice-grid,
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-block: 18px;
     }
 
-    .lock-button:hover,
-    .lock-button:focus-visible {
-      filter: brightness(0.94);
+    .trust-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
     }
 
-    .lock-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .trust-card strong,
+    .trust-card span {
+      display: block;
     }
 
-    .lock-error {
-      margin-top: 15px;
-      padding: 12px;
-      background: var(--red-light);
-      border: 1px solid #e1aaaa;
-      border-radius: 8px;
-      color: var(--red-dark);
-      font-size: 0.88rem;
+    .prototype-banner {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.32);
+      background: rgba(120, 53, 15, 0.32);
+      color: #fde68a;
+      font-size: 0.9rem;
     }
 
     .emergency-bar {
@@ -675,44 +592,3858 @@
       outline-offset: 2px;
     }
 
-    .trust-center-section {
-      margin-bottom: 24px;
+    .record-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    .trust-center-section h3 {
-      margin-top: 0;
-      color: var(--navy);
-      font-size: 1.1rem;
+    .record {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 15px;
+      background: rgba(2, 6, 23, 0.36);
     }
 
-    .trust-item {
+    .record-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background: rgba(2, 6, 23, 0.36);
-      border-radius: 9px;
-      margin-bottom: 8px;
-      font-size: 0.94rem;
+      gap: 10px;
+      align-items: flex-start;
     }
 
-    .trust-item-label {
-      font-weight: 700;
+    .record h3 {
+      margin: 0;
+      font-size: 1rem;
     }
 
-    .trust-item-value {
-      color: #cbd5e1;
+    .record-meta {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-top: 4px;
     }
 
-    .trust-item-status {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.8rem;
+    .record-text {
+      margin: 12px 0 0;
+      white-space: pre-wrap;
+    }
+
+    .record-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .small-button {
+      appearance: none;
+      border: 1px solid var(--border-dark);
+      background: rgba(2, 6, 23, 0.58);
+      color: #ede9fe;
+      border-radius: 7px;
+      padding: 6px 9px;
+      cursor: pointer;
+      font-size: 0.79rem;
       font-weight: 800;
-      background: var(--green-light);
-      color: var(--green);
     }
 
-    .trust-item-status.warning {
-      background: var(--gold-light);\n      color: var(--gold);\n    }\n\n    .trust-item-status.danger {\n      background: var(--red-light);\n      color: var(--red);\n    }\n\n    .footer {\n      color: var(--muted);\n      font-size: 0.88rem;\n      padding: 24px 0 38px;\n    }\n\n    .footer-inner {\n      border-top: 1px solid var(--border);\n      padding-top: 20px;\n    }\n\n    .hidden {\n      display: none !important;\n    }\n\n    .toast {\n      position: fixed;\n      right: 16px;\n      bottom: 16px;\n      max-width: 360px;\n      background: var(--navy-dark);\n      color: white;\n      padding: 13px 16px;\n      border-radius: 10px;\n      box-shadow: var(--shadow);\n      z-index: 5000;\n    }\n\n    @media (prefers-reduced-motion: reduce) {\n      *,\n      *::before,\n      *::after {\n        scroll-behavior: auto !important;\n        animation-duration: 0.01ms !important;\n        animation-iteration-count: 1 !important;\n        transition-duration: 0.01ms !important;\n      }\n    }\n\n    @media (max-width: 820px) {\n      .hero,\n      .form-grid,\n      .checkbox-grid {\n        grid-template-columns: 1fr;\n      }\n    }\n\n    @media (max-width: 610px) {\n      .header-inner {\n        align-items: flex-start;\n        flex-direction: column;\n      }\n\n      .header-actions {\n        justify-content: flex-start;\n      }\n\n      .button {\n        width: 100%;\n      }\n\n      .lock-form {\n        padding: 30px;\n      }\n    }\n  </style>\n</head>\n\n<body>\n  <a class=\"skip-link\" href=\"#main-content\">Skip to main content</a>\n\n  <div id=\"lock-screen\" class=\"lock-screen\">\n    <div class=\"lock-icon\">🔒</div>\n    <div class=\"lock-form\">\n      <h1>VERA Vault</h1>\n      <p>Enter your passphrase to unlock your data</p>\n      <form id=\"vault-unlock-form\">\n        <div class=\"lock-form-group\">\n          <label for=\"vault-passphrase\">Passphrase</label>\n          <input\n            type=\"password\"\n            id=\"vault-passphrase\"\n            placeholder=\"Enter vault passphrase\"\n            required\n            autocomplete=\"off\"\n          />\n        </div>\n        <button type=\"submit\" class=\"lock-button\">Unlock VERA</button>\n        <div id=\"vault-error\" class=\"lock-error hidden\"></div>\n      </form>\n    </div>\n  </div>\n\n  <header role=\"banner\">\n    <div class=\"prototype-notice\">\n      <div class=\"container prototype-inner\">\n        <span>⚠️</span>\n        <span>\n          <strong>Prototype:</strong> VERA uses encrypted local storage, but does not protect information while unlocked or guarantee protection from compromised devices, malicious extensions, software vulnerabilities, subpoenas, or lawful process.\n          <a href=\"#trust-center\" style=\"margin-left: 8px;\">Learn more</a>\n        </span>\n      </div>\n    </div>\n    <div class=\"container header-inner\">\n      <div class=\"brand\">\n        <div class=\"brand-mark\" aria-hidden=\"true\">V</div>\n        <div>\n          <p class=\"brand-name\">White Knight Law | VERA</p>\n          <p class=\"brand-subtitle\">\n            Victim Evidence &amp; Response Advocate workspace\n          </p>\n        </div>\n      </div>\n\n      <div class=\"header-actions\">\n        <div class=\"vault-status unlocked\" id=\"vault-status\">\n          <span>🔓</span>\n          <span>Unlocked</span>\n        </div>\n        <button class=\"header-button\" id=\"lock-vera-btn\" title=\"Lock vault and clear encryption key from memory\">Lock VERA</button>\n        <button class=\"header-button\" id=\"trust-center-btn\" title=\"View encryption status and privacy information\">Trust Center</button>\n        <a class=\"header-button\" href=\"https://www.whiteknightlaw.org/\">\n          White Knight Law\n        </a>\n      </div>\n    </div>\n  </header>\n\n  <main id=\"main-content\">\n    <div class=\"container\">\n      <div class=\"notice notice-info\">\n        <strong>Phase 1 Encrypted Local Vault:</strong> Your data is encrypted with AES-256-GCM before storage. See Trust Center for details.\n      </div>\n\n      <!-- Trust Center View -->\n      <div id=\"trust-center-view\" class=\"view\">\n        <div class=\"panel\">\n          <h2>Trust Center: Encryption & Privacy</h2>\n          <p>Information about how your data is stored and protected.</p>\n\n          <div class=\"trust-center-section\">\n            <h3>Encryption Status</h3>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Vault Status</span>\n              <span class=\"trust-item-value\">\n                <span class=\"trust-item-status\" id=\"trust-vault-status\">🔓 Unlocked</span>\n              </span>\n            </div>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Encryption Algorithm</span>\n              <span class=\"trust-item-value\">AES-256-GCM</span>\n            </div>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Key Derivation</span>\n              <span class=\"trust-item-value\">PBKDF2-SHA-256 (600,000 iterations)</span>\n            </div>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Implementation</span>\n              <span class=\"trust-item-value\">Native Web Crypto API (no third-party crypto)</span>\n            </div>\n          </div>\n\n          <div class=\"trust-center-section\">\n            <h3>Data Storage</h3>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Storage Location</span>\n              <span class=\"trust-item-value\">This device only (browser localStorage)</span>\n            </div>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Backup/Sync</span>\n              <span class=\"trust-item-value\">Not implemented (Phase 2)</span>\n            </div>\n            <div class=\"trust-item\">\n              <span class=\"trust-item-label\">Auto-lock Timeout</span>\n              <span class=\"trust-item-value\" id=\"trust-timeout\">15 minutes</span>\n            </div>\n          </div>\n\n          <div class=\"trust-center-section\">\n            <h3>Encrypted Categories</h3>\n            <ul>\n              <li>Urgent concerns / crisis escalation</li>\n              <li>Evidence inventory</li>\n              <li>Timeline events</li>\n              <li>Chat transcript</li>\n              <li>Narrative / victim statement</li>\n              <li>Medical information</li>\n              <li>Legal information</li>\n              <li>Contact details</li>\n              <li>Case notes</li>\n            </ul>\n          </div>\n\n          <div class=\"trust-center-section\">\n            <h3>What This Does NOT Guarantee</h3>\n            <ul>\n              <li>✗ Protection while vault is unlocked</li>\n              <li>✗ Protection from compromised devices</li>\n              <li>✗ Protection from malicious browser extensions</li>\n              <li>✗ Protection from keyloggers or malware</li>\n              <li>✗ Protection from XSS or code injection</li>\n              <li>✗ Protection from lawful process or subpoenas</li>\n              <li>✗ HIPAA compliance or legal privilege</li>\n              <li>✗ Production-ready security</li>\n            </ul>\n          </div>\n\n          <div class=\"trust-center-section\">\n            <h3>Your Controls</h3>\n            <button class=\"button button-outline\" id=\"trust-export-btn\">Export Encrypted Vault</button>\n            <button class=\"button button-danger\" id=\"trust-delete-btn\" style=\"margin-left: 8px;\">Delete All Data</button>\n          </div>\n\n          <div class=\"notice notice-warning\">\n            <strong>Legal Notice:</strong> Victim data may be protected by state crime victims' rights laws, attorney-client privilege, or federal confidentiality statutes. White Knight Law must consult counsel on compliance. Encryption does not grant legal immunity from subpoenas or court orders.\n          </div>\n\n          <button class=\"button button-secondary\" id=\"trust-close-btn\" style=\"margin-top: 20px;\">Back</button>\n        </div>\n      </div>\n\n      <!-- Vault Initialize/Migrate View -->\n      <div id=\"vault-setup-view\" class=\"view\">\n        <div class=\"panel\">\n          <h2>Set Up Your Vault</h2>\n          <p>VERA has detected existing victim data. Choose how to proceed:</p>\n\n          <div class=\"form-group full\">\n            <label for=\"setup-passphrase\">Create a Vault Passphrase</label>\n            <p class=\"help-text\">Choose a strong passphrase (12+ characters recommended). You'll use this to unlock VERA each time.</p>\n            <input\n              type=\"password\"\n              id=\"setup-passphrase\"\n              placeholder=\"Enter a strong passphrase\"\n              required\n              autocomplete=\"off\"\n            />\n          </div>\n\n          <div class=\"form-group full\">\n            <label for=\"setup-passphrase-confirm\">Confirm Passphrase</label>\n            <input\n              type=\"password\"\n              id=\"setup-passphrase-confirm\"\n              placeholder=\"Re-enter passphrase\"\n              required\n              autocomplete=\"off\"\n            />\n          </div>\n\n          <div class=\"button-row\">\n            <button class=\"button button-success\" id=\"setup-encrypt-btn\">Encrypt Existing Data</button>\n            <button class=\"button button-secondary\" id=\"setup-export-btn\">Export and Delete</button>\n            <button class=\"button button-danger\" id=\"setup-delete-btn\">Delete All Data</button>\n          </div>\n        </div>\n      </div>\n\n      <!-- Main VERA Interface (original) -->\n      <div id=\"vera-main-view\" class=\"view active\">\n        <div class=\"hero\">\n          <div class=\"hero-card\">\n            <p class=\"eyebrow\">Secure Victim Intake</p>\n            <h1>VERA</h1>\n            <p class=\"hero-description\">\n              Organize evidence, timelines, resources, and handoff packets for advocate review. Your data is encrypted with AES-256-GCM and stored locally on this device.\n            </p>\n            <div class=\"opening-question\">\n              Ready to help a victim organize their case?\n            </div>\n          </div>\n          <div class=\"status-card\">\n            <h2>System Status</h2>\n            <div class=\"status-list\">\n              <div class=\"status-item\">\n                <div class=\"status-dot\"></div>\n                <span>Encryption active</span>\n              </div>\n              <div class=\"status-item\">\n                <div class=\"status-dot\"></div>\n                <span>No backend communication</span>\n              </div>\n              <div class=\"status-item\">\n                <div class=\"status-dot\"></div>\n                <span>Data stored locally</span>\n              </div>\n              <div class=\"status-item\">\n                <div class=\"status-dot warning\"></div>\n                <span>Prototype (not production-ready)</span>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"notice notice-success\">\n          <strong>Phase 1 Implementation:</strong> Encrypted local vault is active. All victim data is encrypted before storage. See Trust Center for security details and limitations.\n        </div>\n      </div>\n    </div>\n  </main>\n\n  <footer class=\"footer\">\n    <div class=\"container footer-inner\">\n      <p>\n        &copy; 2026 White Knight Law. VERA is a prototype developed for crime victim advocacy.\n        <a href=\"https://github.com/White-Knight-Law/vera_2\">Open source</a> |\n        <a href=\"docs/security-policy.md\">Security Policy</a> |\n        <a href=\"docs/threat-model.md\">Threat Model</a>\n      </p>\n    </div>\n  </footer>\n\n  <!-- Crypto & Storage Modules -->\n  <script src=\"js/crypto-utils.js\"></script>\n  <script src=\"js/storage-adapter.js\"></script>\n  <script src=\"js/vault-session.js\"></script>\n  <script src=\"js/handoff-encryption.js\"></script>\n\n  <!-- Application Script -->\n  <script>\n    const VERAApp = (() => {\n      let vaultInitialized = false;\n\n      async function initializeApp() {\n        // Check for existing plaintext data\n        const plaintextKeys = StorageAdapter.detectPlaintextData();\n\n        if (plaintextKeys.length > 0) {\n          // Show vault setup screen\n          showVaultSetup();\n        } else {\n          // Check if vault already exists\n          const metadata = StorageAdapter.getVaultMetadata();\n          if (metadata) {\n            // Show lock screen\n            showLockScreen();\n          } else {\n            // First time use - go straight to main app\n            showMainApp();\n          }\n        }\n      }\n\n      function showLockScreen() {\n        document.getElementById('lock-screen').classList.remove('hidden');\n        document.querySelector('#vault-unlock-form').addEventListener('submit', handleUnlock);\n      }\n\n      function showVaultSetup() {\n        document.getElementById('vera-main-view').classList.remove('active');\n        document.getElementById('vault-setup-view').classList.add('active');\n        setupEventListeners();\n      }\n\n      function showMainApp() {\n        document.getElementById('lock-screen').classList.add('hidden');\n        document.getElementById('vera-main-view').classList.add('active');\n        setupEventListeners();\n        VaultSession.initSession();\n        vaultInitialized = true;\n      }\n\n      async function handleUnlock(e) {\n        e.preventDefault();\n        const passphrase = document.getElementById('vault-passphrase').value;\n        const errorEl = document.getElementById('vault-error');\n\n        try {\n          const metadata = StorageAdapter.getVaultMetadata();\n          if (!metadata) {\n            throw new Error('Vault not found');\n          }\n\n          const salt = new Uint8Array(\n            atob(metadata.salt)\n              .split('')\n              .map(c => c.charCodeAt(0))\n          );\n\n          const key = await CryptoUtils.deriveKeyFromPassphrase(passphrase, salt);\n          StorageAdapter.setVaultKey(key);\n          VaultSession.unlockVault();\n\n          document.getElementById('lock-screen').classList.add('hidden');\n          showMainApp();\n        } catch (err) {\n          errorEl.textContent = 'Invalid passphrase. Please try again.';\n          errorEl.classList.remove('hidden');\n          document.getElementById('vault-passphrase').value = '';\n        }\n      }\n\n      function setupEventListeners() {\n        // Lock VERA button\n        const lockBtn = document.getElementById('lock-vera-btn');\n        if (lockBtn) {\n          lockBtn.addEventListener('click', () => {\n            VaultSession.lockVault('user');\n            showLockScreen();\n          });\n        }\n\n        // Trust Center button\n        const trustBtn = document.getElementById('trust-center-btn');\n        if (trustBtn) {\n          trustBtn.addEventListener('click', () => {\n            updateTrustCenter();\n            document.getElementById('vera-main-view').classList.remove('active');\n            document.getElementById('trust-center-view').classList.add('active');\n          });\n        }\n\n        // Trust Center close\n        const closeBtn = document.getElementById('trust-close-btn');\n        if (closeBtn) {\n          closeBtn.addEventListener('click', () => {\n            document.getElementById('trust-center-view').classList.remove('active');\n            document.getElementById('vera-main-view').classList.add('active');\n          });\n        }\n\n        // Vault setup handlers\n        const encryptBtn = document.getElementById('setup-encrypt-btn');\n        if (encryptBtn) {\n          encryptBtn.addEventListener('click', handleEncryptSetup);\n        }\n      }\n\n      function updateTrustCenter() {\n        const statusEl = document.getElementById('trust-vault-status');\n        if (VaultSession.isVaultLocked()) {\n          statusEl.textContent = '🔒 Locked';\n          statusEl.className = 'trust-item-status danger';\n        } else {\n          statusEl.textContent = '🔓 Unlocked';\n          statusEl.className = 'trust-item-status';\n        }\n      }\n\n      async function handleEncryptSetup() {\n        const passphrase = document.getElementById('setup-passphrase').value;\n        const confirm = document.getElementById('setup-passphrase-confirm').value;\n\n        if (passphrase !== confirm) {\n          alert('Passphrases do not match');\n          return;\n        }\n\n        if (passphrase.length < 12) {\n          alert('Passphrase should be at least 12 characters');\n          return;\n        }\n\n        try {\n          // Initialize vault\n          const vault = await CryptoUtils.initializeVault(passphrase);\n          StorageAdapter.setVaultKey(vault.key);\n          StorageAdapter.setVaultMetadata({\n            salt: vault.salt,\n            created: vault.timestamp\n          });\n\n          // Migrate plaintext data\n          const plaintextKeys = StorageAdapter.detectPlaintextData();\n          const result = await StorageAdapter.migratePlaintextData(plaintextKeys);\n\n          if (result.successful > 0) {\n            // Delete plaintext\n            StorageAdapter.deletePlaintextData(plaintextKeys);\n          }\n\n          VaultSession.unlockVault();\n          document.getElementById('vault-setup-view').classList.remove('active');\n          showMainApp();\n        } catch (err) {\n          alert('Failed to set up vault: ' + err.message);\n        }\n      }\n\n      return {\n        init: initializeApp\n      };\n    })();\n\n    // Initialize on load\n    document.addEventListener('DOMContentLoaded', () => {\n      VERAApp.init();\n    });\n\n    // Lock on page unload\n    window.addEventListener('beforeunload', () => {\n      VaultSession.lockVault('page-unload');\n    });\n\n    // Listen for vault-locked events\n    document.addEventListener('vault-locked', (e) => {\n      const statusEl = document.getElementById('vault-status');\n      if (statusEl) {\n        statusEl.innerHTML = '<span>🔒</span><span>Locked</span>';\n        statusEl.classList.remove('unlocked');\n        statusEl.classList.add('locked');\n      }\n    });\n  </script>\n</body>\n</html>\n
+    .small-button.delete {
+      color: var(--red);
+      border-color: #d7a3a3;
+    }
+
+    .summary-output {
+      white-space: pre-wrap;
+      border: 1px solid var(--border-dark);
+      background: rgba(2, 6, 23, 0.52);
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 280px;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+      font-size: 0.91rem;
+      overflow-wrap: anywhere;
+    }
+
+    .resource-search {
+      margin-bottom: 17px;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .resource-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.72);
+      padding: 18px;
+    }
+
+    .resource-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    .resource-card p {
+      margin: 0 0 11px;
+      color: #cbd5e1;
+      font-size: 0.92rem;
+    }
+
+    .resource-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 9px 0;
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: var(--blue-light);
+      color: var(--navy);
+      font-size: 0.75rem;
+      font-weight: 750;
+    }
+
+    .resource-link {
+      font-weight: 850;
+      font-size: 0.88rem;
+    }
+
+    .chat-layout,
+    .admin-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .chat-window {
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      background: rgba(2, 6, 23, 0.48);
+      min-height: 430px;
+      max-height: 58vh;
+      overflow-y: auto;
+      padding: 14px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .chat-message {
+      max-width: 82%;
+      border-radius: 12px;
+      padding: 11px 13px;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+
+    .chat-message.user {
+      margin-left: auto;
+      background: var(--navy);
+      color: white;
+    }
+
+    .chat-message.vera {
+      background: rgba(241, 245, 249, 0.96);
+      color: #17212b;
+      border: 1px solid var(--border);
+    }
+
+    .chat-message.system {
+      max-width: 100%;
+      background: var(--gold-light);
+      border: 1px solid #e9cd95;
+      color: #4d3105;
+      font-size: 0.92rem;
+    }
+
+    .chat-meta {
+      display: block;
+      opacity: 0.76;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .chat-compose {
+      margin-top: 12px;
+    }
+
+    .chat-compose textarea {
+      min-height: 94px;
+    }
+
+    .handoff-card {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px;
+      background: rgba(241, 245, 249, 0.96);
+      color: #17212b;
+      margin-top: 12px;
+    }
+
+    .case-file-card {
+      display: grid;
+      gap: 10px;
+      border: 1px solid rgba(167, 139, 250, 0.34);
+      border-radius: 11px;
+      padding: 14px;
+      background: rgba(15, 23, 42, 0.72);
+      margin: 0 0 14px;
+    }
+
+    .case-file-card h3 {
+      margin: 0;
+    }
+
+    .case-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .case-meta-grid span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .case-meta-grid strong {
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.92rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: var(--blue-light);
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 850;
+    }
+
+    .status-pill.urgent {
+      background: var(--red-light);
+      color: var(--red-dark);
+    }
+
+    .status-pill.review {
+      background: var(--gold-light);
+      color: #5d3b07;
+    }
+
+    .empty-state {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--border-dark);
+      border-radius: 11px;
+    }
+
+    .privacy-box {
+      background: var(--navy);
+      color: white;
+      border-radius: 13px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    .privacy-box h2,
+    .privacy-box h3 {
+      color: white;
+      margin-top: 0;
+    }
+
+    .privacy-box ul {
+      columns: 2;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 24px 0 38px;
+    }
+
+    .footer-inner {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      max-width: 360px;
+      background: var(--navy-dark);
+      color: white;
+      padding: 13px 16px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      z-index: 5000;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .hero,
+      .form-grid,
+      .resource-grid,
+      .chat-layout,
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .case-meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-box ul {
+        columns: 1;
+      }
+    }
+
+    @media (max-width: 610px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
+
+      .record-header {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .navigation {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      header,
+      .emergency-bar,
+      .navigation,
+      .button-row,
+      .header-actions,
+      .footer,
+      .privacy-box,
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      main {
+        padding: 0;
+      }
+
+      .panel,
+      .hero-card,
+      .status-card {
+        border: 0;
+        box-shadow: none;
+      }
+
+      .view {
+        display: none !important;
+      }
+
+      #summary-view {
+        display: block !important;
+      }
+
+      .summary-output {
+        border: 0;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header role="banner">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">V</div>
+
+        <div>
+          <p class="brand-name">White Knight Law | VERA</p>
+          <p class="brand-subtitle">
+            Victim Evidence &amp; Response Advocate workspace
+          </p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a class="header-button" href="https://www.whiteknightlaw.org/">
+          White Knight Law
+        </a>
+
+        <a class="header-button" href="https://www.whiteknightlaw.org/dashboard">
+          Dashboard
+        </a>
+
+        <button
+          class="header-button"
+          type="button"
+          data-view-target="chat-view"
+        >
+          Start chat
+        </button>
+
+        <button
+          class="header-button"
+          type="button"
+          data-view-target="privacy-view"
+        >
+          Trust Center
+        </button>
+
+        <button class="header-button" type="button" id="lock-vera">
+          Lock VERA
+        </button>
+
+        <button
+          class="header-button"
+          type="button"
+          data-view-target="resources-view"
+        >
+          Advocacy library
+        </button>
+
+        <a class="header-button" href="#emergency-information">
+          Emergency information
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="prototype-banner" role="note">
+    <div class="container">
+      <strong>Prototype limitation:</strong> Encrypted local storage reduces
+      exposure on this device, but does not protect information while the vault
+      is unlocked or guarantee protection from compromised devices, malicious
+      browser extensions, software vulnerabilities, subpoenas, or lawful process.
+    </div>
+  </div>
+
+  <section
+    class="emergency-bar"
+    id="emergency-information"
+    aria-label="Emergency information"
+  >
+    <div class="container emergency-inner">
+      <strong>Immediate danger:</strong>
+      VERA is not an emergency service and is not monitored by a person.
+      If you or someone else may be in immediate danger, contact local
+      emergency services or a local crisis service now. Do not rely on
+      this website for urgent intervention.
+    </div>
+  </section>
+
+  <main class="container" id="main-content" tabindex="-1">
+    <section class="hero" aria-labelledby="vera-title">
+      <article class="hero-card">
+        <p class="eyebrow">White Knight Law advocacy workspace</p>
+
+        <h1 id="vera-title">VERA organizes crisis facts for White Knight review.</h1>
+
+        <p class="hero-description">
+          VERA is the victim-advocacy intake surface for the White Knight Law
+          information and resource-coordination system. It helps build an
+          incident timeline, identify potential evidence, document harm,
+          separate direct observations from allegations and third-party
+          statements, and prepare a handoff packet for the White Knight
+          dashboard workflow.
+        </p>
+
+        <div class="opening-question">
+          What happened, and what is the most urgent problem you need
+          help with today?
+        </div>
+      </article>
+
+      <aside class="status-card" aria-label="System status">
+        <h2>White Knight integration</h2>
+
+        <div class="case-file-card" aria-label="Current VERA case file">
+          <h3>Current case file</h3>
+          <div class="case-meta-grid" id="case-meta"></div>
+        </div>
+
+        <div class="status-list">
+          <div class="status-item">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Visual system aligned to the White Knight dashboard.</span>
+          </div>
+
+          <div class="status-item">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Handoff packets are formatted for reviewer intake.</span>
+          </div>
+
+          <div class="status-item">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Dashboard and main-site paths are always one click away.</span>
+          </div>
+
+          <div class="status-item">
+            <span class="status-dot warning" aria-hidden="true"></span>
+            <span>
+              This is structured software, not a human advocate or trained
+              artificial-intelligence model.
+            </span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="navigation" aria-label="VERA sections" role="tablist">
+      <button
+        class="nav-button active"
+        type="button"
+        data-view-target="chat-view"
+        role="tab"
+        aria-controls="chat-view"
+        aria-selected="true"
+      >
+        Chat
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="intake-view"
+        role="tab"
+        aria-controls="intake-view"
+        aria-selected="false"
+      >
+        Intake
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="timeline-view"
+        role="tab"
+        aria-controls="timeline-view"
+        aria-selected="false"
+      >
+        Timeline
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="evidence-view"
+        role="tab"
+        aria-controls="evidence-view"
+        aria-selected="false"
+      >
+        Evidence
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="summary-view"
+        role="tab"
+        aria-controls="summary-view"
+        aria-selected="false"
+      >
+        Summary
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="resources-view"
+        role="tab"
+        aria-controls="resources-view"
+        aria-selected="false"
+      >
+        Library
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="admin-view"
+        role="tab"
+        aria-controls="admin-view"
+        aria-selected="false"
+      >
+        Admin
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+        data-view-target="privacy-view"
+        role="tab"
+        aria-controls="privacy-view"
+        aria-selected="false"
+      >
+        Privacy
+      </button>
+    </nav>
+
+    <section
+      class="view active"
+      id="chat-view"
+      role="tabpanel"
+      aria-labelledby="chat-tab-title"
+    >
+      <article class="panel">
+        <h2 id="chat-tab-title">Secure advocacy chat</h2>
+
+        <div class="notice notice-danger">
+          VERA is not monitored in real time and cannot dispatch help. If
+          anyone may be in immediate danger, contact local emergency services
+          or a local crisis service now.
+        </div>
+
+        <div class="chat-layout">
+          <div>
+            <div
+              class="chat-window"
+              id="chat-window"
+              aria-live="polite"
+              aria-relevant="additions text"
+              aria-label="VERA chat transcript"
+              tabindex="0"
+            ></div>
+
+            <form class="chat-compose" id="chat-form">
+              <div class="form-group">
+                <label for="chat-input">Message VERA</label>
+                <p class="help-text" id="chat-input-help">
+                  Do not include passwords, one-time codes, account numbers, or
+                  unnecessary identifying details.
+                </p>
+                <textarea
+                  id="chat-input"
+                  name="message"
+                  placeholder="Start with what happened or the safest next thing you need help with."
+                  aria-describedby="chat-input-help"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="button-row">
+                <button class="button button-primary" type="submit">
+                  Send message
+                </button>
+
+                <button
+                  class="button button-secondary"
+                  type="button"
+                  id="chat-save-intake"
+                >
+                  Save chat to intake
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="chat-add-timeline"
+                >
+                  Add latest as timeline
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="chat-add-evidence"
+                >
+                  Add latest as evidence
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <aside>
+            <div class="notice notice-info">
+              <strong>Consent and privacy notice.</strong>
+              Chat messages are stored only in this browser in this prototype.
+              Do not enter passwords, account numbers, intimate images, or
+              details that could increase danger if someone else sees this
+              device.
+            </div>
+
+            <div class="handoff-card">
+              <h3>Human handoff</h3>
+              <p>
+                Use this when the conversation should be reviewed by a trained
+                person. The export includes intake, transcript, timeline,
+                evidence inventory, and flags formatted for White Knight's
+                dashboard review workflow.
+              </p>
+
+              <div class="button-row">
+                <button
+                  class="button button-success"
+                  type="button"
+                  id="request-handoff"
+                >
+                  Request human review
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="export-handoff"
+                >
+                  Export handoff packet
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="copy-handoff"
+                >
+                  Copy dashboard packet
+                </button>
+
+                <a
+                  class="button button-outline"
+                  href="https://www.whiteknightlaw.org/dashboard"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open White Knight dashboard in a new tab"
+                >
+                  Open dashboard
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="intake-view"
+      role="tabpanel"
+      aria-labelledby="intake-title"
+    >
+      <article class="panel">
+        <h2 id="intake-title">Initial intake</h2>
+
+        <div class="notice notice-info">
+          Share only what is needed to understand the situation. You do
+          not need to provide your legal name. Do not enter passwords,
+          Social Security numbers, one-time codes, full account numbers,
+          intimate images, or unnecessary identifying information.
+        </div>
+
+        <form id="intake-form">
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="urgent-problem">
+                What happened, and what is the most urgent problem you
+                need help with today?
+              </label>
+
+              <textarea
+                id="urgent-problem"
+                name="urgentProblem"
+                placeholder="Describe the immediate concern in your own words."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="safety-status">Current safety</label>
+              <p class="help-text" id="safety-status-help">
+                Choose immediate or possible danger when current safety is uncertain.
+              </p>
+
+              <select
+                id="safety-status"
+                name="safetyStatus"
+                aria-describedby="safety-status-help"
+              >
+                <option value="">Choose one</option>
+                <option value="No immediate danger reported">
+                  No immediate danger reported
+                </option>
+                <option value="Unsure whether danger is immediate">
+                  Unsure whether danger is immediate
+                </option>
+                <option value="Possible immediate danger">
+                  Possible immediate danger
+                </option>
+                <option value="Immediate danger reported">
+                  Immediate danger reported
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="incident-type">General issue category</label>
+
+              <select id="incident-type" name="incidentType">
+                <option value="">Choose one</option>
+                <option>Fraud or financial exploitation</option>
+                <option>Identity theft or account takeover</option>
+                <option>Harassment or threats</option>
+                <option>Stalking or unwanted monitoring</option>
+                <option>Domestic or family violence</option>
+                <option>Sexual violence or coercion</option>
+                <option>Physical assault</option>
+                <option>Cybercrime or online abuse</option>
+                <option>Workplace or institutional misconduct</option>
+                <option>Property crime</option>
+                <option>Other or uncertain</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="approximate-start">Approximate start date</label>
+              <input id="approximate-start" name="approximateStart" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="approximate-end">Approximate end or most recent date</label>
+              <input id="approximate-end" name="approximateEnd" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="location-platform">Location or online platform</label>
+              <input
+                id="location-platform"
+                name="locationPlatform"
+                type="text"
+                placeholder="City, workplace, website, app, email, phone, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="people-organizations">
+                People or organizations involved
+              </label>
+              <input
+                id="people-organizations"
+                name="peopleOrganizations"
+                type="text"
+                placeholder="Use roles or initials when possible."
+              >
+            </div>
+
+            <div class="form-group full">
+              <label for="directly-witnessed">
+                What did you directly see, hear, receive, or experience?
+              </label>
+
+              <textarea
+                id="directly-witnessed"
+                name="directlyWitnessed"
+                placeholder="Include only what you personally observed or received."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="allegations">
+                What do you believe happened but cannot personally verify?
+              </label>
+
+              <textarea
+                id="allegations"
+                name="allegations"
+                placeholder="Describe allegations, suspicions, or interpretations separately."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="third-party-statements">
+                What did another person tell you?
+              </label>
+
+              <textarea
+                id="third-party-statements"
+                name="thirdPartyStatements"
+                placeholder="Identify the speaker by role or initials and summarize what they said."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="harm-loss">
+                Financial loss, physical injury, emotional impact, or other harm
+              </label>
+
+              <textarea
+                id="harm-loss"
+                name="harmLoss"
+                placeholder="Describe losses, expenses, missed work, damaged property, medical needs, housing problems, or other effects."
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="reports-made">
+                Reports, complaints, or requests for help already made
+              </label>
+
+              <textarea
+                id="reports-made"
+                name="reportsMade"
+                placeholder="Police, bank, employer, school, platform, regulator, attorney, advocate, medical provider, etc."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="deadline">Known deadline, court date, or appointment</label>
+              <input id="deadline" name="deadline" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="outcome-sought">Primary outcome sought</label>
+
+              <select id="outcome-sought" name="outcomeSought">
+                <option value="">Choose one</option>
+                <option>Immediate safety</option>
+                <option>Stop unwanted contact</option>
+                <option>Preserve or organize evidence</option>
+                <option>Report to law enforcement</option>
+                <option>Report to another agency or organization</option>
+                <option>Recover money or property</option>
+                <option>Prepare for an attorney consultation</option>
+                <option>Understand available options</option>
+                <option>Document the incident for future use</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>Potential evidence currently available</legend>
+
+            <div class="checkbox-grid">
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Messages and emails">
+                Messages and emails
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Photos or videos">
+                Photos or videos
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Audio recordings">
+                Audio recordings
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Financial records">
+                Financial records
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Account activity">
+                Account activity
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Medical records">
+                Medical records
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Police or agency reports">
+                Police or agency reports
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Witnesses">
+                Witnesses
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Contracts and business records">
+                Contracts and business records
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Device or technical evidence">
+                Device or technical evidence
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="evidenceCategories" value="Other supporting documents">
+                Other supporting documents
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">
+              Save intake locally
+            </button>
+
+            <button
+              class="button button-secondary"
+              type="button"
+              id="generate-next-steps"
+            >
+              Show suggested next steps
+            </button>
+          </div>
+        </form>
+
+        <div id="safety-response" class="hidden" role="status" aria-live="polite"></div>
+        <div id="next-steps-output" role="status" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="timeline-view"
+      role="tabpanel"
+      aria-labelledby="timeline-title"
+    >
+      <article class="panel">
+        <h2 id="timeline-title">Chronological timeline</h2>
+
+        <p>
+          Add one event at a time. Use approximate dates when the exact date
+          is unknown. Describe what occurred without adding conclusions.
+        </p>
+
+        <form id="timeline-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="timeline-date">Date</label>
+              <input id="timeline-date" name="date" type="date">
+            </div>
+
+            <div class="form-group">
+              <label for="timeline-time">Approximate time</label>
+              <input id="timeline-time" name="time" type="time">
+            </div>
+
+            <div class="form-group">
+              <label for="timeline-location">Location or platform</label>
+              <input
+                id="timeline-location"
+                name="location"
+                type="text"
+                placeholder="Physical location, app, website, email, telephone, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="timeline-source">Information category</label>
+
+              <select id="timeline-source" name="sourceType">
+                <option>Direct observation or experience</option>
+                <option>User allegation</option>
+                <option>Third-party statement</option>
+                <option>Document or record</option>
+                <option>Unresolved or uncertain</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="timeline-event">What happened?</label>
+
+              <textarea
+                id="timeline-event"
+                name="event"
+                placeholder="Describe the event in factual, neutral language."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="timeline-support">Related evidence or witness</label>
+
+              <textarea
+                id="timeline-support"
+                name="support"
+                placeholder="Message, statement, photograph, transaction, witness, record, or other supporting item."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">
+              Add timeline event
+            </button>
+
+            <button
+              class="button button-outline"
+              type="button"
+              id="clear-timeline-form"
+            >
+              Clear form
+            </button>
+          </div>
+        </form>
+
+        <div
+          class="record-list"
+          id="timeline-list"
+          role="region"
+          aria-live="polite"
+          aria-label="Saved timeline events"
+        ></div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="evidence-view"
+      role="tabpanel"
+      aria-labelledby="evidence-title"
+    >
+      <article class="panel">
+        <h2 id="evidence-title">Evidence inventory</h2>
+
+        <div class="notice notice-warning">
+          Preserve original files and records when it is safe to do so.
+          Avoid editing, cropping, annotating, renaming, publicly posting,
+          or repeatedly forwarding potential evidence. Do not obtain
+          evidence through hacking, impersonation, trespassing, threats,
+          or unlawful surveillance.
+        </div>
+
+        <form id="evidence-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="evidence-category">Category</label>
+
+              <select id="evidence-category" name="category">
+                <option>Messages and emails</option>
+                <option>Photos or videos</option>
+                <option>Audio recordings</option>
+                <option>Financial records</option>
+                <option>Account activity</option>
+                <option>Medical records</option>
+                <option>Police or agency reports</option>
+                <option>Witness information</option>
+                <option>Contracts and business records</option>
+                <option>Device or technical evidence</option>
+                <option>Other supporting document</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-date">Date obtained or created</label>
+              <input id="evidence-date" name="date" type="date">
+            </div>
+
+            <div class="form-group full">
+              <label for="evidence-description">Description</label>
+
+              <textarea
+                id="evidence-description"
+                name="description"
+                placeholder="Describe the item without pasting highly sensitive content."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-location">Where is the original stored?</label>
+
+              <input
+                id="evidence-location"
+                name="storageLocation"
+                type="text"
+                placeholder="Device, email account, cloud folder, paper file, agency, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-owner">Who controls or possesses it?</label>
+
+              <input
+                id="evidence-owner"
+                name="owner"
+                type="text"
+                placeholder="You, witness, bank, employer, agency, platform, etc."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-original">Original preserved?</label>
+
+              <select id="evidence-original" name="originalPreserved">
+                <option value="Unknown">Unknown</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="evidence-backup">Backup made?</label>
+
+              <select id="evidence-backup" name="backupMade">
+                <option value="Unknown">Unknown</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="evidence-notes">
+                Authenticity, context, or follow-up notes
+              </label>
+
+              <textarea
+                id="evidence-notes"
+                name="notes"
+                placeholder="Who created it, how it was received, missing context, or questions to verify."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" type="submit">
+              Add evidence item
+            </button>
+
+            <button
+              class="button button-outline"
+              type="button"
+              id="clear-evidence-form"
+            >
+              Clear form
+            </button>
+          </div>
+        </form>
+
+        <div
+          class="record-list"
+          id="evidence-list"
+          role="region"
+          aria-live="polite"
+          aria-label="Saved evidence items"
+        ></div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="summary-view"
+      role="tabpanel"
+      aria-labelledby="summary-title"
+    >
+      <article class="panel">
+        <h2 id="summary-title">Organizational incident summary</h2>
+
+        <div class="notice notice-info no-print">
+          Review the summary carefully. Correct inaccurate language before
+          giving it to an advocate, lawyer, agency, medical provider, or
+          law-enforcement professional.
+        </div>
+
+        <div
+          class="summary-output"
+          id="summary-output"
+          role="region"
+          aria-live="polite"
+          aria-label="Generated organizational incident summary"
+          tabindex="0"
+        >
+          No summary has been generated yet.
+        </div>
+
+        <div class="button-row no-print">
+          <button
+            class="button button-primary"
+            type="button"
+            id="generate-summary"
+          >
+            Generate or refresh summary
+          </button>
+
+          <button
+            class="button button-secondary"
+            type="button"
+            id="copy-summary"
+          >
+            Copy summary
+          </button>
+
+          <button
+            class="button button-outline"
+            type="button"
+            id="download-summary"
+          >
+            Download text file
+          </button>
+
+          <button
+            class="button button-outline"
+            type="button"
+            id="print-summary"
+          >
+            Print or save as PDF
+          </button>
+
+          <button
+            class="button button-success"
+            type="button"
+            id="export-case"
+          >
+            Export case backup
+          </button>
+
+          <label class="button button-outline" for="import-case">
+            Import case backup
+          </label>
+
+          <input
+            class="hidden"
+            id="import-case"
+            type="file"
+            accept="application/json,.json"
+          >
+        </div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="resources-view"
+      role="tabpanel"
+      aria-labelledby="resources-title"
+    >
+      <article class="panel">
+        <h2 id="resources-title">Victim advocacy reference library</h2>
+
+        <p>
+          These materials informed the structure and safeguards used by
+          VERA. To make the PDF links work on GitHub Pages, create a
+          <code>resources</code> folder in the repository and upload the
+          eight PDF files using the filenames shown below.
+        </p>
+
+        <div class="form-group resource-search">
+          <label for="resource-search">Search the library</label>
+          <input
+            id="resource-search"
+            type="search"
+            placeholder="Search privacy, evidence, safety, compensation, advocacy, court..."
+          >
+        </div>
+
+        <div class="resource-grid" id="resource-grid"></div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="privacy-view"
+      role="tabpanel"
+      aria-labelledby="privacy-title"
+    >
+      <article class="panel">
+        <h2 id="privacy-title">Trust Center</h2>
+
+        <div class="notice notice-warning">
+          VERA is currently a prototype, not a secure case-management portal.
+          The local vault protects stored records while locked, but the browser
+          must decrypt them while you use the application.
+        </div>
+
+        <h3>Where information is stored</h3>
+
+        <p>
+          Intake answers, timeline events, and evidence inventory entries
+          are encrypted before being stored on this device. The website does
+          not intentionally send this information to White Knight Law, an advocate, an
+          attorney, law enforcement, or any other person.
+        </p>
+
+        <div class="trust-grid" aria-live="polite">
+          <div class="trust-card">
+            <span>Vault status</span>
+            <strong id="trust-vault-status">Locked</strong>
+          </div>
+          <div class="trust-card">
+            <span>Storage location</span>
+            <strong>This browser only</strong>
+          </div>
+          <div class="trust-card">
+            <span>Encryption at rest</span>
+            <strong>AES-256-GCM</strong>
+          </div>
+          <div class="trust-card">
+            <span>White Knight access</span>
+            <strong>No automatic access</strong>
+          </div>
+        </div>
+
+        <h3>Stored categories</h3>
+        <p id="trust-stored-categories">No encrypted case is stored.</p>
+
+        <div class="form-group">
+          <label for="inactivity-timeout">Lock automatically after inactivity</label>
+          <select id="inactivity-timeout">
+            <option value="2">2 minutes</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+          </select>
+        </div>
+
+        <div class="button-row">
+          <button class="button button-success" type="button" id="export-encrypted-case">
+            Download encrypted backup
+          </button>
+          <button class="button button-outline" type="button" id="export-plaintext-case">
+            Export readable copy
+          </button>
+          <button class="button button-outline" type="button" id="trust-lock-vera">
+            Lock now
+          </button>
+        </div>
+
+        <h3>Do not enter</h3>
+
+        <ul>
+          <li>Passwords, one-time codes, or recovery codes</li>
+          <li>Social Security numbers or government identification numbers</li>
+          <li>Full bank, card, or financial account numbers</li>
+          <li>Intimate images or recordings</li>
+          <li>Medical records containing unnecessary identifiers</li>
+          <li>Information that could increase danger if another person sees it</li>
+        </ul>
+
+        <h3>Legal and professional limits</h3>
+
+        <p>
+          VERA is not a lawyer, law firm, police agency, therapist,
+          investigator, medical provider, or emergency service. It does not
+          determine whether a crime occurred, assess credibility, identify
+          a guilty person, guarantee confidentiality, create legal
+          privilege, provide legal advice, or establish an attorney-client
+          relationship.
+        </p>
+
+        <div class="privacy-box">
+          <h3>Delete information from this browser</h3>
+
+          <p>
+            This removes VERA information stored by this website from the
+            current browser. It does not delete downloaded files, printed
+            pages, browser backups, screenshots, or information copied
+            elsewhere.
+          </p>
+
+          <button
+            class="button button-danger"
+            type="button"
+            id="delete-local-data"
+          >
+            Delete all local VERA data
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <section
+      class="view"
+      id="admin-view"
+      role="tabpanel"
+      aria-labelledby="admin-title"
+    >
+      <article class="panel">
+        <h2 id="admin-title">Admin review queue</h2>
+
+        <div class="notice notice-warning">
+          This prototype admin queue reads the current browser only. A
+          production version needs authenticated staff accounts, encrypted
+          server storage, audit logs, retention rules, and a real notification
+          channel inside the White Knight dashboard before it can receive live
+          victim messages.
+        </div>
+
+        <div class="admin-layout">
+          <div>
+            <h3>Review status</h3>
+            <div
+              id="admin-review-list"
+              role="region"
+              aria-live="polite"
+              aria-label="Admin review status"
+            ></div>
+          </div>
+
+          <div>
+            <h3>Reviewer notes</h3>
+            <form id="admin-form">
+              <div class="form-group">
+                <label for="admin-status">Case status</label>
+                <select id="admin-status" name="status">
+                  <option>New</option>
+                  <option>Submitted for review</option>
+                  <option>Needs crisis escalation</option>
+                  <option>Needs advocate follow-up</option>
+                  <option>Needs evidence review</option>
+                  <option>Needs legal review</option>
+                  <option>Assigned to reviewer</option>
+                  <option>Referred out</option>
+                  <option>Closed</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-priority">Priority</label>
+                <select id="admin-priority" name="priority">
+                  <option>Standard</option>
+                  <option>High</option>
+                  <option>Urgent safety</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-owner">Assigned reviewer</label>
+                <input
+                  id="admin-owner"
+                  name="owner"
+                  placeholder="Unassigned"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="admin-notes">Notes for reviewer</label>
+                <textarea
+                  id="admin-notes"
+                  name="notes"
+                  placeholder="Document review decisions, referrals, safety concerns, and follow-up needs."
+                ></textarea>
+              </div>
+
+              <div class="button-row">
+                <button class="button button-primary" type="submit">
+                  Save admin notes
+                </button>
+
+                <button
+                  class="button button-success"
+                  type="button"
+                  id="submit-dashboard-case"
+                >
+                  Submit to dashboard queue
+                </button>
+
+                <button
+                  class="button button-outline"
+                  type="button"
+                  id="copy-admin-packet"
+                >
+                  Copy admin packet
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      VERA is an organizational victim-support tool. It does not replace
+      emergency services, a trained victim advocate, licensed attorney,
+      medical care, mental-health care, or law enforcement.
+    </div>
+  </footer>
+
+  <div
+    class="toast hidden"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <div class="vault-overlay" id="vault-overlay" role="dialog" aria-modal="true" aria-labelledby="vault-title">
+    <div class="vault-card">
+      <h1 id="vault-title">Protect your VERA workspace</h1>
+      <p id="vault-message">
+        Create or unlock a local encrypted vault before entering sensitive information.
+        White Knight cannot recover a forgotten vault passphrase in this prototype.
+      </p>
+
+      <div id="vault-error" class="notice notice-danger hidden" role="alert"></div>
+
+      <form id="vault-form">
+        <div class="form-group">
+          <label for="vault-passphrase">Vault passphrase</label>
+          <input id="vault-passphrase" type="password" minlength="12" autocomplete="current-password" required>
+          <small>Use at least 12 characters. Do not reuse a password or security answer.</small>
+        </div>
+        <div class="form-group" id="vault-confirm-group">
+          <label for="vault-passphrase-confirm">Confirm passphrase</label>
+          <input id="vault-passphrase-confirm" type="password" minlength="12" autocomplete="new-password">
+        </div>
+        <button class="button button-primary" type="submit" id="vault-submit">Create encrypted vault</button>
+      </form>
+
+      <div id="migration-choices" class="hidden">
+        <p><strong>Plaintext VERA data was found on this device.</strong> Choose what happens before continuing.</p>
+        <div class="vault-choice-grid">
+          <button class="button button-primary" type="button" id="migrate-encrypt">Encrypt existing data now</button>
+          <button class="button button-outline" type="button" id="migrate-export">Export it before migration</button>
+          <button class="button button-danger" type="button" id="migrate-delete">Delete it</button>
+        </div>
+        <p class="muted">VERA will not silently migrate or delete the existing plaintext record.</p>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="import-passphrase-dialog" class="vault-card" aria-labelledby="import-passphrase-title">
+    <form method="dialog" id="import-passphrase-form">
+      <h2 id="import-passphrase-title">Unlock encrypted backup</h2>
+      <p>The passphrase is used in this browser for this import only and is not stored.</p>
+      <div class="form-group">
+        <label for="import-passphrase">Backup passphrase</label>
+        <input id="import-passphrase" type="password" minlength="12" autocomplete="off" required>
+      </div>
+      <div class="button-row">
+        <button class="button button-primary" value="confirm">Continue</button>
+        <button class="button button-outline" value="cancel" formnovalidate>Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { createSalt, DEFAULT_PBKDF2_ITERATIONS, decryptJson, deriveVaultKey } from "./js/crypto-utils.js";
+    import { EncryptedStorageAdapter } from "./js/storage-adapter.js";
+    import { VaultSession, DEFAULT_INACTIVITY_MINUTES } from "./js/vault-session.js";
+    import { createEncryptedExport, isEncryptedExport } from "./js/handoff-encryption.js";
+
+    "use strict";
+
+    const emptyCase = {
+      caseId: "",
+      createdAt: "",
+      submittedAt: null,
+      intake: {},
+      timeline: [],
+      evidence: [],
+      messages: [],
+      handoff: {
+        requested: false,
+        requestedAt: null,
+        status: "New",
+        priority: "Standard",
+        owner: "",
+        notes: ""
+      },
+      serverSubmission: null,
+      updatedAt: null
+    };
+
+    const crisisTerms = [
+      "immediate danger",
+      "kill",
+      "weapon",
+      "gun",
+      "knife",
+      "suicide",
+      "hurt myself",
+      "hurt me",
+      "threat",
+      "strang",
+      "stalk",
+      "following me",
+      "outside my house",
+      "cannot leave"
+    ];
+
+    let caseData = normalizeCase(structuredClone(emptyCase));
+    let appInitialized = false;
+    const vaultStorage = new EncryptedStorageAdapter();
+    const vaultSession = new VaultSession();
+
+    const advocacyResources = [
+      {
+        title: "Victim Advocacy Guidelines",
+        file: "resources/2019-Victim-Advocacy-Guidelines-final.pdf",
+        summary:
+          "Guidance on trauma-informed services, crisis intervention, risk assessment, safety planning, professional boundaries, victims’ rights, court support, referrals, and coordinated multidisciplinary advocacy.",
+        tags: [
+          "training",
+          "safety planning",
+          "victims’ rights",
+          "court support",
+          "referrals"
+        ]
+      },
+      {
+        title: "Know Your Rights: A Guide for Victims of Crime",
+        file: "resources/rights-crime-victims-booklet.pdf",
+        summary:
+          "A New York-focused victim-rights booklet covering case information, court participation, protection from intimidation, victim impact statements, notification, compensation, restitution-related issues, and legal assistance.",
+        tags: [
+          "victims’ rights",
+          "New York",
+          "compensation",
+          "court",
+          "notification"
+        ]
+      },
+      {
+        title: "Best Practices Guidelines: Crime Victim Services",
+        file: "resources/Practices_Best practices guidelines-508.pdf",
+        summary:
+          "Victim-centered service principles addressing personal advocacy, crisis intervention, justice-system advocacy, financial assistance, accessibility, confidentiality, partnerships, governance, ethics, and program quality.",
+        tags: [
+          "best practices",
+          "victim-centered",
+          "confidentiality",
+          "ethics",
+          "accessibility"
+        ]
+      },
+      {
+        title: "Resources for Meeting the Victim Support and Advocacy Standard",
+        file:
+          "resources/Resources-for-Meeting-the-Victim-Support-and-Advocacy-Standard-2023.04.14.pdf",
+        summary:
+          "Updated advocacy-standard material addressing abuse dynamics, trauma-informed response, crisis and risk assessment, legal rights, court support, cultural responsiveness, caregiver resilience, domestic violence, and referral resources.",
+        tags: [
+          "2023 standards",
+          "trauma-informed",
+          "risk assessment",
+          "culture",
+          "domestic violence"
+        ]
+      },
+      {
+        title:
+          "The Victim Advocate’s Guide to Safety and Economic Security for Victims of Violence Against Women",
+        file: "resources/ESS-Victim-Advocate-Sector-Guide-1.pdf",
+        summary:
+          "Guidance on the relationship between victim safety and economic security, including housing, employment, transportation, financial loss, economic abuse, compensation, restitution, civil protections, referrals, and justice-system participation.",
+        tags: [
+          "economic abuse",
+          "financial harm",
+          "housing",
+          "restitution",
+          "safety"
+        ]
+      },
+      {
+        title:
+          "The Victim Advocate’s Guide to Safety and Economic Security — Second Copy",
+        file: "resources/ESS-Victim-Advocate-Sector-Guide.pdf",
+        summary:
+          "Duplicate source copy retained for completeness. Covers economic security, safety planning, financial evidence, economic barriers, justice-system remedies, referrals, and coordinated advocacy.",
+        tags: [
+          "economic security",
+          "financial evidence",
+          "safety planning",
+          "advocacy"
+        ]
+      },
+      {
+        title:
+          "New Directions from the Field: Victims’ Rights and Services for the 21st Century",
+        file: "resources/GOVPUB-J34-PURL-LPS88920.pdf",
+        summary:
+          "A broad Office for Victims of Crime resource addressing victims’ rights, law enforcement, prosecution, courts, corrections, victim assistance, health and mental health, legal services, financial recovery, child victims, technology, and multidisciplinary partnerships.",
+        tags: [
+          "Office for Victims of Crime",
+          "law enforcement",
+          "courts",
+          "restitution",
+          "multidisciplinary"
+        ]
+      },
+      {
+        title:
+          "Effective Victim Advocacy Within the Criminal Justice System",
+        file: "resources/Advocacy-in-Criminal-Justice-System.pdf",
+        summary:
+          "Detailed guidance on community-based and system-based advocacy, victim privacy, confidentiality, legal privilege, medical forensic examinations, law-enforcement investigations, prosecution, victims’ rights, compensation, restitution, civil issues, and collaboration.",
+        tags: [
+          "privacy",
+          "confidentiality",
+          "investigation",
+          "prosecution",
+          "compensation"
+        ]
+      }
+    ];
+
+    const views = [...document.querySelectorAll(".view")];
+    const viewButtons = [...document.querySelectorAll("[data-view-target]")];
+    const navButtons = [...document.querySelectorAll(".nav-button")];
+
+    const intakeForm = document.getElementById("intake-form");
+    const chatForm = document.getElementById("chat-form");
+    const timelineForm = document.getElementById("timeline-form");
+    const evidenceForm = document.getElementById("evidence-form");
+    const adminForm = document.getElementById("admin-form");
+
+    const chatWindow = document.getElementById("chat-window");
+    const chatInput = document.getElementById("chat-input");
+    const timelineList = document.getElementById("timeline-list");
+    const evidenceList = document.getElementById("evidence-list");
+    const adminReviewList = document.getElementById("admin-review-list");
+    const caseMeta = document.getElementById("case-meta");
+    const summaryOutput = document.getElementById("summary-output");
+    const safetyResponse = document.getElementById("safety-response");
+    const nextStepsOutput = document.getElementById("next-steps-output");
+    const resourceGrid = document.getElementById("resource-grid");
+    const resourceSearch = document.getElementById("resource-search");
+    const toast = document.getElementById("toast");
+    const vaultOverlay = document.getElementById("vault-overlay");
+    const vaultForm = document.getElementById("vault-form");
+    const vaultError = document.getElementById("vault-error");
+    const migrationChoices = document.getElementById("migration-choices");
+
+    bootstrapVault();
+
+    async function bootstrapVault() {
+      bindVaultActions();
+      const config = vaultStorage.getConfig();
+
+      if (vaultStorage.hasLegacyCase() && !vaultStorage.hasEncryptedCase()) {
+        showMigrationChoices();
+        return;
+      }
+
+      if (config && vaultStorage.hasEncryptedCase()) {
+        showUnlockForm();
+        return;
+      }
+
+      showCreateForm();
+    }
+
+    function bindVaultActions() {
+      vaultForm.addEventListener("submit", handleVaultSubmit);
+      document.getElementById("migrate-encrypt").addEventListener("click", prepareMigration);
+      document.getElementById("migrate-export").addEventListener("click", exportLegacyBeforeMigration);
+      document.getElementById("migrate-delete").addEventListener("click", deleteLegacyBeforeMigration);
+      document.getElementById("lock-vera").addEventListener("click", () => vaultSession.lock("manual"));
+      document.getElementById("trust-lock-vera").addEventListener("click", () => vaultSession.lock("manual"));
+      document.getElementById("export-encrypted-case").addEventListener("click", exportEncryptedCase);
+      document.getElementById("export-plaintext-case").addEventListener("click", exportPlaintextCase);
+      document.getElementById("inactivity-timeout").addEventListener("change", updateInactivityTimeout);
+
+      ["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
+        document.addEventListener(eventName, () => vaultSession.touch(), { passive: true });
+      });
+    }
+
+    function showCreateForm() {
+      setApplicationInert(true);
+      vaultOverlay.classList.remove("hidden");
+      migrationChoices.classList.add("hidden");
+      vaultForm.classList.remove("hidden");
+      document.getElementById("vault-confirm-group").classList.remove("hidden");
+      document.getElementById("vault-submit").textContent = "Create encrypted vault";
+      vaultForm.dataset.mode = "create";
+      document.getElementById("vault-message").textContent =
+        "Create a local encrypted vault before entering sensitive information. White Knight cannot recover a forgotten passphrase in this prototype.";
+    }
+
+    function showUnlockForm() {
+      setApplicationInert(true);
+      vaultOverlay.classList.remove("hidden");
+      migrationChoices.classList.add("hidden");
+      vaultForm.classList.remove("hidden");
+      document.getElementById("vault-confirm-group").classList.add("hidden");
+      document.getElementById("vault-submit").textContent = "Unlock VERA";
+      vaultForm.dataset.mode = "unlock";
+      document.getElementById("vault-message").textContent =
+        "Enter your vault passphrase. The key is derived in this browser and kept in memory only while VERA is unlocked.";
+      setTimeout(() => document.getElementById("vault-passphrase").focus(), 0);
+    }
+
+    function showMigrationChoices() {
+      setApplicationInert(true);
+      vaultOverlay.classList.remove("hidden");
+      vaultForm.classList.add("hidden");
+      migrationChoices.classList.remove("hidden");
+      document.getElementById("vault-message").textContent =
+        "VERA found an older readable record in this browser. Nothing will be changed until you choose an option.";
+    }
+
+    function prepareMigration() {
+      showCreateForm();
+      vaultForm.dataset.mode = "migrate";
+      document.getElementById("vault-submit").textContent = "Encrypt and verify existing data";
+    }
+
+    function exportLegacyBeforeMigration() {
+      const readable = vaultStorage.readLegacyText();
+      if (!readable) return showMigrationChoices();
+      const confirmed = window.confirm(
+        "This creates a readable file containing sensitive information. Anyone with the file may be able to read it. Continue?"
+      );
+      if (confirmed) downloadFile(`vera-plaintext-before-migration-${dateStamp()}.json`, readable, "application/json;charset=utf-8");
+    }
+
+    function deleteLegacyBeforeMigration() {
+      const confirmed = window.confirm(
+        "Permanently delete the older readable VERA data from this browser? This cannot be undone unless you exported a copy."
+      );
+      if (!confirmed) return;
+      vaultStorage.deleteLegacyCase();
+      showCreateForm();
+    }
+
+    async function handleVaultSubmit(event) {
+      event.preventDefault();
+      setVaultError("");
+      const passphrase = document.getElementById("vault-passphrase").value;
+      const confirmation = document.getElementById("vault-passphrase-confirm").value;
+      const mode = vaultForm.dataset.mode;
+
+      try {
+        if (mode === "unlock") {
+          const config = vaultStorage.getConfig();
+          await vaultSession.unlock(passphrase, config);
+          caseData = normalizeCase(await vaultStorage.loadCase(vaultSession.key));
+        } else {
+          if (passphrase !== confirmation) throw new Error("The passphrases do not match.");
+          const config = {
+            version: 1,
+            salt: createSalt(),
+            iterations: DEFAULT_PBKDF2_ITERATIONS,
+            inactivityMinutes: DEFAULT_INACTIVITY_MINUTES,
+            createdAt: new Date().toISOString()
+          };
+          await vaultSession.unlock(passphrase, config);
+          vaultStorage.setConfig(config);
+          caseData = mode === "migrate"
+            ? normalizeCase(await vaultStorage.migrateLegacyCase(vaultSession.key))
+            : normalizeCase(structuredClone(emptyCase));
+          await vaultStorage.saveCase(caseData, vaultSession.key);
+        }
+
+        vaultSession.configure({
+          timeoutMinutes: vaultStorage.getConfig().inactivityMinutes,
+          onLock: handleVaultLock
+        });
+        openApplication();
+      } catch (error) {
+        if (mode === "migrate" && vaultStorage.hasLegacyCase()) {
+          vaultStorage.rollbackPartialMigration();
+        }
+        vaultSession.lock("failed-unlock");
+        setVaultError(error.message || "VERA could not unlock this vault.");
+      }
+    }
+
+    function openApplication() {
+      vaultForm.reset();
+      vaultOverlay.classList.add("hidden");
+      setApplicationInert(false);
+      document.getElementById("inactivity-timeout").value = String(vaultSession.timeoutMinutes);
+      if (!appInitialized) {
+        initialize();
+        appInitialized = true;
+      } else {
+        refreshApplication();
+      }
+      renderTrustCenter();
+    }
+
+    function refreshApplication() {
+      intakeForm.reset();
+      populateIntakeForm();
+      populateAdminForm();
+      renderChat();
+      renderTimeline();
+      renderEvidence();
+      renderAdminReview();
+      renderCaseMeta();
+      evaluateSafety();
+    }
+
+    function handleVaultLock(reason) {
+      caseData = normalizeCase(structuredClone(emptyCase));
+      clearSensitiveInterface();
+      showUnlockForm();
+      if (reason === "inactivity") setVaultError("VERA locked after a period of inactivity.");
+    }
+
+    function clearSensitiveInterface() {
+      [intakeForm, chatForm, timelineForm, evidenceForm, adminForm].forEach((form) => form.reset());
+      [chatWindow, timelineList, evidenceList, adminReviewList, caseMeta, nextStepsOutput].forEach((element) => element.replaceChildren());
+      summaryOutput.textContent = "No summary has been generated yet.";
+    }
+
+    function setVaultError(message) {
+      vaultError.textContent = message;
+      vaultError.classList.toggle("hidden", !message);
+    }
+
+    function setApplicationInert(locked) {
+      document.querySelectorAll("body > :not(#vault-overlay)").forEach((element) => {
+        element.inert = locked;
+      });
+    }
+
+    function initialize() {
+      bindNavigation();
+      bindForms();
+      bindActions();
+      syncViewState("chat-view");
+      populateIntakeForm();
+      populateAdminForm();
+      seedChat();
+      renderChat();
+      renderTimeline();
+      renderEvidence();
+      renderAdminReview();
+      renderCaseMeta();
+      renderResources(advocacyResources);
+      evaluateSafety();
+    }
+
+    function bindNavigation() {
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          showView(button.dataset.viewTarget);
+        });
+      });
+
+      navButtons.forEach((button, index) => {
+        button.addEventListener("keydown", (event) => {
+          const keyMap = {
+            ArrowRight: 1,
+            ArrowDown: 1,
+            ArrowLeft: -1,
+            ArrowUp: -1
+          };
+
+          if (event.key === "Home") {
+            event.preventDefault();
+            navButtons[0].focus();
+            showView(navButtons[0].dataset.viewTarget);
+            return;
+          }
+
+          if (event.key === "End") {
+            event.preventDefault();
+            const lastButton = navButtons[navButtons.length - 1];
+            lastButton.focus();
+            showView(lastButton.dataset.viewTarget);
+            return;
+          }
+
+          if (!(event.key in keyMap)) {
+            return;
+          }
+
+          event.preventDefault();
+          const nextIndex =
+            (index + keyMap[event.key] + navButtons.length) %
+            navButtons.length;
+          const nextButton = navButtons[nextIndex];
+
+          nextButton.focus();
+          showView(nextButton.dataset.viewTarget);
+        });
+      });
+    }
+
+    function showView(viewId) {
+      syncViewState(viewId);
+
+      if (viewId === "summary-view") {
+        generateSummary();
+      }
+
+      if (viewId === "admin-view") {
+        renderAdminReview();
+        populateAdminForm();
+      }
+
+      window.scrollTo({
+        top: document.querySelector(".navigation").offsetTop - 15,
+        behavior: "smooth"
+      });
+    }
+
+    function syncViewState(viewId) {
+      views.forEach((view) => {
+        view.classList.toggle("active", view.id === viewId);
+      });
+
+      navButtons.forEach((button) => {
+        const isActive = button.dataset.viewTarget === viewId;
+
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-selected", String(isActive));
+        button.tabIndex = isActive ? 0 : -1;
+      });
+    }
+
+    function bindForms() {
+      intakeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveIntake();
+      });
+
+      chatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendChatMessage();
+      });
+
+      document
+        .getElementById("safety-status")
+        .addEventListener("change", evaluateSafety);
+
+      timelineForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        addTimelineEvent();
+      });
+
+      evidenceForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        addEvidenceItem();
+      });
+
+      adminForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveAdminNotes();
+      });
+    }
+
+    function bindActions() {
+      document
+        .getElementById("generate-next-steps")
+        .addEventListener("click", generateNextSteps);
+
+      document
+        .getElementById("clear-timeline-form")
+        .addEventListener("click", () => timelineForm.reset());
+
+      document
+        .getElementById("clear-evidence-form")
+        .addEventListener("click", () => evidenceForm.reset());
+
+      document
+        .getElementById("chat-save-intake")
+        .addEventListener("click", saveChatToIntake);
+
+      document
+        .getElementById("chat-add-timeline")
+        .addEventListener("click", addLatestChatAsTimeline);
+
+      document
+        .getElementById("chat-add-evidence")
+        .addEventListener("click", addLatestChatAsEvidence);
+
+      document
+        .getElementById("request-handoff")
+        .addEventListener("click", requestHandoff);
+
+      document
+        .getElementById("export-handoff")
+        .addEventListener("click", exportHandoffPacket);
+
+      document
+        .getElementById("copy-handoff")
+        .addEventListener("click", copyHandoffPacket);
+
+      document
+        .getElementById("submit-dashboard-case")
+        .addEventListener("click", submitDashboardCase);
+
+      document
+        .getElementById("copy-admin-packet")
+        .addEventListener("click", copyHandoffPacket);
+
+      document
+        .getElementById("generate-summary")
+        .addEventListener("click", generateSummary);
+
+      document
+        .getElementById("copy-summary")
+        .addEventListener("click", copySummary);
+
+      document
+        .getElementById("download-summary")
+        .addEventListener("click", downloadSummary);
+
+      document
+        .getElementById("print-summary")
+        .addEventListener("click", () => window.print());
+
+      document
+        .getElementById("export-case")
+        .addEventListener("click", exportCase);
+
+      document
+        .getElementById("import-case")
+        .addEventListener("change", importCase);
+
+      document
+        .getElementById("delete-local-data")
+        .addEventListener("click", deleteLocalData);
+
+      resourceSearch.addEventListener("input", filterResources);
+    }
+
+    function normalizeCase(rawCase) {
+      const createdAt =
+        rawCase.createdAt ||
+        rawCase.updatedAt ||
+        new Date().toISOString();
+
+      return {
+        caseId: rawCase.caseId || createCaseId(createdAt),
+        createdAt,
+        submittedAt: rawCase.submittedAt || null,
+        intake: rawCase.intake || {},
+        timeline: Array.isArray(rawCase.timeline) ? rawCase.timeline : [],
+        evidence: Array.isArray(rawCase.evidence) ? rawCase.evidence : [],
+        messages: Array.isArray(rawCase.messages) ? rawCase.messages : [],
+        handoff: {
+          requested: Boolean(rawCase.handoff?.requested),
+          requestedAt: rawCase.handoff?.requestedAt || null,
+          status: rawCase.handoff?.status || "New",
+          priority: rawCase.handoff?.priority || "Standard",
+          owner: rawCase.handoff?.owner || "",
+          notes: rawCase.handoff?.notes || ""
+        },
+        serverSubmission: rawCase.serverSubmission || null,
+        updatedAt: rawCase.updatedAt || null
+      };
+    }
+
+    function createCaseId(seed) {
+      const compactDate = new Date(seed)
+        .toISOString()
+        .slice(0, 10)
+        .replaceAll("-", "");
+      const suffix = crypto.randomUUID().slice(0, 8).toUpperCase();
+      return `VERA-${compactDate}-${suffix}`;
+    }
+
+    function seedChat() {
+      if (caseData.messages.length) {
+        return;
+      }
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "vera",
+        text:
+          "I can help organize what happened, identify urgent safety issues, list evidence without uploading it here, build a timeline, suggest resource categories, and prepare a handoff packet for human review.\n\nBefore you continue: do not use this chat for emergencies. If anyone may be in immediate danger, contact local emergency services or a local crisis service now.\n\nWhat is the most urgent problem you need help with today?",
+        createdAt: new Date().toISOString(),
+        flags: ["consent-notice"]
+      });
+
+      saveCase();
+    }
+
+    function sendChatMessage() {
+      const message = chatInput.value.trim();
+
+      if (!message) {
+        showToast("Write a message first.");
+        return;
+      }
+
+      const flags = detectMessageFlags(message);
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "user",
+        text: message,
+        createdAt: new Date().toISOString(),
+        flags
+      });
+
+      if (flags.includes("crisis")) {
+        caseData.handoff.requested = true;
+        caseData.handoff.requestedAt =
+          caseData.handoff.requestedAt || new Date().toISOString();
+        caseData.handoff.status = "Needs crisis escalation";
+      }
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "vera",
+        text: buildAdvocateResponse(message, flags),
+        createdAt: new Date().toISOString(),
+        flags: flags.includes("crisis") ? ["crisis-escalation"] : []
+      });
+
+      saveCase();
+      chatInput.value = "";
+      renderChat();
+      renderAdminReview();
+    }
+
+    function detectMessageFlags(message) {
+      const normalized = message.toLowerCase();
+      const flags = [];
+
+      if (crisisTerms.some((term) => normalized.includes(term))) {
+        flags.push("crisis");
+      }
+
+      if (
+        normalized.includes("evidence") ||
+        normalized.includes("photo") ||
+        normalized.includes("screenshot") ||
+        normalized.includes("email") ||
+        normalized.includes("recording") ||
+        normalized.includes("document")
+      ) {
+        flags.push("evidence");
+      }
+
+      if (
+        /\b(20\d{2}|19\d{2})\b/.test(normalized) ||
+        normalized.includes("yesterday") ||
+        normalized.includes("today") ||
+        normalized.includes("last week") ||
+        normalized.includes("then")
+      ) {
+        flags.push("timeline");
+      }
+
+      return flags;
+    }
+
+    function buildAdvocateResponse(message, flags) {
+      if (flags.includes("crisis")) {
+        return [
+          "This may involve urgent safety risk. Stop ordinary documentation if continuing could increase danger.",
+          "",
+          "If anyone may be in immediate danger, contact local emergency services or a local crisis service now. Move to a safer place if possible, avoid confronting the person, and do not try to collect more evidence if that could put anyone at risk.",
+          "",
+          "I marked this conversation for human review in the local admin queue. When it is safe, write only the next fact needed: where are you now, and what immediate help do you need?"
+        ].join("\n");
+      }
+
+      if (flags.includes("evidence")) {
+        return [
+          "I can help inventory that evidence without uploading the content here.",
+          "",
+          "For each item, capture: what it is, when it was created or received, where the original is stored, who controls it, whether the original is preserved, and what it tends to show.",
+          "",
+          "Use the evidence button below to save your latest message as a draft evidence item, then edit it for accuracy."
+        ].join("\n");
+      }
+
+      if (flags.includes("timeline")) {
+        return [
+          "Let's keep this chronological and factual.",
+          "",
+          "For the next entry, separate the date or approximate date, location or platform, what you directly observed, what someone else said, and what document or record supports it.",
+          "",
+          "Use the timeline button below to save your latest message as a draft event, then refine it."
+        ].join("\n");
+      }
+
+      return [
+        "I understand. To organize this for review, answer the next safest question you can:",
+        "",
+        "1. What did you personally see, hear, receive, or experience?",
+        "2. What do you believe happened but cannot personally verify?",
+        "3. What evidence or records may exist?",
+        "4. What outcome are you seeking right now?",
+        "",
+        "Keep names, account numbers, passwords, and unnecessary identifying details out of the chat."
+      ].join("\n");
+    }
+
+    function renderChat() {
+      chatWindow.innerHTML = "";
+
+      caseData.messages.forEach((message) => {
+        const article = document.createElement("article");
+        article.className = `chat-message ${message.role}`;
+        article.innerHTML = `
+          <span class="chat-meta">
+            ${message.role === "user" ? "You" : message.role === "system" ? "System" : "VERA"}
+            ${message.flags?.length ? ` · ${escapeHtml(message.flags.join(", "))}` : ""}
+          </span>
+          ${escapeHtml(message.text)}
+        `;
+
+        chatWindow.appendChild(article);
+      });
+
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function getLatestUserMessage() {
+      return [...caseData.messages].reverse().find(
+        (message) => message.role === "user"
+      );
+    }
+
+    function saveChatToIntake() {
+      const latest = getLatestUserMessage();
+
+      if (!latest) {
+        showToast("No user chat message is available yet.");
+        return;
+      }
+
+      const existing = intakeForm.elements.namedItem("urgentProblem").value;
+      intakeForm.elements.namedItem("urgentProblem").value = [
+        existing,
+        latest.text
+      ]
+        .filter(Boolean)
+        .join("\n\n");
+
+      saveIntake();
+      showToast("Latest chat message saved to intake.");
+    }
+
+    function addLatestChatAsTimeline() {
+      const latest = getLatestUserMessage();
+
+      if (!latest) {
+        showToast("No user chat message is available yet.");
+        return;
+      }
+
+      caseData.timeline.push({
+        id: crypto.randomUUID(),
+        date: "",
+        time: "",
+        location: "",
+        sourceType: "User allegation",
+        event: latest.text,
+        support: "Drafted from VERA chat. Review and separate facts before sharing.",
+        createdAt: new Date().toISOString()
+      });
+
+      sortTimeline();
+      saveCase();
+      renderTimeline();
+      showToast("Latest chat message added as a draft timeline event.");
+    }
+
+    function addLatestChatAsEvidence() {
+      const latest = getLatestUserMessage();
+
+      if (!latest) {
+        showToast("No user chat message is available yet.");
+        return;
+      }
+
+      caseData.evidence.push({
+        id: crypto.randomUUID(),
+        category: "Other supporting document",
+        date: "",
+        description: latest.text,
+        storageLocation: "",
+        owner: "",
+        originalPreserved: "Unknown",
+        backupMade: "Unknown",
+        notes: "Drafted from VERA chat. Do not upload sensitive evidence to this static site.",
+        createdAt: new Date().toISOString()
+      });
+
+      saveCase();
+      renderEvidence();
+      showToast("Latest chat message added as a draft evidence item.");
+    }
+
+    function requestHandoff() {
+      caseData.handoff.requested = true;
+      caseData.handoff.requestedAt = new Date().toISOString();
+
+      if (caseData.handoff.status === "New") {
+        caseData.handoff.status = "Needs advocate follow-up";
+      }
+
+      caseData.messages.push({
+        id: crypto.randomUUID(),
+        role: "system",
+        text:
+          "Human review requested in this browser. Export the handoff packet and send it through an approved secure channel when one is available.",
+        createdAt: new Date().toISOString(),
+        flags: ["handoff-requested"]
+      });
+
+      saveCase();
+      renderChat();
+      renderAdminReview();
+      showToast("Human review request marked locally.");
+    }
+
+    function exportHandoffPacket() {
+      const packet = buildHandoffPacket();
+
+      const confirmed = window.confirm(
+        "This handoff file is readable and may contain sensitive information. Export it only to an approved secure destination. Continue?"
+      );
+
+      if (!confirmed) return;
+
+      downloadFile(
+        `vera-handoff-packet-${dateStamp()}.json`,
+        JSON.stringify(packet, null, 2),
+        "application/json;charset=utf-8"
+      );
+
+      showToast("Handoff packet exported.");
+    }
+
+    async function copyHandoffPacket() {
+      const packet = buildHandoffPacket();
+      const packetJson = JSON.stringify(packet, null, 2);
+
+      const confirmed = window.confirm(
+        "This copies readable sensitive information to your device clipboard, where other apps may be able to access it. Continue?"
+      );
+
+      if (!confirmed) return;
+
+      try {
+        await navigator.clipboard.writeText(packetJson);
+        showToast("Dashboard packet copied.");
+      } catch (error) {
+        console.error("Clipboard error:", error);
+        downloadFile(
+          `vera-dashboard-packet-${dateStamp()}.json`,
+          packetJson,
+          "application/json;charset=utf-8"
+        );
+        showToast("Copy failed, so the dashboard packet was downloaded.");
+      }
+    }
+
+    function buildHandoffPacket() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+
+      return {
+        version: 2,
+        source: "VERA",
+        sourceUrl: "https://vera.whiteknightlaw.org/",
+        targetSystem: "White Knight Law dashboard",
+        dashboardPath: "/dashboard/vera/intake",
+        caseId: caseData.caseId,
+        caseCreatedAt: caseData.createdAt,
+        submittedAt: caseData.submittedAt,
+        exportedAt: new Date().toISOString(),
+        handoff: caseData.handoff,
+        flags: buildReviewFlags(),
+        counts: {
+          messages: caseData.messages.length,
+          timelineEvents: caseData.timeline.length,
+          evidenceItems: caseData.evidence.length
+        },
+        transcript: caseData.messages,
+        intake: caseData.intake,
+        timeline: caseData.timeline,
+        evidence: caseData.evidence,
+        summary: generateSummary()
+      };
+    }
+
+    function buildReviewFlags() {
+      const flags = new Set();
+
+      caseData.messages.forEach((message) => {
+        (message.flags || []).forEach((flag) => flags.add(flag));
+      });
+
+      if (caseData.handoff.requested) {
+        flags.add("human-review-requested");
+      }
+
+      if (!caseData.timeline.length) {
+        flags.add("timeline-incomplete");
+      }
+
+      if (!caseData.evidence.length) {
+        flags.add("evidence-inventory-incomplete");
+      }
+
+      return [...flags];
+    }
+
+    function populateAdminForm() {
+      document.getElementById("admin-status").value =
+        caseData.handoff.status || "New";
+      document.getElementById("admin-priority").value =
+        caseData.handoff.priority || "Standard";
+      document.getElementById("admin-owner").value =
+        caseData.handoff.owner || "";
+      document.getElementById("admin-notes").value =
+        caseData.handoff.notes || "";
+    }
+
+    function saveAdminNotes() {
+      caseData.handoff.status = document.getElementById("admin-status").value;
+      caseData.handoff.priority = document.getElementById("admin-priority").value;
+      caseData.handoff.owner = document.getElementById("admin-owner").value.trim();
+      caseData.handoff.notes = document.getElementById("admin-notes").value.trim();
+      saveCase();
+      renderAdminReview();
+      showToast("Admin review notes saved locally.");
+    }
+
+    async function submitDashboardCase() {
+      const approved = window.confirm(
+        "This attempts to send a readable case packet to the configured White Knight dashboard endpoint. The current static prototype may not have a secure receiving service. Continue?"
+      );
+
+      if (!approved) return;
+
+      caseData.intake = formToObject(intakeForm);
+      caseData.submittedAt = new Date().toISOString();
+      caseData.handoff.requested = true;
+      caseData.handoff.requestedAt =
+        caseData.handoff.requestedAt || caseData.submittedAt;
+      caseData.handoff.status = "Submitted for review";
+
+      if (buildReviewFlags().includes("crisis")) {
+        caseData.handoff.priority = "Urgent safety";
+      } else if (
+        caseData.evidence.length ||
+        caseData.timeline.length ||
+        caseData.messages.length > 2
+      ) {
+        caseData.handoff.priority = "High";
+      }
+
+      saveCase();
+
+      const packet = buildHandoffPacket();
+
+      try {
+        const response = await fetch("/api/intakes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(packet)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Submission failed with status ${response.status}`);
+        }
+
+        caseData.serverSubmission = await response.json();
+        caseData.handoff.status = "Submitted for review";
+        saveCase();
+        populateAdminForm();
+        renderAdminReview();
+        renderCaseMeta();
+        showToast("Case submitted to the VERA server review queue.");
+      } catch (error) {
+        console.error("Server submission error:", error);
+        caseData.serverSubmission = {
+          ok: false,
+          error: "Server submission failed; saved locally only.",
+          failedAt: new Date().toISOString()
+        };
+        saveCase();
+        populateAdminForm();
+        renderAdminReview();
+        renderCaseMeta();
+        showToast("Saved locally. Server submission is not available.");
+      }
+
+      populateAdminForm();
+      renderAdminReview();
+    }
+
+    function renderAdminReview() {
+      const flags = buildReviewFlags();
+      const urgent = flags.includes("crisis") || flags.includes("crisis-escalation");
+      const latest = caseData.messages.at(-1);
+
+      adminReviewList.innerHTML = `
+        <div class="handoff-card">
+          <p>
+            <span class="status-pill ${urgent ? "urgent" : "review"}">
+              ${escapeHtml(caseData.handoff.status || "New")}
+            </span>
+          </p>
+          <p><strong>Case ID:</strong> ${escapeHtml(caseData.caseId)}</p>
+          <p><strong>Priority:</strong> ${escapeHtml(caseData.handoff.priority || "Standard")}</p>
+          <p><strong>Assigned reviewer:</strong> ${
+            caseData.handoff.owner ? escapeHtml(caseData.handoff.owner) : "Unassigned"
+          }</p>
+          <p><strong>Server queue:</strong> ${
+            caseData.serverSubmission?.ok
+              ? `Received ${escapeHtml(new Date(caseData.serverSubmission.receivedAt).toLocaleString())}`
+              : caseData.serverSubmission?.error
+                ? escapeHtml(caseData.serverSubmission.error)
+                : "Not submitted to server"
+          }</p>
+          <p><strong>Human review requested:</strong> ${
+            caseData.handoff.requested ? "Yes" : "No"
+          }</p>
+          <p><strong>Submitted at:</strong> ${
+            caseData.submittedAt
+              ? new Date(caseData.submittedAt).toLocaleString()
+              : "Not submitted"
+          }</p>
+          <p><strong>Requested at:</strong> ${
+            caseData.handoff.requestedAt
+              ? new Date(caseData.handoff.requestedAt).toLocaleString()
+              : "Not requested"
+          }</p>
+          <p><strong>Messages:</strong> ${caseData.messages.length}</p>
+          <p><strong>Timeline events:</strong> ${caseData.timeline.length}</p>
+          <p><strong>Evidence items:</strong> ${caseData.evidence.length}</p>
+          <p><strong>Flags:</strong> ${flags.length ? flags.map(escapeHtml).join(", ") : "None"}</p>
+          <p><strong>Latest message:</strong> ${
+            latest ? escapeHtml(latest.text.slice(0, 240)) : "No messages yet."
+          }</p>
+        </div>
+      `;
+    }
+
+    function renderCaseMeta() {
+      const updated = caseData.updatedAt
+        ? new Date(caseData.updatedAt).toLocaleString()
+        : "Not saved";
+      const submitted = caseData.submittedAt
+        ? new Date(caseData.submittedAt).toLocaleString()
+        : "Not submitted";
+      const serverQueue = caseData.serverSubmission?.ok
+        ? "Server received"
+        : caseData.serverSubmission?.error
+          ? "Local only"
+          : "Not sent";
+
+      caseMeta.innerHTML = `
+        <div>
+          <span>Case ID</span>
+          <strong>${escapeHtml(caseData.caseId)}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong>${escapeHtml(caseData.handoff.status || "New")}</strong>
+        </div>
+        <div>
+          <span>Priority</span>
+          <strong>${escapeHtml(caseData.handoff.priority || "Standard")}</strong>
+        </div>
+        <div>
+          <span>Submitted</span>
+          <strong>${escapeHtml(submitted)}</strong>
+        </div>
+        <div>
+          <span>Updated</span>
+          <strong>${escapeHtml(updated)}</strong>
+        </div>
+        <div>
+          <span>Packet</span>
+          <strong>${caseData.messages.length} messages / ${caseData.timeline.length} timeline / ${caseData.evidence.length} evidence</strong>
+        </div>
+        <div>
+          <span>Server queue</span>
+          <strong>${escapeHtml(serverQueue)}</strong>
+        </div>
+      `;
+    }
+
+    function saveCase() {
+      caseData.updatedAt = new Date().toISOString();
+
+      if (vaultSession.isLocked) return;
+
+      vaultStorage.saveCase(caseData, vaultSession.key).catch(() => {
+        showToast("The browser could not save this information.");
+      });
+      renderCaseMeta();
+    }
+
+    function formToObject(form) {
+      const formData = new FormData(form);
+      const result = {};
+
+      for (const [key, value] of formData.entries()) {
+        if (key === "evidenceCategories") {
+          continue;
+        }
+
+        result[key] = String(value).trim();
+      }
+
+      result.evidenceCategories = [
+        ...form.querySelectorAll(
+          'input[name="evidenceCategories"]:checked'
+        )
+      ].map((input) => input.value);
+
+      return result;
+    }
+
+    function saveIntake() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+      evaluateSafety();
+      generateNextSteps();
+      showToast("Intake saved in this browser.");
+    }
+
+    function populateIntakeForm() {
+      const intake = caseData.intake || {};
+
+      Object.entries(intake).forEach(([key, value]) => {
+        if (key === "evidenceCategories") {
+          const selected = Array.isArray(value) ? value : [];
+
+          document
+            .querySelectorAll('input[name="evidenceCategories"]')
+            .forEach((input) => {
+              input.checked = selected.includes(input.value);
+            });
+
+          return;
+        }
+
+        const field = intakeForm.elements.namedItem(key);
+
+        if (field && typeof value === "string") {
+          field.value = value;
+        }
+      });
+    }
+
+    function evaluateSafety() {
+      const safetyStatus =
+        document.getElementById("safety-status").value ||
+        caseData.intake.safetyStatus ||
+        "";
+
+      safetyResponse.className = "";
+
+      if (safetyStatus === "Immediate danger reported") {
+        safetyResponse.classList.add("notice", "notice-danger");
+        safetyResponse.innerHTML = `
+          <strong>Immediate safety comes first.</strong>
+          Do not continue ordinary intake if doing so could increase danger.
+          Contact local emergency services or an appropriate local crisis
+          service now. Move to a safer location when possible. Do not confront
+          the person, announce plans to leave, or attempt to collect additional
+          evidence if doing so could place anyone at greater risk.
+        `;
+      } else if (safetyStatus === "Possible immediate danger") {
+        safetyResponse.classList.add("notice", "notice-danger");
+        safetyResponse.innerHTML = `
+          <strong>Possible urgent safety risk.</strong>
+          Consider contacting local emergency services, a local victim-service
+          provider, domestic-violence service, stalking resource, hospital, or
+          another appropriate crisis service. Avoid confrontation and do not
+          take evidence-preservation steps that could increase danger.
+        `;
+      } else if (
+        safetyStatus === "Unsure whether danger is immediate"
+      ) {
+        safetyResponse.classList.add("notice", "notice-warning");
+        safetyResponse.innerHTML = `
+          <strong>Uncertain safety risk.</strong>
+          Consider whether there have been recent threats, access to weapons,
+          escalating behavior, monitoring, forced isolation, serious injury,
+          strangulation, threats involving children, or attempts to prevent
+          you from leaving or obtaining help. Contact local emergency or crisis
+          services when danger may be immediate.
+        `;
+      } else if (safetyStatus) {
+        safetyResponse.classList.add("notice", "notice-success");
+        safetyResponse.textContent =
+          "No immediate danger was reported. Reassess safety if circumstances change.";
+      } else {
+        safetyResponse.classList.add("hidden");
+      }
+    }
+
+    function addTimelineEvent() {
+      const formData = new FormData(timelineForm);
+      const eventText = String(formData.get("event") || "").trim();
+
+      if (!eventText) {
+        showToast("Add a factual event description.");
+        return;
+      }
+
+      caseData.timeline.push({
+        id: crypto.randomUUID(),
+        date: String(formData.get("date") || ""),
+        time: String(formData.get("time") || ""),
+        location: String(formData.get("location") || "").trim(),
+        sourceType: String(formData.get("sourceType") || ""),
+        event: eventText,
+        support: String(formData.get("support") || "").trim(),
+        createdAt: new Date().toISOString()
+      });
+
+      sortTimeline();
+      saveCase();
+      timelineForm.reset();
+      renderTimeline();
+      showToast("Timeline event added.");
+    }
+
+    function sortTimeline() {
+      caseData.timeline.sort((a, b) => {
+        const aValue = `${a.date || "9999-12-31"}T${a.time || "23:59"}`;
+        const bValue = `${b.date || "9999-12-31"}T${b.time || "23:59"}`;
+        return aValue.localeCompare(bValue);
+      });
+    }
+
+    function renderTimeline() {
+      timelineList.innerHTML = "";
+
+      if (!caseData.timeline.length) {
+        timelineList.innerHTML = `
+          <div class="empty-state">
+            No timeline events have been added.
+          </div>
+        `;
+        return;
+      }
+
+      caseData.timeline.forEach((item, index) => {
+        const article = document.createElement("article");
+        article.className = "record";
+
+        article.innerHTML = `
+          <div class="record-header">
+            <div>
+              <h3>Event ${index + 1}: ${escapeHtml(formatDate(item.date))}</h3>
+              <div class="record-meta">
+                ${escapeHtml(item.time || "Time unknown")}
+                ${item.location ? ` · ${escapeHtml(item.location)}` : ""}
+                · ${escapeHtml(item.sourceType || "Uncategorized")}
+              </div>
+            </div>
+
+            <div class="record-actions">
+              <button
+                class="small-button delete"
+                type="button"
+                data-delete-timeline="${escapeHtml(item.id)}"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <p class="record-text">${escapeHtml(item.event)}</p>
+
+          ${
+            item.support
+              ? `<p class="record-meta"><strong>Support:</strong> ${escapeHtml(item.support)}</p>`
+              : ""
+          }
+        `;
+
+        timelineList.appendChild(article);
+      });
+
+      document
+        .querySelectorAll("[data-delete-timeline]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            deleteTimelineItem(button.dataset.deleteTimeline);
+          });
+        });
+    }
+
+    function deleteTimelineItem(id) {
+      const confirmed = window.confirm(
+        "Delete this timeline event from the browser?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      caseData.timeline = caseData.timeline.filter(
+        (item) => item.id !== id
+      );
+
+      saveCase();
+      renderTimeline();
+      showToast("Timeline event deleted.");
+    }
+
+    function addEvidenceItem() {
+      const formData = new FormData(evidenceForm);
+      const description = String(
+        formData.get("description") || ""
+      ).trim();
+
+      if (!description) {
+        showToast("Add a description of the evidence item.");
+        return;
+      }
+
+      caseData.evidence.push({
+        id: crypto.randomUUID(),
+        category: String(formData.get("category") || ""),
+        date: String(formData.get("date") || ""),
+        description,
+        storageLocation: String(
+          formData.get("storageLocation") || ""
+        ).trim(),
+        owner: String(formData.get("owner") || "").trim(),
+        originalPreserved: String(
+          formData.get("originalPreserved") || "Unknown"
+        ),
+        backupMade: String(formData.get("backupMade") || "Unknown"),
+        notes: String(formData.get("notes") || "").trim(),
+        createdAt: new Date().toISOString()
+      });
+
+      saveCase();
+      evidenceForm.reset();
+      renderEvidence();
+      showToast("Evidence item added.");
+    }
+
+    function renderEvidence() {
+      evidenceList.innerHTML = "";
+
+      if (!caseData.evidence.length) {
+        evidenceList.innerHTML = `
+          <div class="empty-state">
+            No evidence items have been added.
+          </div>
+        `;
+        return;
+      }
+
+      caseData.evidence.forEach((item, index) => {
+        const article = document.createElement("article");
+        article.className = "record";
+
+        article.innerHTML = `
+          <div class="record-header">
+            <div>
+              <h3>Item ${index + 1}: ${escapeHtml(item.category)}</h3>
+              <div class="record-meta">
+                ${escapeHtml(formatDate(item.date))}
+              </div>
+            </div>
+
+            <div class="record-actions">
+              <button
+                class="small-button delete"
+                type="button"
+                data-delete-evidence="${escapeHtml(item.id)}"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <p class="record-text">${escapeHtml(item.description)}</p>
+
+          <div class="record-meta">
+            ${
+              item.storageLocation
+                ? `<div><strong>Stored:</strong> ${escapeHtml(item.storageLocation)}</div>`
+                : ""
+            }
+
+            ${
+              item.owner
+                ? `<div><strong>Possessed by:</strong> ${escapeHtml(item.owner)}</div>`
+                : ""
+            }
+
+            <div>
+              <strong>Original preserved:</strong>
+              ${escapeHtml(item.originalPreserved)}
+            </div>
+
+            <div>
+              <strong>Backup made:</strong>
+              ${escapeHtml(item.backupMade)}
+            </div>
+
+            ${
+              item.notes
+                ? `<div><strong>Notes:</strong> ${escapeHtml(item.notes)}</div>`
+                : ""
+            }
+          </div>
+        `;
+
+        evidenceList.appendChild(article);
+      });
+
+      document
+        .querySelectorAll("[data-delete-evidence]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            deleteEvidenceItem(button.dataset.deleteEvidence);
+          });
+        });
+    }
+
+    function deleteEvidenceItem(id) {
+      const confirmed = window.confirm(
+        "Delete this evidence entry from the browser?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      caseData.evidence = caseData.evidence.filter(
+        (item) => item.id !== id
+      );
+
+      saveCase();
+      renderEvidence();
+      showToast("Evidence item deleted.");
+    }
+
+    function generateNextSteps() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+
+      const intake = caseData.intake;
+      const steps = [];
+
+      if (
+        intake.safetyStatus === "Immediate danger reported" ||
+        intake.safetyStatus === "Possible immediate danger"
+      ) {
+        steps.push(
+          "Address immediate safety before continuing documentation. Contact local emergency or crisis services when appropriate."
+        );
+      }
+
+      if (
+        !intake.directlyWitnessed ||
+        !intake.allegations ||
+        !intake.thirdPartyStatements
+      ) {
+        steps.push(
+          "Continue separating direct observations, user allegations, and third-party statements."
+        );
+      }
+
+      if (!intake.approximateStart && !caseData.timeline.length) {
+        steps.push(
+          "Add approximate dates and create a chronological timeline."
+        );
+      }
+
+      if (
+        !intake.evidenceCategories ||
+        !intake.evidenceCategories.length
+      ) {
+        steps.push(
+          "Identify available messages, account records, photographs, reports, witnesses, contracts, medical records, or technical evidence."
+        );
+      }
+
+      if (!caseData.evidence.length) {
+        steps.push(
+          "Create an evidence inventory without uploading sensitive evidence to this website."
+        );
+      }
+
+      if (!intake.reportsMade) {
+        steps.push(
+          "Record which organizations, agencies, financial institutions, employers, platforms, advocates, or professionals have already been contacted."
+        );
+      }
+
+      if (!intake.deadline) {
+        steps.push(
+          "Check for reporting deadlines, hearings, court dates, appointments, threatened actions, account-recovery windows, or insurance deadlines."
+        );
+      }
+
+      if (intake.harmLoss) {
+        steps.push(
+          "Keep receipts, invoices, lost-wage records, repair estimates, medical expenses, relocation costs, and other records of harm or loss."
+        );
+      }
+
+      if (
+        intake.incidentType === "Fraud or financial exploitation" ||
+        intake.incidentType === "Identity theft or account takeover"
+      ) {
+        steps.push(
+          "Contact affected financial institutions or account providers through verified contact information, change exposed credentials from a safe device, and preserve transaction and account-activity records."
+        );
+      }
+
+      if (
+        intake.incidentType === "Harassment or threats" ||
+        intake.incidentType === "Stalking or unwanted monitoring" ||
+        intake.incidentType === "Cybercrime or online abuse"
+      ) {
+        steps.push(
+          "Preserve original messages, usernames, profile links, dates, times, call records, platform reports, and device-security alerts. Avoid responding when engagement may increase risk."
+        );
+      }
+
+      if (
+        intake.incidentType === "Domestic or family violence" ||
+        intake.incidentType === "Sexual violence or coercion"
+      ) {
+        steps.push(
+          "Consider contacting a trained community-based victim advocate. Do not make changes that could increase danger without considering safety."
+        );
+      }
+
+      steps.push(
+        "Generate an organizational summary and review it for accuracy before sharing it with a professional."
+      );
+
+      nextStepsOutput.innerHTML = `
+        <div class="notice notice-info">
+          <strong>Suggested organizational next steps</strong>
+          <ol>
+            ${steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+          These are general organizational suggestions, not legal advice.
+        </div>
+      `;
+    }
+
+    function generateSummary() {
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+
+      const intake = caseData.intake;
+      const lines = [];
+
+      lines.push("VERA ORGANIZATIONAL INCIDENT SUMMARY");
+      lines.push("====================================");
+      lines.push("");
+      lines.push(`Case ID: ${caseData.caseId}`);
+      lines.push(`Case status: ${caseData.handoff.status || "New"}`);
+      lines.push(`Priority: ${caseData.handoff.priority || "Standard"}`);
+      lines.push(
+        `Submitted for review: ${caseData.submittedAt ? "Yes" : "No"}`
+      );
+      lines.push("");
+
+      lines.push("1. IMMEDIATE CONCERN");
+      lines.push(valueOrUnknown(intake.urgentProblem));
+      lines.push("");
+
+      lines.push("2. CURRENT SAFETY STATUS");
+      lines.push(valueOrUnknown(intake.safetyStatus));
+      lines.push("");
+
+      lines.push("3. GENERAL INCIDENT INFORMATION");
+      lines.push(`Issue category: ${valueOrUnknown(intake.incidentType)}`);
+      lines.push(
+        `Approximate start: ${valueOrUnknown(
+          formatDate(intake.approximateStart)
+        )}`
+      );
+      lines.push(
+        `Approximate end or latest event: ${valueOrUnknown(
+          formatDate(intake.approximateEnd)
+        )}`
+      );
+      lines.push(
+        `Location or platform: ${valueOrUnknown(intake.locationPlatform)}`
+      );
+      lines.push(
+        `People or organizations involved: ${valueOrUnknown(
+          intake.peopleOrganizations
+        )}`
+      );
+      lines.push("");
+
+      lines.push("4. DIRECTLY OBSERVED OR EXPERIENCED BY USER");
+      lines.push(valueOrUnknown(intake.directlyWitnessed));
+      lines.push("");
+
+      lines.push("5. USER ALLEGATIONS, BELIEFS, OR INTERPRETATIONS");
+      lines.push(valueOrUnknown(intake.allegations));
+      lines.push("");
+
+      lines.push("6. THIRD-PARTY STATEMENTS");
+      lines.push(valueOrUnknown(intake.thirdPartyStatements));
+      lines.push("");
+
+      lines.push("7. REPORTED HARM OR LOSS");
+      lines.push(valueOrUnknown(intake.harmLoss));
+      lines.push("");
+
+      lines.push("8. REPORTS OR REQUESTS FOR HELP ALREADY MADE");
+      lines.push(valueOrUnknown(intake.reportsMade));
+      lines.push("");
+
+      lines.push("9. DEADLINES OR APPOINTMENTS");
+      lines.push(valueOrUnknown(formatDate(intake.deadline)));
+      lines.push("");
+
+      lines.push("10. OUTCOME SOUGHT");
+      lines.push(valueOrUnknown(intake.outcomeSought));
+      lines.push("");
+
+      lines.push("11. EVIDENCE CATEGORIES IDENTIFIED DURING INTAKE");
+
+      if (
+        Array.isArray(intake.evidenceCategories) &&
+        intake.evidenceCategories.length
+      ) {
+        intake.evidenceCategories.forEach((category) => {
+          lines.push(`- ${category}`);
+        });
+      } else {
+        lines.push("No evidence categories identified.");
+      }
+
+      lines.push("");
+      lines.push("12. CHRONOLOGICAL TIMELINE");
+
+      if (caseData.timeline.length) {
+        caseData.timeline.forEach((item, index) => {
+          lines.push(
+            `${index + 1}. ${formatDate(item.date)} ${
+              item.time || "time unknown"
+            }`
+          );
+          lines.push(`   Location/platform: ${item.location || "Unknown"}`);
+          lines.push(`   Category: ${item.sourceType || "Unknown"}`);
+          lines.push(`   Event: ${item.event}`);
+
+          if (item.support) {
+            lines.push(`   Related support: ${item.support}`);
+          }
+        });
+      } else {
+        lines.push("No timeline events entered.");
+      }
+
+      lines.push("");
+      lines.push("13. EVIDENCE INVENTORY");
+
+      if (caseData.evidence.length) {
+        caseData.evidence.forEach((item, index) => {
+          lines.push(`${index + 1}. ${item.category}`);
+          lines.push(`   Date: ${formatDate(item.date)}`);
+          lines.push(`   Description: ${item.description}`);
+          lines.push(
+            `   Storage location: ${item.storageLocation || "Unknown"}`
+          );
+          lines.push(`   Possessed by: ${item.owner || "Unknown"}`);
+          lines.push(
+            `   Original preserved: ${item.originalPreserved || "Unknown"}`
+          );
+          lines.push(`   Backup made: ${item.backupMade || "Unknown"}`);
+
+          if (item.notes) {
+            lines.push(`   Notes or unresolved issues: ${item.notes}`);
+          }
+        });
+      } else {
+        lines.push("No evidence inventory entries.");
+      }
+
+      lines.push("");
+      lines.push("14. CHAT AND HUMAN REVIEW STATUS");
+      lines.push(`Messages captured: ${caseData.messages.length}`);
+      lines.push(
+        `Human review requested: ${caseData.handoff.requested ? "Yes" : "No"}`
+      );
+      lines.push(`Review status: ${caseData.handoff.status || "New"}`);
+
+      if (caseData.handoff.notes) {
+        lines.push(`Reviewer notes: ${caseData.handoff.notes}`);
+      }
+
+      const reviewFlags = buildReviewFlags();
+      lines.push(
+        `Review flags: ${reviewFlags.length ? reviewFlags.join(", ") : "None"}`
+      );
+
+      lines.push("");
+      lines.push("15. UNRESOLVED QUESTIONS");
+
+      const unresolved = buildUnresolvedQuestions();
+
+      if (unresolved.length) {
+        unresolved.forEach((question) => lines.push(`- ${question}`));
+      } else {
+        lines.push(
+          "No automatically identified unresolved questions. Human review is still recommended."
+        );
+      }
+
+      lines.push("");
+      lines.push("16. LIMITATIONS");
+      lines.push(
+        "VERA has not independently verified any statement, allegation, document, identity, loss, date, or event described above."
+      );
+      lines.push("");
+      lines.push(
+        "This document is an organizational draft based on information provided by the user. It has not been independently verified and is not legal advice."
+      );
+
+      summaryOutput.textContent = lines.join("\n");
+      return summaryOutput.textContent;
+    }
+
+    function buildUnresolvedQuestions() {
+      const intake = caseData.intake;
+      const questions = [];
+
+      if (!intake.approximateStart && !caseData.timeline.length) {
+        questions.push("When did the conduct begin?");
+      }
+
+      if (!intake.peopleOrganizations) {
+        questions.push("Which people or organizations were involved?");
+      }
+
+      if (!intake.directlyWitnessed) {
+        questions.push(
+          "What did the user personally see, hear, receive, or experience?"
+        );
+      }
+
+      if (!intake.reportsMade) {
+        questions.push(
+          "Have any reports, complaints, account disputes, or requests for assistance already been made?"
+        );
+      }
+
+      if (!intake.outcomeSought) {
+        questions.push("What outcome is the user seeking?");
+      }
+
+      if (!caseData.evidence.length) {
+        questions.push(
+          "What original records or communications are currently available, and where are they stored?"
+        );
+      }
+
+      const unpreserved = caseData.evidence.filter(
+        (item) => item.originalPreserved !== "Yes"
+      );
+
+      if (unpreserved.length) {
+        questions.push(
+          "Can the original versions of identified evidence be preserved safely and lawfully?"
+        );
+      }
+
+      return questions;
+    }
+
+    async function copySummary() {
+      const text = generateSummary();
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Summary copied.");
+      } catch (error) {
+        console.error("Clipboard error:", error);
+        showToast("Copy failed. Select and copy the summary manually.");
+      }
+    }
+
+    function downloadSummary() {
+      const text = generateSummary();
+      downloadFile(
+        `vera-summary-${dateStamp()}.txt`,
+        text,
+        "text/plain;charset=utf-8"
+      );
+    }
+
+    async function exportCase() {
+      await exportEncryptedCase();
+    }
+
+    async function exportEncryptedCase() {
+      if (vaultSession.isLocked) return;
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+      await vaultStorage.flush();
+      const exportData = await createEncryptedExport(
+        { format: "VERA case backup", version: 3, exportedAt: new Date().toISOString(), case: caseData },
+        vaultSession.key,
+        vaultStorage.getConfig(),
+        "case-backup"
+      );
+      downloadFile(
+        `vera-encrypted-case-backup-${dateStamp()}.json`,
+        JSON.stringify(exportData, null, 2),
+        "application/json;charset=utf-8"
+      );
+      showToast("Encrypted case backup downloaded.");
+    }
+
+    function exportPlaintextCase() {
+      if (vaultSession.isLocked) return;
+      const confirmed = window.confirm(
+        "This creates a readable file containing your VERA information. Anyone with the file may be able to read it. Continue?"
+      );
+      if (!confirmed) return;
+      caseData.intake = formToObject(intakeForm);
+      downloadFile(
+        `vera-readable-case-backup-${dateStamp()}.json`,
+        JSON.stringify({ format: "VERA case backup", version: 3, exportedAt: new Date().toISOString(), case: caseData }, null, 2),
+        "application/json;charset=utf-8"
+      );
+      showToast("Readable case backup downloaded.");
+    }
+
+    function importCase(event) {
+      const file = event.target.files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = async () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          let imported;
+
+          if (isEncryptedExport(parsed)) {
+            const passphrase = await requestImportPassphrase();
+            if (!passphrase) return;
+            const importKey = await deriveVaultKey(
+              passphrase,
+              parsed.encryption.salt,
+              parsed.encryption.iterations
+            );
+            const decrypted = await decryptJson(parsed.payload, importKey);
+            imported = decrypted.case || decrypted;
+          } else {
+            const plaintextConfirmed = window.confirm(
+              "This appears to be a readable backup. Importing it will encrypt the data in your current local vault. Continue?"
+            );
+            if (!plaintextConfirmed) return;
+            imported = parsed.case || parsed;
+          }
+
+          if (
+            typeof imported !== "object" ||
+            imported === null ||
+            !Array.isArray(imported.timeline) ||
+            !Array.isArray(imported.evidence)
+          ) {
+            throw new Error("Unsupported case format");
+          }
+
+          const confirmed = window.confirm(
+            "Replace the current browser data with this imported case?"
+          );
+
+          if (!confirmed) {
+            return;
+          }
+
+          caseData = normalizeCase(imported);
+
+          saveCase();
+          intakeForm.reset();
+          populateIntakeForm();
+          populateAdminForm();
+          seedChat();
+          renderChat();
+          renderTimeline();
+          renderEvidence();
+          renderAdminReview();
+          renderCaseMeta();
+          generateSummary();
+          evaluateSafety();
+          showToast("Case backup imported.");
+        } catch (error) {
+          console.error("Import error:", error);
+          showToast("The selected file is not a valid VERA case backup.");
+        } finally {
+          event.target.value = "";
+        }
+      };
+
+      reader.readAsText(file);
+    }
+
+    function deleteLocalData() {
+      const confirmed = window.confirm(
+        "Delete all VERA intake, timeline, and evidence information stored in this browser?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      vaultStorage.clearAll();
+      caseData = normalizeCase(structuredClone(emptyCase));
+
+      intakeForm.reset();
+      chatForm.reset();
+      timelineForm.reset();
+      evidenceForm.reset();
+      adminForm.reset();
+
+      seedChat();
+      renderChat();
+      renderTimeline();
+      renderEvidence();
+      populateAdminForm();
+      renderAdminReview();
+      renderCaseMeta();
+      summaryOutput.textContent = "No summary has been generated yet.";
+      nextStepsOutput.innerHTML = "";
+      safetyResponse.className = "hidden";
+
+      showToast("Local VERA data deleted.");
+      vaultSession.lock("deleted");
+      showCreateForm();
+    }
+
+    function updateInactivityTimeout(event) {
+      const minutes = Number(event.target.value);
+      const config = vaultStorage.getConfig();
+      config.inactivityMinutes = minutes;
+      vaultStorage.setConfig(config);
+      vaultSession.configure({ timeoutMinutes: minutes, onLock: handleVaultLock });
+      renderTrustCenter();
+      showToast(`VERA will lock after ${minutes} minutes of inactivity.`);
+    }
+
+    function renderTrustCenter() {
+      document.getElementById("trust-vault-status").textContent = vaultSession.isLocked ? "Locked" : "Unlocked";
+      const categories = vaultStorage.storedCategories();
+      document.getElementById("trust-stored-categories").textContent = categories.length
+        ? categories.join(" • ")
+        : "No encrypted case is stored.";
+    }
+
+    function requestImportPassphrase() {
+      const dialog = document.getElementById("import-passphrase-dialog");
+      const form = document.getElementById("import-passphrase-form");
+      const input = document.getElementById("import-passphrase");
+
+      return new Promise((resolve) => {
+        const handleClose = () => {
+          const value = dialog.returnValue === "confirm" ? input.value : "";
+          form.reset();
+          dialog.removeEventListener("close", handleClose);
+          resolve(value);
+        };
+        dialog.addEventListener("close", handleClose);
+        dialog.showModal();
+        setTimeout(() => input.focus(), 0);
+      });
+    }
+
+    function renderResources(resources) {
+      resourceGrid.innerHTML = "";
+
+      if (!resources.length) {
+        resourceGrid.innerHTML = `
+          <div class="empty-state">
+            No matching resources found.
+          </div>
+        `;
+        return;
+      }
+
+      resources.forEach((resource) => {
+        const article = document.createElement("article");
+        article.className = "resource-card";
+
+        article.innerHTML = `
+          <h3>${escapeHtml(resource.title)}</h3>
+          <p>${escapeHtml(resource.summary)}</p>
+
+          <div class="resource-tags">
+            ${resource.tags
+              .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+              .join("")}
+          </div>
+
+          <a
+            class="resource-link"
+            href="${encodeURI(resource.file)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open PDF
+          </a>
+        `;
+
+        resourceGrid.appendChild(article);
+      });
+    }
+
+    function filterResources() {
+      const query = resourceSearch.value.trim().toLowerCase();
+
+      if (!query) {
+        renderResources(advocacyResources);
+        return;
+      }
+
+      const filtered = advocacyResources.filter((resource) => {
+        const searchable = [
+          resource.title,
+          resource.summary,
+          ...resource.tags
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return searchable.includes(query);
+      });
+
+      renderResources(filtered);
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function valueOrUnknown(value) {
+      const normalized = String(value || "").trim();
+      return normalized || "Not provided.";
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "Date unknown";
+      }
+
+      const date = new Date(`${value}T12:00:00`);
+
+      if (Number.isNaN(date.getTime())) {
+        return value;
+      }
+
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }).format(date);
+    }
+
+    function dateStamp() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.remove("hidden");
+
+      window.clearTimeout(showToast.timeout);
+
+      showToast.timeout = window.setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3200);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>

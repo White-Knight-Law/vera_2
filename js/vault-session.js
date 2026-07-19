@@ -1,100 +1,50 @@
-/**
- * VERA Vault Session Manager
- * Handles vault locking, unlocking, and automatic timeout
- */
+import { deriveVaultKey } from "./crypto-utils.js";
 
-const VaultSession = (() => {
-  const DEFAULT_INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000;
-  const SESSION_ACTIVITY_KEY = 'vera_last_activity';
+export const DEFAULT_INACTIVITY_MINUTES = 10;
 
-  let inactivityTimer = null;
-  let inactivityTimeoutMs = DEFAULT_INACTIVITY_TIMEOUT_MS;
-  let isLocked = true;
+export class VaultSession {
+  #key = null;
+  #timer = null;
+  #timeoutMinutes = DEFAULT_INACTIVITY_MINUTES;
+  #onLock = () => {};
 
-  function initSession(timeoutMs = DEFAULT_INACTIVITY_TIMEOUT_MS) {
-    inactivityTimeoutMs = timeoutMs;
-    updateActivity();
-    setupActivityListener();
+  get key() {
+    if (!this.#key) throw new Error("The VERA vault is locked.");
+    return this.#key;
   }
 
-  function updateActivity() {
-    localStorage.setItem(SESSION_ACTIVITY_KEY, Date.now().toString());
-    resetInactivityTimer();
+  get isLocked() {
+    return !this.#key;
   }
 
-  function setupActivityListener() {
-    const activities = ['mousedown', 'keydown', 'touchstart', 'click'];
-    activities.forEach(activity => {
-      document.addEventListener(activity, updateActivity, true);
-    });
+  get timeoutMinutes() {
+    return this.#timeoutMinutes;
   }
 
-  function resetInactivityTimer() {
-    if (inactivityTimer) {
-      clearTimeout(inactivityTimer);
-    }
-
-    if (isLocked) {
-      return;
-    }
-
-    inactivityTimer = setTimeout(() => {
-      lockVault('inactivity');
-    }, inactivityTimeoutMs);
+  async unlock(passphrase, config) {
+    this.#key = await deriveVaultKey(passphrase, config.salt, config.iterations);
+    this.#timeoutMinutes = Number(config.inactivityMinutes) || DEFAULT_INACTIVITY_MINUTES;
+    this.touch();
+    return this.#key;
   }
 
-  function unlockVault() {
-    isLocked = false;
-    updateActivity();
+  configure({ timeoutMinutes, onLock }) {
+    if (Number.isFinite(Number(timeoutMinutes))) this.#timeoutMinutes = Number(timeoutMinutes);
+    if (typeof onLock === "function") this.#onLock = onLock;
+    if (!this.isLocked) this.touch();
   }
 
-  function lockVault(reason = 'user') {
-    isLocked = true;
-    StorageAdapter.clearVaultKey();
-    if (inactivityTimer) {
-      clearTimeout(inactivityTimer);
-      inactivityTimer = null;
-    }
-
-    const event = new CustomEvent('vault-locked', { detail: { reason } });
-    document.dispatchEvent(event);
+  touch() {
+    if (this.isLocked) return;
+    clearTimeout(this.#timer);
+    this.#timer = setTimeout(() => this.lock("inactivity"), this.#timeoutMinutes * 60_000);
   }
 
-  function isVaultLocked() {
-    return isLocked;
+  lock(reason = "manual") {
+    clearTimeout(this.#timer);
+    this.#timer = null;
+    this.#key = null;
+    this.#onLock(reason);
   }
+}
 
-  function setInactivityTimeout(ms) {
-    inactivityTimeoutMs = ms;
-    resetInactivityTimer();
-  }
-
-  function getTimeUntilLock() {
-    if (isLocked) return 0;
-    const lastActivityStr = localStorage.getItem(SESSION_ACTIVITY_KEY);
-    if (!lastActivityStr) return inactivityTimeoutMs;
-    const lastActivity = parseInt(lastActivityStr, 10);
-    const elapsed = Date.now() - lastActivity;
-    const remaining = Math.max(0, inactivityTimeoutMs - elapsed);
-    return remaining;
-  }
-
-  function clearOnUnload() {
-    window.addEventListener('beforeunload', () => {
-      lockVault('page-unload');
-    });
-  }
-
-  return {
-    DEFAULT_INACTIVITY_TIMEOUT_MS,
-    initSession,
-    updateActivity,
-    resetInactivityTimer,
-    unlockVault,
-    lockVault,
-    isVaultLocked,
-    setInactivityTimeout,
-    getTimeUntilLock,
-    clearOnUnload
-  };
-})();

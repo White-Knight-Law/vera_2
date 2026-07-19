@@ -1,161 +1,95 @@
-/**
- * VERA Encrypted Storage Adapter
- * Wraps localStorage with transparent encryption/decryption
- */
+import { decryptJson, encryptJson } from "./crypto-utils.js";
 
-const StorageAdapter = (() => {
-  const STORAGE_PREFIX = 'vera_encrypted_';
-  const VAULT_METADATA_KEY = 'vera_vault_metadata';
-  const PLAINTEXT_DETECTION_KEYS = [
-    'vera_urgent_concerns',
-    'vera_evidence',
-    'vera_timeline',
-    'vera_resources',
-    'vera_chat',
-    'vera_narrative'
-  ];
+export const LEGACY_CASE_KEY = "vera_case_v1";
+export const ENCRYPTED_CASE_KEY = "vera_vault_case_v1";
+export const VAULT_CONFIG_KEY = "vera_vault_config_v1";
 
-  let currentKey = null;
-
-  function isVaultUnlocked() {
-    return currentKey !== null;
+export class EncryptedStorageAdapter {
+  constructor(storage = globalThis.localStorage) {
+    this.storage = storage;
+    this.pendingWrite = Promise.resolve();
   }
 
-  function setVaultKey(key) {
-    currentKey = key;
+  getConfig() {
+    const raw = this.storage.getItem(VAULT_CONFIG_KEY);
+    return raw ? JSON.parse(raw) : null;
   }
 
-  function clearVaultKey() {
-    currentKey = CryptoUtils.clearKey(currentKey);
-    currentKey = null;
+  setConfig(config) {
+    this.storage.setItem(VAULT_CONFIG_KEY, JSON.stringify(config));
   }
 
-  async function setEncrypted(key, value) {
-    if (!currentKey) {
-      throw new Error('Vault is locked. Cannot write encrypted data.');
+  hasEncryptedCase() {
+    return Boolean(this.storage.getItem(ENCRYPTED_CASE_KEY));
+  }
+
+  hasLegacyCase() {
+    return Boolean(this.storage.getItem(LEGACY_CASE_KEY));
+  }
+
+  readLegacyCase() {
+    const raw = this.storage.getItem(LEGACY_CASE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }
+
+  readLegacyText() {
+    return this.storage.getItem(LEGACY_CASE_KEY);
+  }
+
+  deleteLegacyCase() {
+    this.storage.removeItem(LEGACY_CASE_KEY);
+  }
+
+  rollbackPartialMigration() {
+    this.storage.removeItem(ENCRYPTED_CASE_KEY);
+    this.storage.removeItem(VAULT_CONFIG_KEY);
+  }
+
+  async loadCase(key) {
+    const raw = this.storage.getItem(ENCRYPTED_CASE_KEY);
+    if (!raw) return null;
+    return decryptJson(JSON.parse(raw), key);
+  }
+
+  saveCase(caseData, key) {
+    const snapshot = structuredClone(caseData);
+    this.pendingWrite = this.pendingWrite.then(async () => {
+      const encrypted = await encryptJson(snapshot, key);
+      this.storage.setItem(ENCRYPTED_CASE_KEY, JSON.stringify(encrypted));
+    });
+    return this.pendingWrite;
+  }
+
+  async migrateLegacyCase(key) {
+    const legacy = this.readLegacyCase();
+    if (!legacy) throw new Error("No plaintext VERA data was found.");
+
+    await this.saveCase(legacy, key);
+    const verified = await this.loadCase(key);
+    if (JSON.stringify(verified) !== JSON.stringify(legacy)) {
+      throw new Error("Migration verification failed. Plaintext data was not removed.");
     }
 
-    const encryptedPayload = await CryptoUtils.encrypt(value, currentKey);
-    const storageKey = STORAGE_PREFIX + key;
-    localStorage.setItem(storageKey, JSON.stringify(encryptedPayload));
-  }
-
-  async function getEncrypted(key, defaultValue = null) {
-    if (!currentKey) {
-      throw new Error('Vault is locked. Cannot read encrypted data.');
+    this.deleteLegacyCase();
+    if (this.hasLegacyCase()) {
+      throw new Error("Plaintext deletion could not be verified.");
     }
-
-    const storageKey = STORAGE_PREFIX + key;
-    const storedValue = localStorage.getItem(storageKey);
-
-    if (!storedValue) {
-      return defaultValue;
-    }
-
-    try {
-      const encryptedPayload = JSON.parse(storedValue);
-      return await CryptoUtils.decrypt(encryptedPayload, currentKey, true);
-    } catch (err) {
-      console.error(`Failed to decrypt key '${key}':`, err);
-      throw new Error(`Decryption failed for key '${key}': ${err.message}`);
-    }
+    return verified;
   }
 
-  function removeEncrypted(key) {
-    const storageKey = STORAGE_PREFIX + key;
-    localStorage.removeItem(storageKey);
+  async flush() {
+    await this.pendingWrite;
   }
 
-  function detectPlaintextData() {
-    const plaintextKeys = [];
-    for (const key of PLAINTEXT_DETECTION_KEYS) {
-      if (localStorage.getItem(key)) {
-        plaintextKeys.push(key);
-      }
-    }
-    return plaintextKeys;
+  clearAll() {
+    this.storage.removeItem(LEGACY_CASE_KEY);
+    this.storage.removeItem(ENCRYPTED_CASE_KEY);
+    this.storage.removeItem(VAULT_CONFIG_KEY);
   }
 
-  async function migratePlaintextData(keysToMigrate) {
-    if (!currentKey) {
-      throw new Error('Vault must be unlocked to migrate data.');
-    }
-
-    const result = {
-      successful: 0,
-      failed: 0,
-      errors: []
-    };
-
-    for (const key of keysToMigrate) {
-      try {
-        const plaintextValue = localStorage.getItem(key);
-        if (plaintextValue) {
-          let value = plaintextValue;
-          try {
-            value = JSON.parse(plaintextValue);
-          } catch (e) {}
-          const encryptedKey = key.replace('vera_', '');
-          await setEncrypted(encryptedKey, value);
-          result.successful++;
-        }
-      } catch (err) {
-        result.failed++;
-        result.errors.push({ key, error: err.message });
-      }
-    }
-
-    return result;
+  storedCategories() {
+    return this.hasEncryptedCase()
+      ? ["Intake answers", "Conversation", "Timeline", "Evidence inventory", "Handoff status"]
+      : [];
   }
-
-  function deletePlaintextData(keysToDelete) {
-    let deletedCount = 0;
-    for (const key of keysToDelete) {
-      if (localStorage.getItem(key)) {
-        localStorage.removeItem(key);
-        deletedCount++;
-      }
-    }
-    return deletedCount;
-  }
-
-  function getVaultMetadata() {
-    const metadata = localStorage.getItem(VAULT_METADATA_KEY);
-    return metadata ? JSON.parse(metadata) : null;
-  }
-
-  function setVaultMetadata(metadata) {
-    localStorage.setItem(VAULT_METADATA_KEY, JSON.stringify(metadata));
-  }
-
-  function clearAllEncryptedData() {
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith(STORAGE_PREFIX)) {
-        keysToRemove.push(key);
-      }
-    }
-    keysToRemove.forEach(key => localStorage.removeItem(key));
-    localStorage.removeItem(VAULT_METADATA_KEY);
-    return keysToRemove.length;
-  }
-
-  return {
-    STORAGE_PREFIX,
-    VAULT_METADATA_KEY,
-    PLAINTEXT_DETECTION_KEYS,
-    isVaultUnlocked,
-    setVaultKey,
-    clearVaultKey,
-    setEncrypted,
-    getEncrypted,
-    removeEncrypted,
-    detectPlaintextData,
-    migratePlaintextData,
-    deletePlaintextData,
-    getVaultMetadata,
-    setVaultMetadata,
-    clearAllEncryptedData
-  };
-})();
+}
