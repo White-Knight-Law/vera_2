@@ -211,6 +211,64 @@
       background: rgba(255, 255, 255, 0.12);
     }
 
+    .vault-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(2, 6, 23, 0.96);
+      backdrop-filter: blur(14px);
+    }
+
+    .vault-overlay.hidden {
+      display: none;
+    }
+
+    .vault-card {
+      width: min(100%, 620px);
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      padding: 28px;
+      border: 1px solid var(--border-dark);
+      border-radius: 18px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .vault-card h1 {
+      margin-top: 0;
+    }
+
+    .vault-choice-grid,
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-block: 18px;
+    }
+
+    .trust-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .trust-card strong,
+    .trust-card span {
+      display: block;
+    }
+
+    .prototype-banner {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.32);
+      background: rgba(120, 53, 15, 0.32);
+      color: #fde68a;
+      font-size: 0.9rem;
+    }
+
     .emergency-bar {
       background: rgba(127, 29, 29, 0.28);
       border-bottom: 1px solid rgba(248, 113, 113, 0.32);
@@ -1015,7 +1073,11 @@
           type="button"
           data-view-target="privacy-view"
         >
-          Privacy
+          Trust Center
+        </button>
+
+        <button class="header-button" type="button" id="lock-vera">
+          Lock VERA
         </button>
 
         <button
@@ -1032,6 +1094,15 @@
       </div>
     </div>
   </header>
+
+  <div class="prototype-banner" role="note">
+    <div class="container">
+      <strong>Prototype limitation:</strong> Encrypted local storage reduces
+      exposure on this device, but does not protect information while the vault
+      is unlocked or guarantee protection from compromised devices, malicious
+      browser extensions, software vulnerabilities, subpoenas, or lawful process.
+    </div>
+  </div>
 
   <section
     class="emergency-bar"
@@ -1946,22 +2017,67 @@
       aria-labelledby="privacy-title"
     >
       <article class="panel">
-        <h2 id="privacy-title">Privacy, limits, and safe use</h2>
+        <h2 id="privacy-title">Trust Center</h2>
 
-        <div class="notice notice-danger">
-          This website is not a secure case-management portal. Information
-          entered into the site may be accessible to anyone who can access
-          this browser profile or device.
+        <div class="notice notice-warning">
+          VERA is currently a prototype, not a secure case-management portal.
+          The local vault protects stored records while locked, but the browser
+          must decrypt them while you use the application.
         </div>
 
         <h3>Where information is stored</h3>
 
         <p>
           Intake answers, timeline events, and evidence inventory entries
-          are stored in the browser using local storage. The website does
-          not send this information to WhiteKnight Law, an advocate, an
+          are encrypted before being stored on this device. The website does
+          not intentionally send this information to White Knight Law, an advocate, an
           attorney, law enforcement, or any other person.
         </p>
+
+        <div class="trust-grid" aria-live="polite">
+          <div class="trust-card">
+            <span>Vault status</span>
+            <strong id="trust-vault-status">Locked</strong>
+          </div>
+          <div class="trust-card">
+            <span>Storage location</span>
+            <strong>This browser only</strong>
+          </div>
+          <div class="trust-card">
+            <span>Encryption at rest</span>
+            <strong>AES-256-GCM</strong>
+          </div>
+          <div class="trust-card">
+            <span>White Knight access</span>
+            <strong>No automatic access</strong>
+          </div>
+        </div>
+
+        <h3>Stored categories</h3>
+        <p id="trust-stored-categories">No encrypted case is stored.</p>
+
+        <div class="form-group">
+          <label for="inactivity-timeout">Lock automatically after inactivity</label>
+          <select id="inactivity-timeout">
+            <option value="2">2 minutes</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+          </select>
+        </div>
+
+        <div class="button-row">
+          <button class="button button-success" type="button" id="export-encrypted-case">
+            Download encrypted backup
+          </button>
+          <button class="button button-outline" type="button" id="export-plaintext-case">
+            Export readable copy
+          </button>
+          <button class="button button-outline" type="button" id="trust-lock-vera">
+            Lock now
+          </button>
+        </div>
 
         <h3>Do not enter</h3>
 
@@ -2122,10 +2238,63 @@
     aria-live="polite"
   ></div>
 
-  <script>
-    "use strict";
+  <div class="vault-overlay" id="vault-overlay" role="dialog" aria-modal="true" aria-labelledby="vault-title">
+    <div class="vault-card">
+      <h1 id="vault-title">Protect your VERA workspace</h1>
+      <p id="vault-message">
+        Create or unlock a local encrypted vault before entering sensitive information.
+        White Knight cannot recover a forgotten vault passphrase in this prototype.
+      </p>
 
-    const STORAGE_KEY = "vera_case_v1";
+      <div id="vault-error" class="notice notice-danger hidden" role="alert"></div>
+
+      <form id="vault-form">
+        <div class="form-group">
+          <label for="vault-passphrase">Vault passphrase</label>
+          <input id="vault-passphrase" type="password" minlength="12" autocomplete="current-password" required>
+          <small>Use at least 12 characters. Do not reuse a password or security answer.</small>
+        </div>
+        <div class="form-group" id="vault-confirm-group">
+          <label for="vault-passphrase-confirm">Confirm passphrase</label>
+          <input id="vault-passphrase-confirm" type="password" minlength="12" autocomplete="new-password">
+        </div>
+        <button class="button button-primary" type="submit" id="vault-submit">Create encrypted vault</button>
+      </form>
+
+      <div id="migration-choices" class="hidden">
+        <p><strong>Plaintext VERA data was found on this device.</strong> Choose what happens before continuing.</p>
+        <div class="vault-choice-grid">
+          <button class="button button-primary" type="button" id="migrate-encrypt">Encrypt existing data now</button>
+          <button class="button button-outline" type="button" id="migrate-export">Export it before migration</button>
+          <button class="button button-danger" type="button" id="migrate-delete">Delete it</button>
+        </div>
+        <p class="muted">VERA will not silently migrate or delete the existing plaintext record.</p>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="import-passphrase-dialog" class="vault-card" aria-labelledby="import-passphrase-title">
+    <form method="dialog" id="import-passphrase-form">
+      <h2 id="import-passphrase-title">Unlock encrypted backup</h2>
+      <p>The passphrase is used in this browser for this import only and is not stored.</p>
+      <div class="form-group">
+        <label for="import-passphrase">Backup passphrase</label>
+        <input id="import-passphrase" type="password" minlength="12" autocomplete="off" required>
+      </div>
+      <div class="button-row">
+        <button class="button button-primary" value="confirm">Continue</button>
+        <button class="button button-outline" value="cancel" formnovalidate>Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { createSalt, DEFAULT_PBKDF2_ITERATIONS, decryptJson, deriveVaultKey } from "./js/crypto-utils.js";
+    import { EncryptedStorageAdapter } from "./js/storage-adapter.js";
+    import { VaultSession, DEFAULT_INACTIVITY_MINUTES } from "./js/vault-session.js";
+    import { createEncryptedExport, isEncryptedExport } from "./js/handoff-encryption.js";
+
+    "use strict";
 
     const emptyCase = {
       caseId: "",
@@ -2164,7 +2333,10 @@
       "cannot leave"
     ];
 
-    let caseData = loadCase();
+    let caseData = normalizeCase(structuredClone(emptyCase));
+    let appInitialized = false;
+    const vaultStorage = new EncryptedStorageAdapter();
+    const vaultSession = new VaultSession();
 
     const advocacyResources = [
       {
@@ -2299,8 +2471,196 @@
     const resourceGrid = document.getElementById("resource-grid");
     const resourceSearch = document.getElementById("resource-search");
     const toast = document.getElementById("toast");
+    const vaultOverlay = document.getElementById("vault-overlay");
+    const vaultForm = document.getElementById("vault-form");
+    const vaultError = document.getElementById("vault-error");
+    const migrationChoices = document.getElementById("migration-choices");
 
-    initialize();
+    bootstrapVault();
+
+    async function bootstrapVault() {
+      bindVaultActions();
+      const config = vaultStorage.getConfig();
+
+      if (vaultStorage.hasLegacyCase() && !vaultStorage.hasEncryptedCase()) {
+        showMigrationChoices();
+        return;
+      }
+
+      if (config && vaultStorage.hasEncryptedCase()) {
+        showUnlockForm();
+        return;
+      }
+
+      showCreateForm();
+    }
+
+    function bindVaultActions() {
+      vaultForm.addEventListener("submit", handleVaultSubmit);
+      document.getElementById("migrate-encrypt").addEventListener("click", prepareMigration);
+      document.getElementById("migrate-export").addEventListener("click", exportLegacyBeforeMigration);
+      document.getElementById("migrate-delete").addEventListener("click", deleteLegacyBeforeMigration);
+      document.getElementById("lock-vera").addEventListener("click", () => vaultSession.lock("manual"));
+      document.getElementById("trust-lock-vera").addEventListener("click", () => vaultSession.lock("manual"));
+      document.getElementById("export-encrypted-case").addEventListener("click", exportEncryptedCase);
+      document.getElementById("export-plaintext-case").addEventListener("click", exportPlaintextCase);
+      document.getElementById("inactivity-timeout").addEventListener("change", updateInactivityTimeout);
+
+      ["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
+        document.addEventListener(eventName, () => vaultSession.touch(), { passive: true });
+      });
+    }
+
+    function showCreateForm() {
+      setApplicationInert(true);
+      vaultOverlay.classList.remove("hidden");
+      migrationChoices.classList.add("hidden");
+      vaultForm.classList.remove("hidden");
+      document.getElementById("vault-confirm-group").classList.remove("hidden");
+      document.getElementById("vault-submit").textContent = "Create encrypted vault";
+      vaultForm.dataset.mode = "create";
+      document.getElementById("vault-message").textContent =
+        "Create a local encrypted vault before entering sensitive information. White Knight cannot recover a forgotten passphrase in this prototype.";
+    }
+
+    function showUnlockForm() {
+      setApplicationInert(true);
+      vaultOverlay.classList.remove("hidden");
+      migrationChoices.classList.add("hidden");
+      vaultForm.classList.remove("hidden");
+      document.getElementById("vault-confirm-group").classList.add("hidden");
+      document.getElementById("vault-submit").textContent = "Unlock VERA";
+      vaultForm.dataset.mode = "unlock";
+      document.getElementById("vault-message").textContent =
+        "Enter your vault passphrase. The key is derived in this browser and kept in memory only while VERA is unlocked.";
+      setTimeout(() => document.getElementById("vault-passphrase").focus(), 0);
+    }
+
+    function showMigrationChoices() {
+      setApplicationInert(true);
+      vaultOverlay.classList.remove("hidden");
+      vaultForm.classList.add("hidden");
+      migrationChoices.classList.remove("hidden");
+      document.getElementById("vault-message").textContent =
+        "VERA found an older readable record in this browser. Nothing will be changed until you choose an option.";
+    }
+
+    function prepareMigration() {
+      showCreateForm();
+      vaultForm.dataset.mode = "migrate";
+      document.getElementById("vault-submit").textContent = "Encrypt and verify existing data";
+    }
+
+    function exportLegacyBeforeMigration() {
+      const readable = vaultStorage.readLegacyText();
+      if (!readable) return showMigrationChoices();
+      const confirmed = window.confirm(
+        "This creates a readable file containing sensitive information. Anyone with the file may be able to read it. Continue?"
+      );
+      if (confirmed) downloadFile(`vera-plaintext-before-migration-${dateStamp()}.json`, readable, "application/json;charset=utf-8");
+    }
+
+    function deleteLegacyBeforeMigration() {
+      const confirmed = window.confirm(
+        "Permanently delete the older readable VERA data from this browser? This cannot be undone unless you exported a copy."
+      );
+      if (!confirmed) return;
+      vaultStorage.deleteLegacyCase();
+      showCreateForm();
+    }
+
+    async function handleVaultSubmit(event) {
+      event.preventDefault();
+      setVaultError("");
+      const passphrase = document.getElementById("vault-passphrase").value;
+      const confirmation = document.getElementById("vault-passphrase-confirm").value;
+      const mode = vaultForm.dataset.mode;
+
+      try {
+        if (mode === "unlock") {
+          const config = vaultStorage.getConfig();
+          await vaultSession.unlock(passphrase, config);
+          caseData = normalizeCase(await vaultStorage.loadCase(vaultSession.key));
+        } else {
+          if (passphrase !== confirmation) throw new Error("The passphrases do not match.");
+          const config = {
+            version: 1,
+            salt: createSalt(),
+            iterations: DEFAULT_PBKDF2_ITERATIONS,
+            inactivityMinutes: DEFAULT_INACTIVITY_MINUTES,
+            createdAt: new Date().toISOString()
+          };
+          await vaultSession.unlock(passphrase, config);
+          vaultStorage.setConfig(config);
+          caseData = mode === "migrate"
+            ? normalizeCase(await vaultStorage.migrateLegacyCase(vaultSession.key))
+            : normalizeCase(structuredClone(emptyCase));
+          await vaultStorage.saveCase(caseData, vaultSession.key);
+        }
+
+        vaultSession.configure({
+          timeoutMinutes: vaultStorage.getConfig().inactivityMinutes,
+          onLock: handleVaultLock
+        });
+        openApplication();
+      } catch (error) {
+        if (mode === "migrate" && vaultStorage.hasLegacyCase()) {
+          vaultStorage.rollbackPartialMigration();
+        }
+        vaultSession.lock("failed-unlock");
+        setVaultError(error.message || "VERA could not unlock this vault.");
+      }
+    }
+
+    function openApplication() {
+      vaultForm.reset();
+      vaultOverlay.classList.add("hidden");
+      setApplicationInert(false);
+      document.getElementById("inactivity-timeout").value = String(vaultSession.timeoutMinutes);
+      if (!appInitialized) {
+        initialize();
+        appInitialized = true;
+      } else {
+        refreshApplication();
+      }
+      renderTrustCenter();
+    }
+
+    function refreshApplication() {
+      intakeForm.reset();
+      populateIntakeForm();
+      populateAdminForm();
+      renderChat();
+      renderTimeline();
+      renderEvidence();
+      renderAdminReview();
+      renderCaseMeta();
+      evaluateSafety();
+    }
+
+    function handleVaultLock(reason) {
+      caseData = normalizeCase(structuredClone(emptyCase));
+      clearSensitiveInterface();
+      showUnlockForm();
+      if (reason === "inactivity") setVaultError("VERA locked after a period of inactivity.");
+    }
+
+    function clearSensitiveInterface() {
+      [intakeForm, chatForm, timelineForm, evidenceForm, adminForm].forEach((form) => form.reset());
+      [chatWindow, timelineList, evidenceList, adminReviewList, caseMeta, nextStepsOutput].forEach((element) => element.replaceChildren());
+      summaryOutput.textContent = "No summary has been generated yet.";
+    }
+
+    function setVaultError(message) {
+      vaultError.textContent = message;
+      vaultError.classList.toggle("hidden", !message);
+    }
+
+    function setApplicationInert(locked) {
+      document.querySelectorAll("body > :not(#vault-overlay)").forEach((element) => {
+        element.inert = locked;
+      });
+    }
 
     function initialize() {
       bindNavigation();
@@ -2503,23 +2863,6 @@
         .addEventListener("click", deleteLocalData);
 
       resourceSearch.addEventListener("input", filterResources);
-    }
-
-    function loadCase() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-
-        if (!saved) {
-          return normalizeCase(structuredClone(emptyCase));
-        }
-
-        const parsed = JSON.parse(saved);
-
-        return normalizeCase(parsed);
-      } catch (error) {
-        console.error("Could not load saved case:", error);
-        return normalizeCase(structuredClone(emptyCase));
-      }
     }
 
     function normalizeCase(rawCase) {
@@ -2812,6 +3155,12 @@
     function exportHandoffPacket() {
       const packet = buildHandoffPacket();
 
+      const confirmed = window.confirm(
+        "This handoff file is readable and may contain sensitive information. Export it only to an approved secure destination. Continue?"
+      );
+
+      if (!confirmed) return;
+
       downloadFile(
         `vera-handoff-packet-${dateStamp()}.json`,
         JSON.stringify(packet, null, 2),
@@ -2824,6 +3173,12 @@
     async function copyHandoffPacket() {
       const packet = buildHandoffPacket();
       const packetJson = JSON.stringify(packet, null, 2);
+
+      const confirmed = window.confirm(
+        "This copies readable sensitive information to your device clipboard, where other apps may be able to access it. Continue?"
+      );
+
+      if (!confirmed) return;
 
       try {
         await navigator.clipboard.writeText(packetJson);
@@ -2912,6 +3267,12 @@
     }
 
     async function submitDashboardCase() {
+      const approved = window.confirm(
+        "This attempts to send a readable case packet to the configured White Knight dashboard endpoint. The current static prototype may not have a secure receiving service. Continue?"
+      );
+
+      if (!approved) return;
+
       caseData.intake = formToObject(intakeForm);
       caseData.submittedAt = new Date().toISOString();
       caseData.handoff.requested = true;
@@ -3067,13 +3428,12 @@
     function saveCase() {
       caseData.updatedAt = new Date().toISOString();
 
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(caseData));
-        renderCaseMeta();
-      } catch (error) {
-        console.error("Could not save case:", error);
+      if (vaultSession.isLocked) return;
+
+      vaultStorage.saveCase(caseData, vaultSession.key).catch(() => {
         showToast("The browser could not save this information.");
-      }
+      });
+      renderCaseMeta();
     }
 
     function formToObject(form) {
@@ -3778,21 +4138,42 @@
       );
     }
 
-    function exportCase() {
-      saveIntake();
+    async function exportCase() {
+      await exportEncryptedCase();
+    }
 
-      const exportData = {
-        format: "VERA case backup",
-        version: 2,
-        exportedAt: new Date().toISOString(),
-        case: caseData
-      };
-
+    async function exportEncryptedCase() {
+      if (vaultSession.isLocked) return;
+      caseData.intake = formToObject(intakeForm);
+      saveCase();
+      await vaultStorage.flush();
+      const exportData = await createEncryptedExport(
+        { format: "VERA case backup", version: 3, exportedAt: new Date().toISOString(), case: caseData },
+        vaultSession.key,
+        vaultStorage.getConfig(),
+        "case-backup"
+      );
       downloadFile(
-        `vera-case-backup-${dateStamp()}.json`,
+        `vera-encrypted-case-backup-${dateStamp()}.json`,
         JSON.stringify(exportData, null, 2),
         "application/json;charset=utf-8"
       );
+      showToast("Encrypted case backup downloaded.");
+    }
+
+    function exportPlaintextCase() {
+      if (vaultSession.isLocked) return;
+      const confirmed = window.confirm(
+        "This creates a readable file containing your VERA information. Anyone with the file may be able to read it. Continue?"
+      );
+      if (!confirmed) return;
+      caseData.intake = formToObject(intakeForm);
+      downloadFile(
+        `vera-readable-case-backup-${dateStamp()}.json`,
+        JSON.stringify({ format: "VERA case backup", version: 3, exportedAt: new Date().toISOString(), case: caseData }, null, 2),
+        "application/json;charset=utf-8"
+      );
+      showToast("Readable case backup downloaded.");
     }
 
     function importCase(event) {
@@ -3804,10 +4185,28 @@
 
       const reader = new FileReader();
 
-      reader.onload = () => {
+      reader.onload = async () => {
         try {
           const parsed = JSON.parse(String(reader.result));
-          const imported = parsed.case || parsed;
+          let imported;
+
+          if (isEncryptedExport(parsed)) {
+            const passphrase = await requestImportPassphrase();
+            if (!passphrase) return;
+            const importKey = await deriveVaultKey(
+              passphrase,
+              parsed.encryption.salt,
+              parsed.encryption.iterations
+            );
+            const decrypted = await decryptJson(parsed.payload, importKey);
+            imported = decrypted.case || decrypted;
+          } else {
+            const plaintextConfirmed = window.confirm(
+              "This appears to be a readable backup. Importing it will encrypt the data in your current local vault. Continue?"
+            );
+            if (!plaintextConfirmed) return;
+            imported = parsed.case || parsed;
+          }
 
           if (
             typeof imported !== "object" ||
@@ -3861,7 +4260,7 @@
         return;
       }
 
-      localStorage.removeItem(STORAGE_KEY);
+      vaultStorage.clearAll();
       caseData = normalizeCase(structuredClone(emptyCase));
 
       intakeForm.reset();
@@ -3882,6 +4281,44 @@
       safetyResponse.className = "hidden";
 
       showToast("Local VERA data deleted.");
+      vaultSession.lock("deleted");
+      showCreateForm();
+    }
+
+    function updateInactivityTimeout(event) {
+      const minutes = Number(event.target.value);
+      const config = vaultStorage.getConfig();
+      config.inactivityMinutes = minutes;
+      vaultStorage.setConfig(config);
+      vaultSession.configure({ timeoutMinutes: minutes, onLock: handleVaultLock });
+      renderTrustCenter();
+      showToast(`VERA will lock after ${minutes} minutes of inactivity.`);
+    }
+
+    function renderTrustCenter() {
+      document.getElementById("trust-vault-status").textContent = vaultSession.isLocked ? "Locked" : "Unlocked";
+      const categories = vaultStorage.storedCategories();
+      document.getElementById("trust-stored-categories").textContent = categories.length
+        ? categories.join(" • ")
+        : "No encrypted case is stored.";
+    }
+
+    function requestImportPassphrase() {
+      const dialog = document.getElementById("import-passphrase-dialog");
+      const form = document.getElementById("import-passphrase-form");
+      const input = document.getElementById("import-passphrase");
+
+      return new Promise((resolve) => {
+        const handleClose = () => {
+          const value = dialog.returnValue === "confirm" ? input.value : "";
+          form.reset();
+          dialog.removeEventListener("close", handleClose);
+          resolve(value);
+        };
+        dialog.addEventListener("close", handleClose);
+        dialog.showModal();
+        setTimeout(() => input.focus(), 0);
+      });
     }
 
     function renderResources(resources) {
