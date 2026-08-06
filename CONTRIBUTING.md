@@ -1,6 +1,6 @@
 # Contributing to VERA
 
-VERA (Victim Evidence & Response Advocate) is a browser-based, trauma-aware
+VERA (Victim Empower & Response Advocate) is a browser-based, trauma-aware
 intake workspace that helps crime victims organize urgent concerns, evidence,
 and timelines, and prepare a handoff packet for a human advocate to review.
 It is maintained by White Knight Law and served as a static site at

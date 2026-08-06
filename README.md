@@ -1,6 +1,6 @@
 <img src="assets/logo.png" alt="VERA logo" width="120">
 
-# VERA — Victim Evidence & Response Advocate
+# VERA — Victim Empower & Response Advocate
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
