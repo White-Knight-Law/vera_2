@@ -62,7 +62,13 @@ This project is open source, licensed under the [MIT License](LICENSE).
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for
 project layout, local setup, and guidelines specific to working on a
-sensitive, trauma-informed tool.
+sensitive, trauma-informed tool. Please also read our
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Security
+
+Found a vulnerability, especially anything that could expose real case
+data? See [SECURITY.md](SECURITY.md) for how to report it privately.
 
 ## Project layout
 
