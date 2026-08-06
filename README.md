@@ -2,11 +2,15 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-VERA is a browser-based, trauma-aware intake workspace that helps crime
+**A calm, structured place to start, on the worst day.**
+
+VERA is a free, open-source, browser-based intake workspace that helps crime
 victims organize urgent concerns, evidence, and timelines, and prepare a
-handoff packet for a human advocate to review. It's maintained by
-[White Knight Law](https://www.whiteknightlaw.org/) and served as a static
-site at [vera.whiteknightlaw.org](https://vera.whiteknightlaw.org/).
+clean handoff packet for a human advocate to review. No account, no app to
+install, nothing to pay for — open the page and start. Built and maintained
+by [White Knight Law](https://www.whiteknightlaw.org/), a 501(c)(3)
+nonprofit, and live today at
+[vera.whiteknightlaw.org](https://vera.whiteknightlaw.org/).
 
 ## Overview
 
@@ -31,11 +35,49 @@ install.
 
 Most victim-advocacy intake still starts with a phone call or a paper form,
 at exactly the moment someone is least equipped to organize their thoughts.
-White Knight Law built VERA to lower that barrier: give someone a calm,
-structured way to get their situation down in writing on their own time,
-flag anything urgent immediately, and hand a clean, complete packet to the
-advocate who picks up the case — so the first human conversation starts from
-context instead of a blank page.
+That gap — between the moment someone decides to reach out and the moment a
+human actually listens — is where people go quiet, give up, or leave out
+the detail that mattered most.
+
+White Knight Law built VERA to close that gap. Not to replace an advocate —
+to make sure the advocate starts from context instead of a blank page, and
+that nothing urgent gets missed in between. It's open source because this
+problem is bigger than one organization, and because every advocacy group,
+clinic, and hotline that needs something like this should be able to run
+it, fork it, and make it their own — for free, forever.
+
+## Part of a larger mission
+
+This repository is the **intake layer** — the first, open-source piece of
+a broader White Knight Law initiative called VERA: making legal help
+accessible regardless of ability to pay. The long-term vision connects a
+victim's initial intake (what's in this repo, live today) to attorney
+matching and funded representation, so that someone's worst day doesn't
+also become the day the legal system fails them for lack of money.
+
+This repo — the intake tool, its crisis-detection logic, and its handoff
+format — is the part that's built, deployed, and open source today. The
+attorney-matching and funding side is a separate, non-technical program run
+by White Knight Law directly; it isn't part of what this grant funds or
+what's in this codebase.
+
+## Impact and mission fit
+
+VERA exists at the intersection of public-interest software and open source:
+
+- **Free forever, by design.** MIT-licensed, no paywall, no account. Any
+  advocacy nonprofit, legal aid clinic, or hotline can deploy it as-is or
+  fork it for their own population.
+- **Built by a nonprofit, for the public interest.** White Knight Law is a
+  501(c)(3); VERA isn't a product looking for a business model — it's
+  infrastructure for a problem the market doesn't otherwise solve.
+- **Small footprint, real use.** A single static page, no backend
+  dependencies, already live in production at
+  [vera.whiteknightlaw.org](https://vera.whiteknightlaw.org/) — this is a
+  working tool, not a proposal.
+- **Genuinely open to contribution.** Accessibility, internationalization,
+  and resource-referral logic are all real, well-scoped gaps a new
+  contributor can pick up — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## For reviewers
 
